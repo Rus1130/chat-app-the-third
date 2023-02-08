@@ -6,15 +6,21 @@
     <script defer src="db-init.js"></script>
 </head>
 <body>
-    <div class="banner-wrapper">
-        <div class="banner-content">
-            <div id="currentUsers">Current Users: # | Current Room: Global</div>
+    <div id="loading-screen">Loading...</div>
+
+    <div class="banner info">
+        <div id="currentUsers">Current Users: # | Current Room: Global</div>
+    </div>
+    <div class="banner ui">
+        <div class="ui-grid">
+            <textarea class="inputs" id="message-input" placeholder="Enter your message here..."></textarea>
+            <div class="inputs" id="send-button">Send</div>
         </div>
     </div>
-</body>
 
 <script defer>
     const currentUsers = document.getElementById('currentUsers')
+    const loadingScreen = document.getElementById('loading-screen')
 
     function generateToken(){
         return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
@@ -54,6 +60,7 @@
                 // get the children who have a status of online
                 let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online")
                 currentUsers.innerHTML = `Current Users: ${onlineUsers.length} | Current Room: Global`
+                loadingScreen.style.display = "none"
             })
         })
 
