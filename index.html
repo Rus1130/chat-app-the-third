@@ -23,7 +23,7 @@
     const loadingScreen = document.getElementById('loading-screen')
 
     function generateToken(){
-        return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
+        return "CATT_" +    (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
     }
 
     document.body.onload = () => {
