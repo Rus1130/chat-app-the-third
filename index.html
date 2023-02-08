@@ -28,6 +28,8 @@
 
         let rtdbRef = rtdb.ref("users/" + userToken)
 
+        let localInstances = 0;
+
         // check if the user is already in the database
         rtdbRef.once("value", (snapshot) => {
             if(snapshot.val() == null){
@@ -36,13 +38,24 @@
                     instances: 1,
                     lastOnline: Date.now()
                 })
+                localInstances = 1;
             } else {
                 rtdbRef.update({
                     status: "online",
                     instances: snapshot.val().instances + 1,
                     lastOnline: Date.now()
                 })
+
+                localInstances++;
             }
+        })
+
+        rtdbRef.on("value", snapshot => {
+            rtdbRef.onDisconnect().update({
+                status: (snapshot.val().instances - 1) === 0 ? "offline" : "online",
+                instances: snapshot.val().instances - 1,
+                lastOnline: Date.now()
+            })
         })
     }
     
