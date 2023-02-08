@@ -27,26 +27,22 @@
         }
 
         let rtdbRef = rtdb.ref("users/" + userToken)
-        
-        rtdbRef.update({
-            status: "online",
-            lastOnline: Date.now()
-        })
 
-        rtdbRef.onDisconnect().update({
-            status: "offline"
-        })
-
-        // everytime a user connects or disconnects, update the current users
-        rtdb.ref("users").on("value", (snapshot) => {
-            let users = snapshot.val()
-            let onlineUsers = 0
-            for(let user in users){
-                if(users[user].status == "online"){
-                    onlineUsers++
-                }
+        // check if the user is already in the database
+        rtdbRef.once("value", (snapshot) => {
+            if(snapshot.val() == null){
+                rtdbRef.set({
+                    status: "online",
+                    instances: 1,
+                    lastOnline: Date.now()
+                })
+            } else {
+                rtdbRef.update({
+                    status: "online",
+                    instances: snapshot.val().instances + 1,
+                    lastOnline: Date.now()
+                })
             }
-            currentUsers.innerHTML = "Current Users: " + onlineUsers
         })
     }
     
