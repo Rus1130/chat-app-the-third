@@ -15,14 +15,12 @@
 
 <script defer>
     const currentUsers = document.getElementById('currentUsers')
-    const dbOpen = true;
 
     function generateToken(){
         return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
     }
 
     document.body.onload = () => {
-        if(!dbOpen) return;
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
 
         if(localStorage.getItem('chat-app-the-third-userToken') == null){
@@ -39,7 +37,8 @@
                 rtdbRef.set({
                     status: "online",
                     instances: 1,
-                    lastOnline: Date.now()
+                    lastOnline: Date.now(),
+                    room: 'Global'
                 })
                 localInstances = 1;
             } else {
