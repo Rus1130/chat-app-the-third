@@ -6,9 +6,9 @@
     <script defer src="db-init.js"></script>
 </head>
 <body>
-    <div class="wrapper">
-        <div class="content">
-            <div id="currentUsers">Current Users:</div>
+    <div class="banner-wrapper">
+        <div class="banner-content">
+            <div id="currentUsers">Current Users: # | Current Room: Global</div>
         </div>
     </div>
 </body>
@@ -53,7 +53,7 @@
             rtdb.ref("users").on("value", (snapshot) => {
                 // get the children who have a status of online
                 let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online")
-                currentUsers.innerHTML = "Current Users: " + onlineUsers.length
+                currentUsers.innerHTML = `Current Users: ${onlineUsers.length} | Current Room: Global`
             })
         })
 
