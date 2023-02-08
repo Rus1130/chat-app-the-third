@@ -48,15 +48,21 @@
 
                 localInstances++;
             }
+            rtdb.ref("users").on("value", (snapshot) => {
+                // get the children who have a status of online
+                let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online")
+                currentUsers.innerHTML = "Current Users: " + onlineUsers.length
+            })
         })
 
-        rtdbRef.on("value", snapshot => {
+        rtdbRef.on("value", (snapshot) => {
             rtdbRef.onDisconnect().update({
                 status: (snapshot.val().instances - 1) === 0 ? "offline" : "online",
                 instances: snapshot.val().instances - 1,
                 lastOnline: Date.now()
             })
         })
+
     }
     
 </script>
