@@ -1,0 +1,53 @@
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script defer src="db-init.js"></script>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="content">
+            <div id="currentUsers">Current Users:</div>
+        </div>
+    </div>
+</body>
+
+<script defer>
+    const currentUsers = document.getElementById('currentUsers')
+    function generateToken(){
+        return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
+    }
+
+    document.body.onload = () => {
+        let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
+
+        if(localStorage.getItem('chat-app-the-third-userToken') == null){
+            localStorage.setItem('chat-app-the-third-userToken', userToken)
+        }
+
+        let rtdbRef = rtdb.ref("users/" + userToken)
+        
+        rtdbRef.update({
+            status: "online",
+            lastOnline: Date.now()
+        })
+
+        rtdbRef.onDisconnect().update({
+            status: "offline"
+        })
+
+        // everytime a user connects or disconnects, update the current users
+        rtdb.ref("users").on("value", (snapshot) => {
+            let users = snapshot.val()
+            let onlineUsers = 0
+            for(let user in users){
+                if(users[user].status == "online"){
+                    onlineUsers++
+                }
+            }
+            currentUsers.innerHTML = "Current Users: " + onlineUsers
+        })
+    }
+    
+</script>
