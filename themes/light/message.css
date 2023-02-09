@@ -13,8 +13,7 @@
 
     margin-bottom: 130px;
 
-
-
+    overflow-y: scroll;
 }
 
 .message-container {
