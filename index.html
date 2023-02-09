@@ -13,7 +13,7 @@
     <div class="banner fix-top">
         <div id="currentUsers">Current Users: # | Current Room: Global</div>
     </div>
-    <div class="messages">
+    <div class="messages-wrapper">
         <div id="messages"></div>
     </div>
     <div class="banner fix-bottom" style="height: 100px">
@@ -41,7 +41,6 @@
     function generateToken(){
         return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
     }
-    
 
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');

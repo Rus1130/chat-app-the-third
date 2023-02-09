@@ -1,4 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
+
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent; 
+}
+
 html {
     user-select: none;
 }
@@ -90,6 +96,35 @@ textarea:focus {
     height: 100%;
 }
 
+.messages-wrapper {
+    display: flex;
+    flex-direction: column-reverse;
+    height: calc(100% - 130px);
+
+    overflow: scroll;
+    overflow-x: hidden;
+
+    margin-top: 100px;
+    margin-bottom: 130px;
+}
+
+.message-container {
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    font-size: 12px;
+    display: grid;
+}
+
+.message-name {
+    margin-bottom: -1px;
+    font-size: 14px;
+}
+
 #message-input {
     border-radius: 5px;
     font-size: 15px;
@@ -127,4 +162,11 @@ textarea:focus {
     width: 100%;
     left: 0;
     top: 0; 
+}
+
+#messages {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-left: 20px;
+    margin-right: 20px;
 }
