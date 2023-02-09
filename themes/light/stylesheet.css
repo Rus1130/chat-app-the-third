@@ -30,10 +30,10 @@ textarea:focus {
 }
 
 .banner {
+    display: flex;
     justify-content: center;
     align-items: center;
-    text-align: center;
-    display: flex;
+    height: 100px;
 
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
     background-color: white;
@@ -46,6 +46,24 @@ textarea:focus {
     padding-left: 20px;
 
     margin: 20px;
+    margin-top: 10px;
+}
+
+.fix-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    margin-top: 20px;
+}
+
+.fix-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
 }
 
 .ui-grid {

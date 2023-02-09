@@ -9,34 +9,27 @@
 <body>
     <div id="loading-screen">Loading...</div>
 
-    <div class="content">
-        <div class="banner">
-            <div id="currentUsers">Current Users: # | Current Room: Global</div>
-        </div>
-        <div id="messages">
-            <div class="message-container">
-                <div>name 1 (sent second)</div>
-                use .append() to add messages
-            </div>
-            <div class="message-container">
-                <div>name 2 (sent first)</div>
-            </div>
-        </div>
-        <div class="banner" style="height: 100px">
-            <div class="ui-grid">
-                <textarea class="inputs" id="message-input" placeholder="Enter your message here..."></textarea>
-                <div class="inputs" id="send-button">Send</div>
-            </div>
+
+    <div class="banner fix-top">
+        <div id="currentUsers">Current Users: # | Current Room: Global</div>
+    </div>
+    <div class="messages">
+        <div id="messages"></div>
+    </div>
+    <div class="banner fix-bottom" style="height: 100px">
+        <div class="ui-grid">
+            <textarea class="inputs" id="message-input" placeholder="Enter your message here..."></textarea>
+            <div class="inputs" id="send-button">Send</div>
         </div>
     </div>
+
 
 <script defer>
     const currentUsers = document.getElementById('currentUsers')
     const loadingScreen = document.getElementById('loading-screen')
     const messageInput = document.getElementById('message-input')
     const sendButton = document.getElementById('send-button')
-
-    const newUserEveryTab = false;
+    const messages = document.getElementById('messages')
 
     messageInput.onkeydown = e => {
         let key = e.key
@@ -101,6 +94,20 @@
                     })
                 }
             })
+        }
+
+        function createMessage(sender, content){
+            let div = document.createElement('div')
+            div.innerHTML = `<div class="message-container">
+                <div class="message-name">${sender}</div>
+                <div class="message-content">${content}</div>
+            </div>`
+
+            messages.prepend(div)
+        }
+
+        sendButton.onclick = () => {
+            createMessage(userToken, messageInput.value)
         }
     }
     
