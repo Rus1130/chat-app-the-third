@@ -103,7 +103,7 @@
             })
         }
 
-        function createMessage(sender, content, clientMessage){
+        function createMessage(sender, content, clientMessage, senderToken){
             let div = document.createElement('div')
             let badges = ''
             if(clientMessage){
@@ -113,6 +113,18 @@
             if(sender == 'System'){
                 badges += systemBadge
             }
+
+            // check the user for any custom badges
+            rtdb.ref("users").once("value", (snapshot) => {
+                let users = snapshot.val()
+                let user = Object.values(users).filter((user) => user.token === senderToken)[0]
+                console.log()
+                if(user.customBadges !== undefined){
+                    user.customBadges.forEach((badge) => {
+                        badges += `&nbsp;<span class='badge ${badge}-badge'>${badge}</span>`
+                    })
+                }
+            })
 
             div.innerHTML = `<div class="message-container">
                 <div class="message-name">${sender}${badges}</div>
@@ -185,10 +197,11 @@
             if(snapshot.val() == null) return;
             let message = snapshot.val()
             let sender = message.senderUsername
+            let token = message.senderToken
             let content = message.content
             let clientMessage = message.senderToken === userToken
 
-            createMessage(sender, content, clientMessage)
+            createMessage(sender, content, clientMessage, token)
         })
 
         sendButton.onclick = () => {
