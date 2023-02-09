@@ -1,6 +1,5 @@
 <head>
     <link rel="stylesheet" href="/themes/light/stylesheet.css">
-    <link rel="stylesheet" href="/themes/light/message.css">
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -22,7 +21,7 @@
             <div class="inputs" id="send-button">Send</div>
         </div>
     </div>
-
+</body>
 
 <script defer>
     const currentUsers = document.getElementById('currentUsers')
@@ -30,6 +29,9 @@
     const messageInput = document.getElementById('message-input')
     const sendButton = document.getElementById('send-button')
     const messages = document.getElementById('messages')
+
+    const clientBadge = `&nbsp;<span class='badge client-badge'>YOU</span>`
+    const systemBadge = `&nbsp;<span class='badge system-badge'>SYSTEM</span>`
 
     messageInput.onkeydown = e => {
         let key = e.key
@@ -43,6 +45,9 @@
     }
 
     document.body.onload = () => {
+
+        let timedOut = false;
+
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
 
         if(localStorage.getItem('chat-app-the-third-userToken') == null){
@@ -51,7 +56,8 @@
 
         let rtdbRef = rtdb.ref("users/" + userToken)
 
-        // check if the user is already in the database
+        let roomID = "Global"
+
         rtdbRef.once("value", (snapshot) => {
             if(snapshot.val() == null){
                 rtdbRef.set({
@@ -95,18 +101,73 @@
             })
         }
 
-        function createMessage(sender, content){
+        function createMessage(sender, content, clientMessage){
             let div = document.createElement('div')
+            let badges = ''
+            if(clientMessage){
+                badges += clientBadge
+            }
+
+            if(sender == 'System'){
+                badges += systemBadge
+            }
+
             div.innerHTML = `<div class="message-container">
-                <div class="message-name">${sender}</div>
+                <div class="message-name">${sender}${badges}</div>
                 <div class="message-content">${content}</div>
             </div>`
 
             messages.prepend(div)
         }
 
+        let currentRoomRef = db.collection("rooms").doc(roomID)
+
+        currentRoomRef.onSnapshot((snapshot) => {
+            if(snapshot.data() == null) return;
+            let newMessageData = snapshot.data().messages[Object.keys(snapshot.data().messages)[Object.keys(snapshot.data().messages).length - 1]]
+            console.log(newMessageData)
+        })
+
+
         sendButton.onclick = () => {
-            createMessage(userToken, messageInput.value)
+            if(timedOut) return;
+
+            let isCommand = messageInput.value.startsWith("/")
+            let isEmpty = messageInput.value.trim() === ""
+
+            let isBanned = false
+
+            rtdbRef.once("value", (snapshot) => {
+                isBanned = snapshot.val().isBanned
+            })
+
+            
+
+            if(isEmpty){
+                return createMessage("System", "You cannot send an empty message.", false)
+            }
+
+            if(isBanned){
+                return createMessage("System", "You are banned from sending messages.", false)
+            }
+
+            let username;
+            rtdbRef.once("value", (snapshot) => {
+                username = snapshot.val().username
+            })
+
+            currentRoomRef.set({
+                messages: {
+                    [Date.now()]: {
+                        senderToken: userToken,
+                        senderUsername: username,
+                        content: messageInput.value,
+                        flags: {
+                            isCommand: isCommand,
+                        }
+                    }
+                }
+            }, {merge: true})
         }
     }
     
