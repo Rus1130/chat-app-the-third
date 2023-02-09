@@ -47,29 +47,27 @@
 
         let rtdbRef = rtdb.ref("users/" + userToken)
 
-        let localInstances = 0;
-
         // check if the user is already in the database
         rtdbRef.once("value", (snapshot) => {
             if(snapshot.val() == null){
                 rtdbRef.set({
                     status: "online",
-                    userInstances: 1,
                     lastOnline: Date.now(),
                     room: 'Global',
                     username: userToken,
-                    isAdmin: false
+                    isAdmin: false,
+                    isBanned: false,
+                    userInstances: 1
                 })
-                localInstances = 1;
             } else {
                 rtdbRef.update({
                     status: "online",
-                    userInstances: snapshot.val().userInstances + 1,
-                    lastOnline: Date.now()
+                    lastOnline: Date.now(),
+                    room: 'Global',
+                    userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1))
                 })
-
-                localInstances++;
             }
+
             rtdb.ref("users").on("value", (snapshot) => {
                 // get the children who have a status of online
                 let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online")
@@ -78,14 +76,20 @@
             })
         })
 
-        rtdbRef.on("value", (snapshot) => {
-            rtdbRef.onDisconnect().update({
-                userInstances: snapshot.val().userInstances - 1,
-                status: (snapshot.val().userInstances - 1) === 0 ? "offline" : "online",
-                lastOnline: Date.now()
+        // onbeforeunload, deduct the userInstances by 1
+        window.onbeforeunload = () => {
+            rtdbRef.once("value", (snapshot) => {
+                rtdbRef.update({
+                    userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances - 1))
+                })
+                if(snapshot.val().userInstances - 1 === 0){
+                    rtdbRef.update({
+                        status: "offline",
+                        lastOnline: Date.now()
+                    })
+                }
             })
-        })
-
+        }
     }
     
 </script>
