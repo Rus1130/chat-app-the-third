@@ -54,7 +54,7 @@
             if(snapshot.val() == null){
                 rtdbRef.set({
                     status: "online",
-                    instances: 1,
+                    userInstances: 1,
                     lastOnline: Date.now(),
                     room: 'Global',
                     username: userToken,
@@ -64,7 +64,7 @@
             } else {
                 rtdbRef.update({
                     status: "online",
-                    instances: snapshot.val().instances + 1,
+                    userInstances: snapshot.val().userInstances + 1,
                     lastOnline: Date.now()
                 })
 
@@ -80,8 +80,8 @@
 
         rtdbRef.on("value", (snapshot) => {
             rtdbRef.onDisconnect().update({
-                status: (snapshot.val().instances - 1) === 0 ? "offline" : "online",
-                instances: snapshot.val().instances - 1,
+                userInstances: snapshot.val().userInstances - 1,
+                status: (snapshot.val().userInstances - 1) === 0 ? "offline" : "online",
                 lastOnline: Date.now()
             })
         })
