@@ -39,16 +39,10 @@
     
 
     document.body.onload = () => {
-        let userToken;
+        let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
 
-        if(newUserEveryTab){
-            userToken = generateToken()
-        } else {
-            userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
-
-            if(localStorage.getItem('chat-app-the-third-userToken') == null){
-                localStorage.setItem('chat-app-the-third-userToken', userToken)
-            }
+        if(localStorage.getItem('chat-app-the-third-userToken') == null){
+            localStorage.setItem('chat-app-the-third-userToken', userToken)
         }
 
         let rtdbRef = rtdb.ref("users/" + userToken)
@@ -90,12 +84,6 @@
                 instances: snapshot.val().instances - 1,
                 lastOnline: Date.now()
             })
-
-            if(newUserEveryTab){
-                if(snapshot.val().status === "offline"){
-                    rtdbRef.remove()
-                }
-            }
         })
 
     }
