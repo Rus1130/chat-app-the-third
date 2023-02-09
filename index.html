@@ -1,5 +1,6 @@
 <head>
-    <link rel="stylesheet" href="style-lighttheme.css">
+    <link rel="stylesheet" href="/themes/light/stylesheet.css">
+    <link rel="stylesheet" href="/themes/light/message.css">
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -8,13 +9,24 @@
 <body>
     <div id="loading-screen">Loading...</div>
 
-    <div class="banner info">
-        <div id="currentUsers">Current Users: # | Current Room: Global</div>
-    </div>
-    <div class="banner ui">
-        <div class="ui-grid">
-            <textarea class="inputs" id="message-input" placeholder="Enter your message here..."></textarea>
-            <div class="inputs" id="send-button">Send</div>
+    <div class="content">
+        <div class="banner">
+            <div id="currentUsers">Current Users: # | Current Room: Global</div>
+        </div>
+        <div id="messages">
+            <div class="message-container">
+                <div>name 1 (sent second)</div>
+                use .append() to add messages
+            </div>
+            <div class="message-container">
+                <div>name 2 (sent first)</div>
+            </div>
+        </div>
+        <div class="banner" style="height: 100px">
+            <div class="ui-grid">
+                <textarea class="inputs" id="message-input" placeholder="Enter your message here..."></textarea>
+                <div class="inputs" id="send-button">Send</div>
+            </div>
         </div>
     </div>
 

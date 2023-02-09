@@ -42,25 +42,10 @@ textarea:focus {
     font-size: 30px;
     height: 80px;
 
-    margin-right: 20px;
-    margin-left: 20px;
-
     padding-right: 20px;
     padding-left: 20px;
-    
-}
 
-.info {
-    margin-bottom: auto;
-
-    margin-top: 20px;
-}
-
-.ui {
-    margin-bottom: 20px;
-    height: 100px;
-
-    margin-top: auto;
+    margin: 20px;
 }
 
 .ui-grid {
@@ -77,6 +62,14 @@ textarea:focus {
 
     height: 100%;
     width: 100%;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 7fr 1fr;
+    margin-bottom: 20px;
+    height: 100%;
 }
 
 #message-input {
