@@ -21,6 +21,15 @@
 <script defer>
     const currentUsers = document.getElementById('currentUsers')
     const loadingScreen = document.getElementById('loading-screen')
+    const messageInput = document.getElementById('message-input')
+    const sendButton = document.getElementById('send-button')
+
+    messageInput.onkeydown = e => {
+        let key = e.key
+        if(key === "Enter"){
+            e.preventDefault()
+        }
+    }
 
     function generateToken(){
         return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
