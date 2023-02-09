@@ -26,6 +26,7 @@
 <script defer>
     const currentUsers = document.getElementById('currentUsers')
     const loadingScreen = document.getElementById('loading-screen')
+
     const messageInput = document.getElementById('message-input')
     const sendButton = document.getElementById('send-button')
     const messages = document.getElementById('messages')
@@ -65,6 +66,7 @@
                     lastOnline: Date.now(),
                     room: 'Global',
                     username: userToken,
+                    token: userToken,
                     isAdmin: false,
                     isBanned: false,
                     userInstances: 1
@@ -119,7 +121,11 @@
             messages.prepend(div)
         }
 
-        let currentRoomRef = rtdb.ref("rooms/" + roomID + '/messages')
+        let year = new Date().getFullYear()
+        let month = String(new Date().getMonth() + 1).padStart(2, '0')
+        let day = new Date().getDate()
+
+        let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${year}/${month}/${day}`)
 
 
 
@@ -152,6 +158,12 @@
                 username = snapshot.val().username
             })
 
+            // let time = `${String(_date.getHours()).padStart(2, '0')}:${String(_date.getMinutes()).padStart(2, '0')}:${String(_date.getSeconds()).padStart(2, '0')}`
+
+            let year = new Date().getFullYear()
+            let month = String(new Date().getMonth() + 1).padStart(2, '0')
+            let day = new Date().getDate()
+
             currentRoomRef.update({
                 [Date.now()]: {
                     senderToken: userToken,
@@ -181,6 +193,13 @@
         sendButton.onclick = () => {
             submitMessage();
         };
+
+        messageInput.onkeyup = e => {
+            let key = e.key
+            if(key === "Enter"){
+                submitMessage();
+            }
+        }
     }
     
 </script>
