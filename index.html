@@ -17,7 +17,7 @@
     </div>
     <div class="banner fix-bottom" style="height: 100px">
         <div class="ui-grid">
-            <textarea class="inputs" id="message-input" placeholder="Enter your message here..."></textarea>
+            <textarea class="inputs" id="message-input" placeholder="Enter your message here..." spellcheck="false"></textarea>
             <div class="inputs" id="send-button">Send</div>
         </div>
     </div>
@@ -69,7 +69,8 @@
                     token: userToken,
                     isAdmin: false,
                     isBanned: false,
-                    userInstances: 1
+                    userInstances: 1,
+                    customBadges: []
                 })
             } else {
                 rtdbRef.update({
