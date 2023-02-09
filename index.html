@@ -86,7 +86,6 @@
             })
         })
 
-        // onbeforeunload, deduct the userInstances by 1
         window.onbeforeunload = () => {
             rtdbRef.once("value", (snapshot) => {
                 rtdbRef.update({
@@ -120,18 +119,12 @@
             messages.prepend(div)
         }
 
-        let currentRoomRef = rtdb.ref("rooms/" + roomID)
+        let currentRoomRef = rtdb.ref("rooms/" + roomID + '/messages')
 
 
-        // BUG ==================
-        currentRoomRef.on("value", (snapshot) => {
-            messages.innerHTML = ""
-            let allMessages = snapshot.val().messages
-            if(allMessages == undefined) return;
-            console.log(allMessages)
 
-        })
-        sendButton.onclick = () => {
+
+        function submitMessage(){
             if(timedOut) return;
 
             let isCommand = messageInput.value.startsWith("/")
@@ -154,26 +147,40 @@
             }
 
             let username;
+
             rtdbRef.once("value", (snapshot) => {
                 username = snapshot.val().username
             })
 
-            // BUG ================
-
-            currentRoomRef.set({
-                messages: {
-                    [Date.now()]: {
-                        senderToken: userToken,
-                        senderUsername: username,
-                        content: messageInput.value,
-                        roomID: roomID,
-                        flags: {
-                            isCommand: isCommand,
-                        }
+            currentRoomRef.update({
+                [Date.now()]: {
+                    senderToken: userToken,
+                    senderUsername: username,
+                    content: messageInput.value,
+                    roomID: roomID,
+                    flags: {
+                        isCommand: isCommand,
                     }
                 }
             })
+
+            messageInput.value = ""
+
         }
+
+        currentRoomRef.on("child_added", (snapshot) => {
+            if(snapshot.val() == null) return;
+            let message = snapshot.val()
+            let sender = message.senderUsername
+            let content = message.content
+            let clientMessage = message.senderToken === userToken
+
+            createMessage(sender, content, clientMessage)
+        })
+
+        sendButton.onclick = () => {
+            submitMessage();
+        };
     }
     
 </script>
