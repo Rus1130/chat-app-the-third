@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="/themes/light/styles.css">
+    <link rel="stylesheet" type="text/css" href="./themes/light/styles.css">
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -120,16 +120,17 @@
             messages.prepend(div)
         }
 
-        let currentRoomRef = db.collection("rooms").doc(roomID)
+        let currentRoomRef = rtdb.ref("rooms/" + roomID)
 
-        currentRoomRef.onSnapshot((snapshot) => {
-            if(snapshot.data().messages == undefined) return;
-            let newMessage = Object.values(snapshot.data().messages)[Object.values(snapshot.data().messages).length - 1]
-            if(newMessage.roomID != roomID) return;
-            createMessage(newMessage.senderUsername, newMessage.content, newMessage.senderToken == userToken)
+
+        // BUG ==================
+        currentRoomRef.on("value", (snapshot) => {
+            messages.innerHTML = ""
+            let allMessages = snapshot.val().messages
+            if(allMessages == undefined) return;
+            console.log(allMessages)
+
         })
-
-
         sendButton.onclick = () => {
             if(timedOut) return;
 
@@ -157,6 +158,8 @@
                 username = snapshot.val().username
             })
 
+            // BUG ================
+
             currentRoomRef.set({
                 messages: {
                     [Date.now()]: {
@@ -169,7 +172,7 @@
                         }
                     }
                 }
-            }, {merge: true})
+            })
         }
     }
     
