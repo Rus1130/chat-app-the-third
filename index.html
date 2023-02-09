@@ -23,8 +23,9 @@
     const loadingScreen = document.getElementById('loading-screen')
 
     function generateToken(){
-        return "CATT_" +    (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
+        return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
     }
+    
 
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
@@ -44,7 +45,9 @@
                     status: "online",
                     instances: 1,
                     lastOnline: Date.now(),
-                    room: 'Global'
+                    room: 'Global',
+                    username: userToken,
+                    isAdmin: false
                 })
                 localInstances = 1;
             } else {
