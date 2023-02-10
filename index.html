@@ -178,7 +178,7 @@
 
             // if the time since the last message is less than 1 second, then return
             rtdbRef.once("value", (snapshot) => {
-                if(snapshot.val().timeSinceLastMessage + 600 > Date.now()){
+                if(snapshot.val().timeSinceLastMessage + 200 > Date.now()){
                     timedOut = true
                     return createMessage("System", "Slow down!", false)
                 } else {
@@ -200,7 +200,7 @@
             // let time = ``
 
             let year = new Date().getFullYear()
-            let month = String(new Date().getMonth() + 1).padStart(2, '0')
+            let month = String(new Date().getMonth() + 1)
             let day = new Date().getDate()
 
             let senderBadges;
