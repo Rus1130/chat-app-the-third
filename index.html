@@ -137,7 +137,7 @@
 
         let year = new Date().getFullYear()
         let month = String(new Date().getMonth() + 1).padStart(2, '0')
-        let day = new Date().getDate()
+        let day = String(new Date().getDate()).padStart(2, '0')
 
         let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${year}/${month}/${day}`)
 
