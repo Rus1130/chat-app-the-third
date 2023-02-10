@@ -29,12 +29,50 @@
 </body>
 
 <script defer>
+    const emojis = {
+        ':grin:': '😁',
+        ':smile:': '😊',
+        ':laugh:': '😂',
+        ':rofl:': '🤣',
+        ':halo:': '😇',
+        ':pensive:': '😔',
+        ':sad:': '😢',
+        ':cry:': '😭',
+        ':angry:': '😠',
+        ':rage:': '😡',
+        ':confused:': '😕',
+        ':sick:': '🤢',
+        ':puke:': '🤮',
+        ':cat-hearts:': '😻',
+        ':cat-wink:': '😼',
+        ':skull:': '💀',
+        ':skull-bones:': '☠️',
+        ':boo:': '👻',
+        ':imp:': '👺',
+        ':devil:': '😈',
+        ':astonished:': '😲',
+        ':grimace:': '😬',
+        ':unamused:': '😒',
+        ':yum:': '😋',
+        ':upside-down:': '🙃',
+        ':heart-eyes:': '😍',
+        ':triple-hearts:': '🥰',
+        ':smirk:': '😏',
+    }
+
     const currentUsers = document.getElementById('currentUsers')
     const loadingScreen = document.getElementById('loading-screen')
 
     const messageInput = document.getElementById('message-input')
     const sendButton = document.getElementById('send-button')
     const messages = document.getElementById('messages')
+
+    messageInput.oninput = e => {
+        // if the message has any key that is in the emoji const, replace it with the value
+        Object.keys(emojis).forEach(index => {
+            messageInput.value = messageInput.value.replaceAll(index, emojis[index])
+        });
+    }
 
     messageInput.onkeydown = e => {
         let key = e.key
@@ -63,7 +101,7 @@
             hours: hours,
             minutes: minutes,
             seconds: seconds,
-            timestamp: `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
+            timestamp: `${month}/${day}/${year} at ${hours}:${minutes}:${seconds}`
         }
     }
 
@@ -71,7 +109,8 @@
         'test': "TESTER",
         'hurr-durr': 'hurr durr im a returd!',
         'admin': 'ADMIN',
-        'invis': 'invisible!'
+        'invis': 'invisible!',
+        'w-human': "W Human Being",
     }
 
     document.body.onload = () => {
@@ -155,6 +194,8 @@
                     badgeDisplay += getBadge(badge, customBadges[badge])
                 })
             }
+
+            let DnT = getDateAndTime()
 
             div.innerHTML = `<div class="message-container">
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${DnT.timestamp}</div></div>

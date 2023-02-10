@@ -234,3 +234,8 @@ textarea:focus {
     color: black;
     opacity: 0.05;
 }
+
+.w-human-badge {
+    background-color: gold;
+    color: black;
+}
