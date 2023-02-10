@@ -67,6 +67,7 @@
                     isBanned: false,
                     userInstances: 1,
                     badges: ['filler'],
+                    timeSinceLastMessage: 0,
                 })
             } else {
                 rtdbRef.update({
@@ -113,7 +114,7 @@
             }
 
             rtdbRef.once("value", (snapshot) => {
-                if(snapshot.val().isAdmin){
+                if(snapshot.val().isAdmin && sender != "System"){
                     badgeDisplay += getBadge("admin", "ADMIN")
                 }
             })
@@ -155,7 +156,6 @@
 
 
         function submitMessage(){
-            if(timedOut) return;
 
             let isCommand = messageInput.value.startsWith("/")
             let isEmpty = messageInput.value.trim() === ""
@@ -176,6 +176,21 @@
                 return createMessage("System", "You are banned from sending messages.", false)
             }
 
+            // if the time since the last message is less than 1 second, then return
+            rtdbRef.once("value", (snapshot) => {
+                if(snapshot.val().timeSinceLastMessage + 600 > Date.now()){
+                    timedOut = true
+                    return createMessage("System", "Slow down!", false)
+                } else {
+                    timedOut = false
+                    rtdbRef.update({
+                        timeSinceLastMessage: Date.now()
+                    })
+                }
+            })
+
+
+            if(timedOut) return;
             let username;
 
             rtdbRef.once("value", (snapshot) => {
