@@ -139,6 +139,10 @@
         let month = String(new Date().getMonth() + 1).padStart(2, '0')
         let day = String(new Date().getDate()).padStart(2, '0')
 
+        let hours = String(new Date().getHours()).padStart(2, '0')
+        let minutes = String(new Date().getMinutes()).padStart(2, '0')
+        let seconds = String(new Date().getSeconds()).padStart(2, '0')
+
         let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${year}/${month}/${day}`)
 
 
@@ -172,7 +176,7 @@
                 username = snapshot.val().username
             })
 
-            // let time = `${String(_date.getHours()).padStart(2, '0')}:${String(_date.getMinutes()).padStart(2, '0')}:${String(_date.getSeconds()).padStart(2, '0')}`
+            // let time = ``
 
             let year = new Date().getFullYear()
             let month = String(new Date().getMonth() + 1).padStart(2, '0')
@@ -193,6 +197,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
+                    timestamp: `${month}/${day}/${year} at ${hours}:${minutes}:${seconds}`,
                     badges: senderBadges
                 }
             })
