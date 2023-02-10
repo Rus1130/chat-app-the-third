@@ -174,10 +174,10 @@
             let month = String(new Date().getMonth() + 1).padStart(2, '0')
             let day = new Date().getDate()
 
-            let userBadges;
+            let senderBadges;
 
             rtdbRef.on("value", (snapshot) => {
-                userBadges = snapshot.val().badges
+                senderBadges = snapshot.val().badges
             })
 
             currentRoomRef.update({
@@ -189,7 +189,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    senderBadges: JSON.parse(JSON.stringify(userBadges))
+                    senderBadges: JSON.parse(JSON.stringify(senderBadges))
                 }
             })
 
@@ -204,9 +204,9 @@
             let token = message.senderToken
             let content = message.content
             let clientMessage = message.senderToken === userToken
-            let userBadges = message.senderBadges
+            let senderBadges_ = message.senderBadges
 
-            createMessage(sender, content, clientMessage, token, userBadges)
+            createMessage(sender, content, clientMessage, token, senderBadges_)
         })
 
         sendButton.onclick = () => {
