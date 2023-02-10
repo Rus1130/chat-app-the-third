@@ -100,28 +100,16 @@
             })
         }
 
-        function createMessage(sender, content, clientMessage, senderToken, senderBadges){
+        function createMessage(sender, content, clientMessage, senderToken, badges){
             let div = document.createElement('div')
-            let badges = ''
+            let badgeDisplay = ''
             if(clientMessage){
-                badges += clientBadge
+                badgeDisplay += clientBadge
             }
 
             if(sender == 'System'){
-                badges += systemBadge
+                badgeDisplay += systemBadge
             }
-
-
-
-
-            if(senderBadges != undefined){
-                senderBadges.forEach((badge) => {
-                    if(badge == 'filler') return;
-                    badges += `&nbsp;<span class='badge ${badge}-badge'>${badge}</span>`
-                })
-            }
-
-            
 
             div.innerHTML = `<div class="message-container">
                 <div class="message-name">${sender}${badges}</div>
@@ -174,13 +162,13 @@
             let month = String(new Date().getMonth() + 1).padStart(2, '0')
             let day = new Date().getDate()
 
-            let senderBadges;
+            let badges;
 
             rtdbRef.on("value", (snapshot) => {
-                senderBadges = snapshot.val().senderBadges
+                badges = snapshot.val().badges
             })
 
-            console.log(senderBadges)
+            console.log(badges)
 
             currentRoomRef.update({
                 [Date.now()]: {
@@ -191,7 +179,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    senderBadges: senderBadges
+                    badges: badges
                 }
             })
 
