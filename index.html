@@ -177,7 +177,7 @@
             let senderBadges;
 
             rtdbRef.on("value", (snapshot) => {
-                senderBadges = snapshot.val().badges
+                senderBadges = snapshot.val().senderBadges
             })
 
             console.log(senderBadges)
@@ -191,7 +191,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    senderBadges: JSON.parse(JSON.stringify(senderBadges))
+                    senderBadges: senderBadges
                 }
             })
 
