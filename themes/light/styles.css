@@ -201,7 +201,12 @@ textarea:focus {
     color: black;
 }
 
-.retard-badge {
+.hurr-durr-badge {
     background-color: rgb(127, 165, 3);
     color: black;
+}
+
+.admin-badge {
+    background-color: red;
+    color: white;
 }
