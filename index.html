@@ -112,12 +112,10 @@
                 badgeDisplay += getBadge("system", 'SYSTEM')
             }
 
-            let customBadges = {'test': "badge-testing! lololol"}
-
             if(senderBadges != undefined){
                 senderBadges.forEach((badge) => {
                     if(badge == 'filler') return;
-                    badgeDisplay += getBadge(badge, customBadges[badge] || badge)
+                    badgeDisplay += getBadge(badge, badge.toUpperCase())
                 })
             }
 
