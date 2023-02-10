@@ -13,7 +13,12 @@
         <div id="currentUsers">Current Users: # | Current Room: Global</div>
     </div>
     <div class="messages-wrapper">
-        <div id="messages"></div>
+        <div id="messages">
+            <div class="message-container">
+                <div class="message-head">${sender}&nbsp;${badgeDisplay}&nbsp;<div class="time-display">02/10/2023 at 15:15:20</div></div>
+                <div class="message-content">${content}</div>
+            </div>
+        </div>
     </div>
     <div class="banner fix-bottom" style="height: 100px">
         <div class="ui-grid">
@@ -43,13 +48,22 @@
     }
 
     function getDateAndTime(){
+        let year = new Date().getFullYear()
+        let month = String(new Date().getMonth() + 1).padStart(2, '0')
+        let day = String(new Date().getDate()).padStart(2, '0')
+
+        let hours = String(new Date().getHours()).padStart(2, '0')
+        let minutes = String(new Date().getMinutes()).padStart(2, '0')
+        let seconds = String(new Date().getSeconds()).padStart(2, '0')
+
         return {
-            year: new Date().getFullYear(),
-            month: String(new Date().getMonth() + 1).padStart(2, '0'),
-            day: String(new Date().getDate()).padStart(2, '0'),
-            hours: String(new Date().getHours()).padStart(2, '0'),
-            minutes: String(new Date().getMinutes()).padStart(2, '0'),
-            seconds: String(new Date().getSeconds()).padStart(2, '0'),
+            year: year,
+            month: month,
+            day: day,
+            hours: hours,
+            minutes: minutes,
+            seconds: seconds,
+            timestamp: `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
         }
     }
 
@@ -57,6 +71,7 @@
         'test': "TESTER",
         'hurr-durr': 'hurr durr im a returd!',
         'admin': 'ADMIN',
+        'invis': 'invisible!'
     }
 
     document.body.onload = () => {
@@ -103,6 +118,9 @@
             })
         })
 
+        let DnT = getDateAndTime()
+        let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${DnT.year}/${DnT.month}/${DnT.day}`)
+
         window.onbeforeunload = () => {
             rtdbUserRef.once("value", (snapshot) => {
                 rtdbUserRef.update({
@@ -120,39 +138,39 @@
             return `&nbsp;<span class='badge ${name}-badge'>${displayText}</span>`
         }
 
-        function createMessage(sender, content, clientMessage, senderToken, senderBadges){
+        function createMessage(data, clientMessage){
             let div = document.createElement('div')
             let badgeDisplay = ''
             if(clientMessage){
                 badgeDisplay += getBadge("client", "YOU")
             }
 
-            if(sender == 'System'){
+            if(data.sender == 'System'){
                 badgeDisplay += getBadge("system", 'SYSTEM')
             }
 
-            if(senderBadges != undefined){
-                senderBadges.forEach((badge) => {
+            if(data.badges != undefined){
+                data.badges.forEach((badge) => {
                     if(badge == 'filler') return;
                     badgeDisplay += getBadge(badge, customBadges[badge])
                 })
             }
 
-            
-
             div.innerHTML = `<div class="message-container">
-                <div class="message-name">${sender}&nbsp;${badgeDisplay}</div>
-                <div class="message-content">${content}</div>
+                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${DnT.timestamp}</div></div>
+                <div class="message-content">${data.content}</div>
             </div>`
 
             messages.prepend(div)
         }
 
-        let DnT = getDateAndTime()
-        let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${DnT.year}/${DnT.month}/${DnT.day}`)
 
 
-        createMessage("System", `Welcome to the chat!`, false)
+        createMessage({
+            sender: "System",
+            content: "Welcome to the chat!",
+            timestamp: DnT.timestamp
+        }, false)
 
         function submitMessage(){
 
@@ -168,25 +186,22 @@
             
 
             if(isEmpty){
-                return createMessage("System", "You cannot send an empty message.", false)
+                let data = {
+                    sender: "System",
+                    content: "You cannot send an empty message.",
+                    timestamp: DnT.timestamp,
+                }
+                return createMessage(data, false)
             }
 
             if(isBanned){
-                return createMessage("System", "You are banned from sending messages.", false)
-            }
-
-            // if the time since the last message is less than 1 second, then return
-            rtdbUserRef.once("value", (snapshot) => {
-                if(snapshot.val().timeSinceLastMessage + 200 > Date.now()){
-                    timedOut = true
-                    return createMessage("System", "Slow down!", false)
-                } else {
-                    timedOut = false
-                    rtdbUserRef.update({
-                        timeSinceLastMessage: Date.now()
-                    })
+                let data = {
+                    sender: "System",
+                    content: "You are banned from sending messages.",
+                    timestamp: DnT.timestamp,
                 }
-            })
+                return createMessage(data, false)
+            }
 
 
             if(timedOut) return;
@@ -211,7 +226,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    timestamp: `${DnT.month}/${DnT.day}/${DnT.year} at ${DnT.hours}:${DnT.minutes}:${DnT.seconds}`,
+                    timestamp: DnT.timestamp,
                     badges: senderBadges
                 }
             })
@@ -223,13 +238,17 @@
         currentRoomRef.on("child_added", (snapshot) => {
             if(snapshot.val() == null) return;
             let message = snapshot.val()
-            let sender = message.senderUsername
-            let token = message.senderToken
-            let content = message.content
             let clientMessage = message.senderToken === userToken
-            let badges = message.badges
 
-            createMessage(sender, content, clientMessage, token, badges)
+            let data = {
+                sender: message.senderUsername,
+                content: message.content,
+                timestamp: message.timestamp,
+                badges: message.badges,
+                token: message.senderToken
+            }
+
+            createMessage(data, clientMessage)
         })
 
         sendButton.onclick = () => {
