@@ -42,6 +42,23 @@
         return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
     }
 
+    function getDateAndTime(){
+        return {
+            year: new Date().getFullYear(),
+            month: String(new Date().getMonth() + 1).padStart(2, '0'),
+            day: String(new Date().getDate()).padStart(2, '0'),
+            hours: String(new Date().getHours()).padStart(2, '0'),
+            minutes: String(new Date().getMinutes()).padStart(2, '0'),
+            seconds: String(new Date().getSeconds()).padStart(2, '0'),
+        }
+    }
+
+    const customBadges = {
+        'test': "TESTER",
+        'hurr-durr': 'hurr durr im a returd!',
+        'admin': 'ADMIN',
+    }
+
     document.body.onload = () => {
 
         let timedOut = false;
@@ -114,12 +131,6 @@
                 badgeDisplay += getBadge("system", 'SYSTEM')
             }
 
-            let customBadges = {
-                'test': "badge-testing! lololol",
-                'hurr-durr': 'hurr durr im a returd!',
-                'admin': 'ADMIN',
-            }
-
             if(senderBadges != undefined){
                 senderBadges.forEach((badge) => {
                     if(badge == 'filler') return;
@@ -137,15 +148,8 @@
             messages.prepend(div)
         }
 
-        let year = new Date().getFullYear()
-        let month = String(new Date().getMonth() + 1).padStart(2, '0')
-        let day = String(new Date().getDate()).padStart(2, '0')
-
-        let hours = String(new Date().getHours()).padStart(2, '0')
-        let minutes = String(new Date().getMinutes()).padStart(2, '0')
-        let seconds = String(new Date().getSeconds()).padStart(2, '0')
-
-        let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${year}/${month}/${day}`)
+        let DnT = getDateAndTime()
+        let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${DnT.year}/${DnT.month}/${DnT.day}`)
 
 
         createMessage("System", `Welcome to the chat!`, false)
@@ -192,12 +196,6 @@
                 username = snapshot.val().username
             })
 
-            // let time = ``
-
-            let year = new Date().getFullYear()
-            let month = String(new Date().getMonth() + 1)
-            let day = new Date().getDate()
-
             let senderBadges;
 
             rtdbUserRef.on("value", (snapshot) => {
@@ -213,7 +211,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    timestamp: `${month}/${day}/${year} at ${hours}:${minutes}:${seconds}`,
+                    timestamp: `${DnT.month}/${DnT.day}/${DnT.year} at ${DnT.hours}:${DnT.minutes}:${DnT.seconds}`,
                     badges: senderBadges
                 }
             })
