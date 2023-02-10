@@ -31,9 +31,6 @@
     const sendButton = document.getElementById('send-button')
     const messages = document.getElementById('messages')
 
-    const clientBadge = `&nbsp;<span class='badge client-badge'>YOU</span>`
-    const systemBadge = `&nbsp;<span class='badge system-badge'>SYSTEM</span>`
-
     messageInput.onkeydown = e => {
         let key = e.key
         if(key === "Enter"){
@@ -100,21 +97,25 @@
             })
         }
 
+        function getBadge(badgeName){
+            return `&nbsp;<span class='badge ${badgeName}-badge'>${badgeName}</span>`
+        }
+
         function createMessage(sender, content, clientMessage, senderToken, senderBadges){
             let div = document.createElement('div')
             let badgeDisplay = ''
             if(clientMessage){
-                badgeDisplay += clientBadge
+                badgeDisplay += getBadge("YOU")
             }
 
             if(sender == 'System'){
-                badgeDisplay += systemBadge
+                badgeDisplay += getBadge("SYSTEM")
             }
 
             if(senderBadges != undefined){
                 senderBadges.forEach((badge) => {
                     if(badge == 'filler') return;
-                    badgeDisplay += `&nbsp;<span class='badge ${badge}-badge'>${badge}</span>`
+                    badgeDisplay += getBadge(badge)
                 })
             }
 
