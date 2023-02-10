@@ -132,6 +132,10 @@ textarea:focus {
     justify-content: start;
 }
 
+.message-content {
+    word-break: break-word;
+}
+
 .time-display {
     color: gray;
     font-size: 10px;
@@ -227,5 +231,6 @@ textarea:focus {
 
 .invis-badge {
     background-color: transparent;
-    color: transparent;
+    color: black;
+    opacity: 0.05;
 }
