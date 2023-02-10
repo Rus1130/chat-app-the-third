@@ -114,17 +114,10 @@
                 badgeDisplay += getBadge("system", 'SYSTEM')
             }
 
-            rtdbUserRef.once("value", (snapshot) => {
-                console.log(snapshot.val())
-                if(snapshot.val().isAdmin){
-                    badgeDisplay += getBadge("admin", "ADMIN")
-                }
-            })
-
-
             let customBadges = {
                 'test': "badge-testing! lololol",
                 'hurr-durr': 'hurr durr im a returd!',
+                'admin': 'ADMIN',
             }
 
             if(senderBadges != undefined){
