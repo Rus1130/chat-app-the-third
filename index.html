@@ -115,11 +115,9 @@
             }
 
             rtdbUserRef.once("value", (snapshot) => {
+                console.log(snapshot.val())
                 if(snapshot.val().isAdmin){
-                    if(sender != 'System'){
-                        badgeDisplay += getBadge("admin", "ADMIN")
-                    }
-
+                    badgeDisplay += getBadge("admin", "ADMIN")
                 }
             })
 
