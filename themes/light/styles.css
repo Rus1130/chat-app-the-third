@@ -200,3 +200,8 @@ textarea:focus {
     background-color: plum;
     color: black;
 }
+
+.retard-badge {
+    background-color: rgb(111, 255, 0);
+    color: black;
+}
