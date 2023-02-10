@@ -100,7 +100,7 @@
             })
         }
 
-        function createMessage(sender, content, clientMessage, senderToken, badges){
+        function createMessage(sender, content, clientMessage, senderToken, senderBadges){
             let div = document.createElement('div')
             let badgeDisplay = ''
             if(clientMessage){
@@ -111,8 +111,17 @@
                 badgeDisplay += systemBadge
             }
 
+            if(senderBadges != undefined){
+                senderBadges.forEach((badge) => {
+                    if(badge == 'filler') return;
+                    badgeDisplay += `&nbsp;<span class='badge ${badge}-badge'>${badge}</span>`
+                })
+            }
+
+            
+
             div.innerHTML = `<div class="message-container">
-                <div class="message-name">${sender}${badges}</div>
+                <div class="message-name">${sender}${badgeDisplay}</div>
                 <div class="message-content">${content}</div>
             </div>`
 
@@ -162,13 +171,13 @@
             let month = String(new Date().getMonth() + 1).padStart(2, '0')
             let day = new Date().getDate()
 
-            let badges;
+            let senderBadges;
 
             rtdbRef.on("value", (snapshot) => {
-                badges = snapshot.val().badges
+                senderBadges = snapshot.val().badges
             })
 
-            console.log(badges)
+            console.log(senderBadges)
 
             currentRoomRef.update({
                 [Date.now()]: {
@@ -179,7 +188,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    badges: badges
+                    badges: senderBadges
                 }
             })
 
@@ -194,9 +203,9 @@
             let token = message.senderToken
             let content = message.content
             let clientMessage = message.senderToken === userToken
-            let senderBadges_ = message.senderBadges
+            let badges = message.badges
 
-            createMessage(sender, content, clientMessage, token, senderBadges_)
+            createMessage(sender, content, clientMessage, token, badges)
         })
 
         sendButton.onclick = () => {
