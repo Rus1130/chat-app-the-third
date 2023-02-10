@@ -52,13 +52,13 @@
             localStorage.setItem('chat-app-the-third-userToken', userToken)
         }
 
-        let rtdbRef = rtdb.ref("users/" + userToken)
+        let rtdbUserRef = rtdb.ref("users/" + userToken)
 
         let roomID = "Global"
 
-        rtdbRef.once("value", (snapshot) => {
+        rtdbUserRef.once("value", (snapshot) => {
             if(snapshot.val() == null){
-                rtdbRef.set({
+                rtdbUserRef.set({
                     status: "online",
                     room: 'Global',
                     username: userToken,
@@ -70,7 +70,7 @@
                     timeSinceLastMessage: 0,
                 })
             } else {
-                rtdbRef.update({
+                rtdbUserRef.update({
                     status: "online",
                     room: 'Global',
                     userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1)),
@@ -79,19 +79,19 @@
 
             rtdb.ref("users").on("value", (snapshot) => {
                 // get the children who have a status of online
-                let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online")
+                let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online" && user.room === roomID)
                 currentUsers.innerHTML = `Current Users: ${onlineUsers.length} | Current Room: Global`
                 loadingScreen.style.display = "none"
             })
         })
 
         window.onbeforeunload = () => {
-            rtdbRef.once("value", (snapshot) => {
-                rtdbRef.update({
+            rtdbUserRef.once("value", (snapshot) => {
+                rtdbUserRef.update({
                     userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances - 1))
                 })
                 if(snapshot.val().userInstances - 1 === 0){
-                    rtdbRef.update({
+                    rtdbUserRef.update({
                         status: "offline",
                     })
                 }
@@ -113,7 +113,7 @@
                 badgeDisplay += getBadge("system", 'SYSTEM')
             }
 
-            rtdbRef.once("value", (snapshot) => {
+            rtdbUserRef.once("value", (snapshot) => {
                 if(snapshot.val().isAdmin && sender != "System"){
                     badgeDisplay += getBadge("admin", "ADMIN")
                 }
@@ -162,7 +162,7 @@
 
             let isBanned = false
 
-            rtdbRef.once("value", (snapshot) => {
+            rtdbUserRef.once("value", (snapshot) => {
                 isBanned = snapshot.val().isBanned
             })
 
@@ -177,13 +177,13 @@
             }
 
             // if the time since the last message is less than 1 second, then return
-            rtdbRef.once("value", (snapshot) => {
+            rtdbUserRef.once("value", (snapshot) => {
                 if(snapshot.val().timeSinceLastMessage + 200 > Date.now()){
                     timedOut = true
                     return createMessage("System", "Slow down!", false)
                 } else {
                     timedOut = false
-                    rtdbRef.update({
+                    rtdbUserRef.update({
                         timeSinceLastMessage: Date.now()
                     })
                 }
@@ -193,7 +193,7 @@
             if(timedOut) return;
             let username;
 
-            rtdbRef.once("value", (snapshot) => {
+            rtdbUserRef.once("value", (snapshot) => {
                 username = snapshot.val().username
             })
 
@@ -205,7 +205,7 @@
 
             let senderBadges;
 
-            rtdbRef.on("value", (snapshot) => {
+            rtdbUserRef.on("value", (snapshot) => {
                 senderBadges = snapshot.val().badges
             })
 
@@ -249,6 +249,11 @@
                 submitMessage();
             }
         }
+
+
+
+
+
     }
     
 </script>
