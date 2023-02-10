@@ -189,7 +189,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    senderBadges: userBadges,
+                    senderBadges: JSON.parse(JSON.stringify(userBadges))
                 }
             })
 
