@@ -179,9 +179,7 @@
             rtdbRef.on("value", (snapshot) => {
                 senderBadges = snapshot.val().badges
             })
-
-            console.log(senderBadges)
-
+            
             currentRoomRef.update({
                 [Date.now()]: {
                     senderToken: userToken,
