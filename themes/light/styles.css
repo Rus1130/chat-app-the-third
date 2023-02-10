@@ -131,6 +131,10 @@ textarea:focus {
     justify-content: start;
 }
 
+.message-content, .message-name {
+    user-select: text;
+}
+
 #message-input {
     border-radius: 5px;
     font-size: 15px;
