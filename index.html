@@ -53,6 +53,7 @@
         }
 
         let rtdbUserRef = rtdb.ref("users/" + userToken)
+        let rtdbUsageDataRef = rtdb.ref("usage-data")
 
         let roomID = "Global"
 
@@ -250,8 +251,13 @@
             }
         }
 
-
-
+        
+        // get all online users
+        rtdb.ref("users").on("value", (snapshot) => {
+            rtdbUsageDataRef.update({
+                onlineUsers: Object.values(snapshot.val()).filter((user) => user.status === "online").length
+            })
+        })
 
 
     }
