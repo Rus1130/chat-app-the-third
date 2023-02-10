@@ -63,21 +63,19 @@
             if(snapshot.val() == null){
                 rtdbRef.set({
                     status: "online",
-                    lastOnline: Date.now(),
                     room: 'Global',
                     username: userToken,
                     token: userToken,
                     isAdmin: false,
                     isBanned: false,
                     userInstances: 1,
-                    customBadges: []
+                    badges: ['filler'],
                 })
             } else {
                 rtdbRef.update({
                     status: "online",
-                    lastOnline: Date.now(),
                     room: 'Global',
-                    userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1))
+                    userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1)),
                 })
             }
 
@@ -97,13 +95,12 @@
                 if(snapshot.val().userInstances - 1 === 0){
                     rtdbRef.update({
                         status: "offline",
-                        lastOnline: Date.now()
                     })
                 }
             })
         }
 
-        function createMessage(sender, content, clientMessage, senderToken){
+        function createMessage(sender, content, clientMessage, senderToken, senderBadges){
             let div = document.createElement('div')
             let badges = ''
             if(clientMessage){
@@ -114,17 +111,17 @@
                 badges += systemBadge
             }
 
-            // check the user for any custom badges
-            rtdb.ref("users").once("value", (snapshot) => {
-                let users = snapshot.val()
-                let user = Object.values(users).filter((user) => user.token === senderToken)[0]
-                console.log()
-                if(user.customBadges !== undefined){
-                    user.customBadges.forEach((badge) => {
-                        badges += `&nbsp;<span class='badge ${badge}-badge'>${badge}</span>`
-                    })
-                }
-            })
+
+
+
+            if(senderBadges != undefined){
+                senderBadges.forEach((badge) => {
+                    if(badge == 'filler') return;
+                    badges += `&nbsp;<span class='badge ${badge}-badge'>${badge}</span>`
+                })
+            }
+
+            
 
             div.innerHTML = `<div class="message-container">
                 <div class="message-name">${sender}${badges}</div>
@@ -177,6 +174,12 @@
             let month = String(new Date().getMonth() + 1).padStart(2, '0')
             let day = new Date().getDate()
 
+            let userBadges;
+
+            rtdbRef.on("value", (snapshot) => {
+                userBadges = snapshot.val().badges
+            })
+
             currentRoomRef.update({
                 [Date.now()]: {
                     senderToken: userToken,
@@ -185,7 +188,8 @@
                     roomID: roomID,
                     flags: {
                         isCommand: isCommand,
-                    }
+                    },
+                    senderBadges: userBadges,
                 }
             })
 
@@ -200,8 +204,9 @@
             let token = message.senderToken
             let content = message.content
             let clientMessage = message.senderToken === userToken
+            let userBadges = message.senderBadges
 
-            createMessage(sender, content, clientMessage, token)
+            createMessage(sender, content, clientMessage, token, userBadges)
         })
 
         sendButton.onclick = () => {
