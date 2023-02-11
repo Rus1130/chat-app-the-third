@@ -187,6 +187,11 @@
 
         let completionInterval = setInterval(() => {
             if(completion.length == 2){
+                createMessage({
+                    sender: "System",
+                    content: "Welcome to the chat!",
+                    timestamp: DnT.timestamp
+                }, false)
                 loadingScreen.style.display = "none"
                 clearInterval(completionInterval)
             }
@@ -215,8 +220,7 @@
                 })
             }
 
-            let DnT = getDateAndTime()
-            let messageID;
+           let messageID;
 
             div.onmouseover = e => {
                 if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
@@ -236,22 +240,13 @@
             }
 
             
-
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
-                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${DnT.timestamp}</div></div>
+                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
 
             messages.prepend(div)
         }
-
-
-
-        createMessage({
-            sender: "System",
-            content: "Welcome to the chat!",
-            timestamp: DnT.timestamp
-        }, false)
 
         function submitMessage(){
 
