@@ -1,5 +1,6 @@
 # Commands
     [ ] ban
+        [x] show offending message on banned page
     [ ] room
     [ ] alias
 
