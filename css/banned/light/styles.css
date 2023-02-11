@@ -18,3 +18,32 @@
     left: 0;
     top: 0; 
 }
+
+.message-container {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    border-radius: 10px;
+
+    margin-bottom: 5px;
+    margin-top: 10px;
+
+    font-size: 12px;
+    padding: 10px;
+    display: grid;
+    min-height: 40px;
+    height: fit-content;
+
+    text-align: initial;
+}
+
+.message-head {
+    margin-bottom: -1px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.message-content {
+    word-break: break-word;
+}

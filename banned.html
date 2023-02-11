@@ -1,19 +1,28 @@
 <head>
     <link rel="stylesheet" type="text/css" href="./css/banned/light/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/badges.css">
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script defer src="db-init.js"></script>
 </head>
 <body>
-    <div class='screen-cover' id="banned">Wow! You're banned. Contact Rus#2180 for appeals.<br>User ID: #USERID</div>
+    <div class='screen-cover' id="banned">
+        <div>
+            Wow! You're banned. Contact Rus#2180 for appeals.<br>
+            User ID: #USERID<br>
+            Offending Item:
+            <div class="message-container">
+                <div class="message-head">#SENDER&nbsp;<span class="badge client-badge">YOU</span>&nbsp;#BADGES&nbsp;&nbsp;<div class="time-display">#TIMESTAMP</div></div>
+                <div class="message-content">#CONTENT</div>
+            </div>
+        </div>
+    </div>
 </body>
 <script defer>
     let userToken = localStorage.getItem('chat-app-the-third-userToken');
     const banned = document.getElementById('banned');
     banned.innerHTML = banned.innerHTML.replace('#USERID', userToken);
-    console.log(userToken)
-
 
     let trulyBanned = true;
     setTimeout(() => {

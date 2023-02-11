@@ -1,5 +1,6 @@
 <head>
     <link rel="stylesheet" type="text/css" href="./css/index/light/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/badges.css">
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
@@ -233,7 +234,7 @@
 
             
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
-                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
+                <div class="message-head">${data.sender}${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
 
