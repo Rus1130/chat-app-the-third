@@ -222,13 +222,14 @@
                     e.target.style.cursor = "pointer"
                     e.target.onclick = e => {
                         if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
+                            if(data.messageID == undefined) data.messageID = "💀💀💀"
                             navigator.clipboard.writeText(data.messageID)
                         }
                     }
                 }
             }
 
-            div.innerHTML = `<div class="message-container" messageID=${data.messageID == undefined ? Date.now() : data.messageID}>
+            div.innerHTML = `<div class="message-container" messageID=${data.messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${DnT.timestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
@@ -256,23 +257,20 @@
             let isEmpty = messageInput.value.trim() === ""
 
             if(isEmpty){
-                let data = {
+                return createMessage({
                     sender: "System",
                     content: "You cannot send an empty message.",
                     timestamp: DnT.timestamp,
-                }
-                return createMessage(data, false)
+                }, false)
             }
 
             if(isBanned){
-                let data = {
+                messageInput.value = ""
+                return createMessage({
                     sender: "System",
                     content: "You are banned from sending messages.",
                     timestamp: DnT.timestamp,
-                }
-
-                messageInput.value = ""
-                return createMessage(data, false)
+                }, false)
             }
 
             if(timedOut) return;
