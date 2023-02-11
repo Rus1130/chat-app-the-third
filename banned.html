@@ -19,7 +19,7 @@
     setTimeout(() => {
         let rtdbRef = rtdb.ref('users/' + userToken);
         rtdbRef.on('value', (snapshot) => {
-            if(!snapshot.val().isBanned){
+            if(!snapshot.val().banned){
                 window.location.href = 'index.html';
             }
         })

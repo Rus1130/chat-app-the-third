@@ -125,7 +125,7 @@
         let rtdbUsageDataRef = rtdb.ref("usage-data")
 
         rtdbUserRef.once("value", (snapshot) => {
-            if(snapshot.val().isBanned){
+            if(snapshot.val().banned){
                 window.location.href = "banned.html"
             }
             completion.push(true);
@@ -146,8 +146,8 @@
                     room: 'Global',
                     username: userToken,
                     token: userToken,
-                    isAdmin: false,
-                    isBanned: false,
+                    admin: false,
+                    banned: false,
                     userInstances: 1,
                     badges: ['filler'],
                     timeSinceLastMessage: 0,
@@ -255,9 +255,9 @@
 
         function submitMessage(){
 
-            let isBanned = false;
+            let banned = false;
             rtdbUserRef.once("value", (snapshot) => {
-                isBanned = snapshot.val().isBanned
+                banned = snapshot.val().banned
             })
 
 
@@ -272,7 +272,7 @@
                 }, false)
             }
 
-            if(isBanned){
+            if(banned){
                 messageInput.value = ""
                 return createMessage({
                     sender: "System",
