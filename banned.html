@@ -1,0 +1,28 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="./css/banned/light/styles.css">
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script defer src="db-init.js"></script>
+</head>
+<body>
+    <div class='screen-cover' id="banned">Wow! You're banned. Contact Rus#2180 for appeals.<br>User ID: #USERID</div>
+</body>
+<script defer>
+    let userToken = localStorage.getItem('chat-app-the-third-userToken');
+    const banned = document.getElementById('banned');
+    banned.innerHTML = banned.innerHTML.replace('#USERID', userToken);
+    console.log(userToken)
+
+
+    let trulyBanned = true;
+    setTimeout(() => {
+        let rtdbRef = rtdb.ref('users/' + userToken);
+        rtdbRef.on('value', (snapshot) => {
+            if(!snapshot.val().isBanned){
+                window.location.href = 'index.html';
+            }
+        })
+    }, 50)
+
+</script>

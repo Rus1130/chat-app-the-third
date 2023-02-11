@@ -168,7 +168,7 @@ textarea:focus {
     cursor: pointer;
 }
 
-#loading-screen {
+.screen-cover {
     justify-content: center;
     background-color: white;
     
@@ -226,7 +226,6 @@ textarea:focus {
 
 .admin-badge {
     background-color: red;
-    color: white;
 }
 
 .invis-badge {

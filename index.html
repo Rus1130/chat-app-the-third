@@ -1,12 +1,12 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="./themes/light/styles.css">
+    <link rel="stylesheet" type="text/css" href="./css/index/light/styles.css">
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script defer src="db-init.js"></script>
 </head>
 <body>
-    <div id="loading-screen">Loading...</div>
+    <div class='screen-cover' id="loading-screen">Loading...</div>
 
 
     <div class="banner fix-top">
@@ -63,10 +63,15 @@
     const messages = document.getElementById('messages')
 
     messageInput.oninput = e => {
-        // if the message has any key that is in the emoji const, replace it with the value
         Object.keys(emojis).forEach(index => {
             messageInput.value = messageInput.value.replaceAll(index, emojis[index])
         });
+    }
+
+    messageInput.oninput = e => {
+        if(messageInput.value.length > 1000){
+            messageInput.value = messageInput.value.substring(0, 1000)
+        }
     }
 
     messageInput.onkeydown = e => {
@@ -108,18 +113,29 @@
         'w-human': "W Human Being",
     }
 
+
+
+
     document.body.onload = () => {
+        let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
+
+        let completion = [];
+
+        let rtdbUserRef = rtdb.ref("users/" + userToken)
+        let rtdbUsageDataRef = rtdb.ref("usage-data")
+
+        rtdbUserRef.once("value", (snapshot) => {
+            if(snapshot.val().isBanned){
+                window.location.href = "banned.html"
+            }
+            completion.push(true);
+        })
 
         let timedOut = false;
-
-        let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
 
         if(localStorage.getItem('chat-app-the-third-userToken') == null){
             localStorage.setItem('chat-app-the-third-userToken', userToken)
         }
-
-        let rtdbUserRef = rtdb.ref("users/" + userToken)
-        let rtdbUsageDataRef = rtdb.ref("usage-data")
 
         let roomID = "Global"
 
@@ -148,7 +164,7 @@
                 // get the children who have a status of online
                 let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online" && user.room === roomID)
                 currentUsers.innerHTML = `Current Users: ${onlineUsers.length} | Current Room: Global`
-                loadingScreen.style.display = "none"
+                completion.push(true);
             })
         })
 
@@ -167,6 +183,15 @@
                 }
             })
         }
+
+
+        let completionInterval = setInterval(() => {
+            if(completion.length == 2){
+                loadingScreen.style.display = "none"
+                clearInterval(completionInterval)
+            }
+        }, 1)
+
 
         function getBadge(name, displayText){
             return `&nbsp;<span class='badge ${name}-badge'>${displayText}</span>`
@@ -192,7 +217,18 @@
 
             let DnT = getDateAndTime()
 
-            div.innerHTML = `<div class="message-container">
+            div.onmouseover = e => {
+                if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
+                    e.target.style.cursor = "pointer"
+                    e.target.onclick = e => {
+                        if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
+                            navigator.clipboard.writeText(data.messageID)
+                        }
+                    }
+                }
+            }
+
+            div.innerHTML = `<div class="message-container" messageID=${data.messageID == undefined ? Date.now() : data.messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${DnT.timestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
@@ -210,16 +246,14 @@
 
         function submitMessage(){
 
-            let isCommand = messageInput.value.startsWith("/")
-            let isEmpty = messageInput.value.trim() === ""
-
-            let isBanned = false
-
+            let isBanned = false;
             rtdbUserRef.once("value", (snapshot) => {
                 isBanned = snapshot.val().isBanned
             })
 
-            
+
+            let isCommand = messageInput.value.startsWith("/")
+            let isEmpty = messageInput.value.trim() === ""
 
             if(isEmpty){
                 let data = {
@@ -236,9 +270,10 @@
                     content: "You are banned from sending messages.",
                     timestamp: DnT.timestamp,
                 }
+
+                messageInput.value = ""
                 return createMessage(data, false)
             }
-
 
             if(timedOut) return;
             let username;
@@ -253,12 +288,14 @@
                 senderBadges = snapshot.val().badges
             })
 
+            let messageID = Date.now()
             currentRoomRef.update({
-                [Date.now()]: {
+                [messageID]: {
                     senderToken: userToken,
                     senderUsername: username,
                     content: messageInput.value,
                     roomID: roomID,
+                    messageID: messageID,
                     flags: {
                         isCommand: isCommand,
                     },
@@ -281,7 +318,8 @@
                 content: message.content,
                 timestamp: message.timestamp,
                 badges: message.badges,
-                token: message.senderToken
+                token: message.senderToken,
+                messageID: message.messageID
             }
 
             createMessage(data, clientMessage)
@@ -297,7 +335,6 @@
                 submitMessage();
             }
         }
-
         
         // get all online users
         rtdb.ref("users").on("value", (snapshot) => {
@@ -305,8 +342,6 @@
                 onlineUsers: Object.values(snapshot.val()).filter((user) => user.status === "online").length
             })
         })
-
-
     }
     
 </script>
