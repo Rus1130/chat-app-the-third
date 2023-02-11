@@ -216,20 +216,28 @@
             }
 
             let DnT = getDateAndTime()
+            let messageID;
 
             div.onmouseover = e => {
                 if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
                     e.target.style.cursor = "pointer"
                     e.target.onclick = e => {
                         if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
-                            if(data.messageID == undefined) data.messageID = "💀💀💀"
-                            navigator.clipboard.writeText(data.messageID)
+                            messageID = currentRoomRef.toString().split("/").slice(3).join("/") + "/" + data.messageID;
+                            messageID = messageID.split("/")
+                            messageID.shift()
+                            messageID = messageID.join("/")
+
+                            if(data.sender == "System") messageID = "💀💀💀"
+                            navigator.clipboard.writeText(messageID)
                         }
                     }
                 }
             }
 
-            div.innerHTML = `<div class="message-container" messageID=${data.messageID}>
+            
+
+            div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${DnT.timestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
