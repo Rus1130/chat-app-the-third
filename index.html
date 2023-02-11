@@ -86,22 +86,14 @@
     }
 
     function getDateAndTime(){
-        let year = new Date().getFullYear()
-        let month = String(new Date().getMonth() + 1).padStart(2, '0')
-        let day = String(new Date().getDate()).padStart(2, '0')
-
-        let hours = String(new Date().getHours()).padStart(2, '0')
-        let minutes = String(new Date().getMinutes()).padStart(2, '0')
-        let seconds = String(new Date().getSeconds()).padStart(2, '0')
-
         return {
-            year: year,
-            month: month,
-            day: day,
-            hours: hours,
-            minutes: minutes,
-            seconds: seconds,
-            timestamp: `${month}/${day}/${year} at ${hours}:${minutes}:${seconds}`
+            year: new Date().getFullYear(),
+            month: String(new Date().getMonth() + 1).padStart(2, '0'),
+            day: String(new Date().getDate()).padStart(2, '0'),
+            hours: String(new Date().getHours()).padStart(2, '0'),
+            minutes: String(new Date().getMinutes()).padStart(2, '0'),
+            seconds: String(new Date().getSeconds()).padStart(2, '0'),
+            timestamp: `${String(new Date().getMonth() + 1).padStart(2, '0')}/${String(new Date().getDate()).padStart(2, '0')}/${new Date().getFullYear()} at ${String(new Date().getHours()).padStart(2, '0')}:${String(new Date().getMinutes()).padStart(2, '0')}:${String(new Date().getSeconds()).padStart(2, '0')}`
         }
     }
 
@@ -190,7 +182,7 @@
                 createMessage({
                     sender: "System",
                     content: "Welcome to the chat!",
-                    timestamp: DnT.timestamp
+                    timestamp: getDateAndTime().timestamp
                 }, false)
                 loadingScreen.style.display = "none"
                 clearInterval(completionInterval)
@@ -263,7 +255,7 @@
                 return createMessage({
                     sender: "System",
                     content: "You cannot send an empty message.",
-                    timestamp: DnT.timestamp,
+                    timestamp: getDateAndTime().timestamp,
                 }, false)
             }
 
@@ -272,7 +264,7 @@
                 return createMessage({
                     sender: "System",
                     content: "You are banned from sending messages.",
-                    timestamp: DnT.timestamp,
+                    timestamp: getDateAndTime().timestamp,
                 }, false)
             }
 
@@ -300,7 +292,7 @@
                     flags: {
                         isCommand: isCommand,
                     },
-                    timestamp: DnT.timestamp,
+                    timestamp: getDateAndTime().timestamp,
                     badges: senderBadges
                 }
             })
