@@ -111,18 +111,12 @@
 
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
+        console.log(`User Token: ${userToken}`)
 
         let completion = [];
 
         let rtdbUserRef = rtdb.ref("users/" + userToken)
         let rtdbUsageDataRef = rtdb.ref("usage-data")
-
-        rtdbUserRef.once("value", (snapshot) => {
-            if(snapshot.val().banned){
-                window.location.href = "banned.html"
-            }
-            completion.push(true);
-        })
 
         let timedOut = false;
 
@@ -146,11 +140,16 @@
                     timeSinceLastMessage: 0,
                 })
             } else {
-                rtdbUserRef.update({
-                    status: "online",
-                    room: 'Global',
-                    userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1)),
-                })
+                if(snapshot.val().banned){
+                    window.location.href = "banned.html"
+                } else {
+                    completion.push(true);
+                    rtdbUserRef.update({
+                        status: "online",
+                        room: 'Global',
+                        userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1)),
+                    })
+                }
             }
 
             rtdb.ref("users").on("value", (snapshot) => {
