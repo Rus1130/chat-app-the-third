@@ -1,9 +1,9 @@
 <head>
     <link rel="stylesheet" type="text/css" href="./styles/index/light/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script defer src="firebase/app.js"></script>
+    <script defer src="firebase/firestore.js"></script>
+    <script defer src="firebase/database.js"></script>
     <script defer src="db-init.js"></script>
 </head>
 <body>
@@ -129,6 +129,7 @@
 
         rtdbUserRef.once("value", (snapshot) => {
             if(snapshot.val() == null){
+                completion.push(true);
                 rtdbUserRef.set({
                     status: "online",
                     room: 'Global',
