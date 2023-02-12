@@ -3,12 +3,18 @@
         [x] show offending message on banned page
     [ ] room
     [ ] alias
+    [ ] bgive (badge give)
+    [ ] bremove (badge remove)
+    [ ] admin
+    [ ] deadmin
 
 # Other
     [ ] markdown
     [ ] click username to copy name
+    [x] click message to copy messageID
 
 # Bugs
     [ ] emojis not working
-    [x] timestamps on messages showing incorrect time
     [ ] fix online user count not working property in db
+    [x] timestamps on messages showing incorrect time
+    
