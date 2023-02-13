@@ -1,7 +1,6 @@
 # Commands
     [ ] admin Commands
-        [ ] ban
-            [x] show offending message on banned page
+        [x] ban
         [ ] unban
         [ ] admin
         [ ] deadmin
