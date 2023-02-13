@@ -2,8 +2,6 @@
     [ ] admin Commands
         [x] ban
         [ ] unban
-        [ ] admin
-        [ ] deadmin
         [ ] bgive (badge give)
         [ ] bremove (badge remove)
 
