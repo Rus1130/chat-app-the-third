@@ -105,6 +105,7 @@
         'invis': 'invisible!',
         'w-human': "W Human Being",
         "crit": "CRITERION",
+        "new": "NEW",
     }
 
 
@@ -138,8 +139,8 @@
                     admin: false,
                     banned: false,
                     userInstances: 1,
-                    badges: ['filler'],
-                    timeSinceLastMessage: 0,
+                    badges: ['filler', "new"],
+                    accountCreation: Date.now(),
                 })
             } else {
                 if(snapshot.val().banned){
@@ -306,6 +307,17 @@
             if(snapshot.val() == null) return;
             let message = snapshot.val()
             let clientMessage = message.senderToken === userToken
+
+
+
+            rtdb.ref(`users/${message.senderToken}`).once("value", (snapshot) => {
+                if(snapshot.val().accountCreation + 86400000 < Date.now()){ // 86400000
+                    // remove the 'new' badge
+                    rtdb.ref(`users/${message.senderToken}`).update({
+                        badges: snapshot.val().badges.filter((badge) => badge != "new")
+                    })
+                }
+            })
 
             let data = {
                 sender: message.senderUsername,
