@@ -51,11 +51,6 @@
         return -(new Date().getTimezoneOffset() * 60)
     }
 
-    let offsetDateInterval = 0;
-    setInterval(() => {
-        console.log(offsetDate(offsetDateInterval))
-    }, 1000)
-
     const emojis = {
         ':grin:': '😁',
         ':smile:': '😊',
@@ -118,9 +113,6 @@
     }
 
     function getDateAndTime(){
-
-
-        
         return {
             year: new Date().getFullYear(),
             month: String(new Date().getUTCMonth() + 1).padStart(2, '0'),
