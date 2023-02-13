@@ -7,7 +7,7 @@
         [ ] bgive (badge give)
         [ ] bremove (badge remove)
 
-    [ ] help
+    [x] help
     [ ] room
     [ ] alias
 

@@ -212,7 +212,7 @@
 
         let completionInterval = setInterval(() => {
             if(completion.length == 2){
-                sendLocalSystemMessage("Welcome to the chat!")
+                sendLocalSystemMessage("Welcome to the chat! Type '/help' for a list of commands.")
                 loadingScreen.style.display = "none"
                 clearInterval(completionInterval)
             }
@@ -281,7 +281,7 @@
             let day = String(timestamp.getDate()).padStart(2, '0')
             let month = String(timestamp.getMonth() + 1).padStart(2, '0')
             let year = timestamp.getFullYear()
-            
+
             let timestampString = `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
             
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
@@ -346,32 +346,42 @@
                 let splitCommand = messageInput.value.split(" ")
                 let command = splitCommand[0]
 
+                const commandDescriptions = [
+                    "help - shows this list",
+                    "tips - shows tips for using the chat",
+                ]
+
+                const adminCommandDescriptions = [
+                    'localping - sends a local system message',
+                    'localadminping - sends a local system message if you are an admin',
+                    'globalping - sends a global system message',
+                    'globaladminping - sends a global system message if you are an admin',
+                    'ban [username] [messageID] - bans a user from sending messages (messageID shows reason for ban)',
+                ]
+
+                const tips = [
+                    'You can click on a message to copy the message ID to your clipboard.',
+                    'You can click on a username to copy the username to your clipboard.',
+                ]
+
 
                 if(command == '/localping'){
                     sendLocalSystemMessage("Local Pong!")
-                } else
-
-                if(command == '/localadminping'){
+                } else if(command == '/localadminping'){
                     // check if the user is an admin
                     rtdbUserRef.once("value", (snapshot) => {
                         if(!snapshot.val().admin) return sendLocalSystemMessage("You are not an admin.")
                         sendLocalSystemMessage("Local Admin Pong!")
                     })
-                } else
-
-                if(command == '/globalping'){
+                } else if(command == '/globalping'){
                     sendGlobalSystemMessage("Global Pong!")
-                } else 
-
-                if(command == '/globaladminping'){
+                } else if(command == '/globaladminping'){
                     // check if the user is an admin
                     rtdbUserRef.once("value", (snapshot) => {
                         if(!snapshot.val().admin) return sendLocalSystemMessage("You are not an admin.")
                         sendGlobalSystemMessage("Global Admin Pong!")
                     })
-                } else 
-                
-                if(command == '/ban'){
+                } else if(command == '/ban'){
                     rtdbUserRef.once("value", (snapshot) => {
                         if(!snapshot.val().admin) return sendLocalSystemMessage("You are not an admin.")
                         let target = splitCommand[1]
@@ -423,6 +433,16 @@
 
                         sendGlobalSystemMessage(`${target} was banned.`)
                     })
+                } else if(command == '/help'){
+                    rtdbUserRef.once("value", (snapshot) => {
+                        if(!snapshot.val().admin){
+                            return sendLocalSystemMessage(commandDescriptions.join("<br>"))
+                        } else {
+                            return sendLocalSystemMessage(commandDescriptions.join("<br>") + "<br><br>ADMIN COMMANDS:<br>" + adminCommandDescriptions.join("<br>"))
+                        }
+                    })
+                } else if(command == "/tips"){
+                    sendLocalSystemMessage(tips.join("<br>"));
                 } else return sendLocalSystemMessage("Invalid command.")
             }
 
