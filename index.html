@@ -45,7 +45,7 @@
             mins: mins,
             secs: secs,
             UTC: new Date(),
-            // UTCTimestamp: `${month}/${day}/${year} at ${hrs}:${mins}:${secs}`
+            localTimestamp: `${new Date(new Date()).toLocaleDateString()} at ${new Date(new Date()).toLocaleTimeString()}`,
         }
     }
 
@@ -268,14 +268,8 @@
                 }
             }
 
-            let timeStamp = data.timestamp
-
-            let date = new Date(timeStamp.UTC).toLocaleDateString()
-            let time = new Date(timeStamp.UTC).toTimeString().split(" ")[0]
-            console.log(time)
-            
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
-                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
+                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp.localTimestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
 
