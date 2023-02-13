@@ -27,7 +27,9 @@
         [ ] --strikethrough--
     [x] click username to copy name
     [x] click message to copy messageID
-    [ ] themes
+    [ ] settings menu
+        [ ] change time format
+        [ ] themes
 
 # Bugs
     [ ] emojis not working
