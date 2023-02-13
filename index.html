@@ -26,6 +26,8 @@
 </body>
 
 <script defer>
+    // date at time
+
     function offsetDate(offset){
         var d = new Date(new Date().getTime() + (offset * 1000));
 
@@ -269,8 +271,28 @@
                 }
             }
 
+            // edit the timestamp so it shows the client's local time
+            let timestamp = new Date(data.timestamp)
+
+            let hours = String(timestamp.getHours()).padStart(2, '0')
+            let minutes = String(timestamp.getMinutes()).padStart(2, '0')
+            let seconds = String(timestamp.getSeconds()).padStart(2, '0')
+
+            let day = String(timestamp.getDate()).padStart(2, '0')
+            let month = String(timestamp.getMonth() + 1).padStart(2, '0')
+            let year = timestamp.getFullYear()
+
+            console.log({
+                year: year,
+                month: month,
+                day: day,
+                hours: hours,
+                minutes: minutes,
+                seconds: seconds
+            })
+            
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
-                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp.localTimestamp}</div></div>
+                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
                 <div class="message-content">${data.content}</div>
             </div>`
 
@@ -320,7 +342,7 @@
                         content: messageInput.value,
                         roomID: roomID,
                         messageID: messageID,
-                        timestamp: offsetDate(0),
+                        timestamp: new Date().toUTCString(),
                         badges: senderBadges
                     }
                 })
@@ -473,7 +495,7 @@
                         content: message,
                         roomID: roomID,
                         messageID: messageID,
-                        timestamp: offsetDate(0),
+                        timestamp: new Date().toUTCString(),
                         badges: ["filler"]
                     }
                 })
@@ -484,7 +506,7 @@
             return createMessage({
                 sender: "System",
                 content: message,
-                timestamp: offsetDate(0),
+                timestamp: new Date().toUTCString(),
             }, false)
         }
     }
