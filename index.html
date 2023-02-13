@@ -169,7 +169,7 @@
 
             rtdb.ref("users").on("value", (snapshot) => {
                 // get the children who have a status of online
-                let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online" && user.room === roomID)
+                let onlineUsers = Object.values(snapshot.val()).filter((user) => user.status === "online" && user.room === roomID && user.token != "GlobalSystem")
                 currentUsers.innerHTML = `Current Users: ${onlineUsers.length} | Current Room: Global`
                 completion.push(true);
             })
@@ -193,14 +193,9 @@
             })
         }
 
-
         let completionInterval = setInterval(() => {
             if(completion.length == 2){
-                createMessage({
-                    sender: "System",
-                    content: "Welcome to the chat!",
-                    timestamp: getDateAndTime().timestamp
-                }, false)
+                sendLocalSystemMessage("Welcome to the chat!")
                 loadingScreen.style.display = "none"
                 clearInterval(completionInterval)
             }
@@ -218,7 +213,7 @@
                 badgeDisplay += getBadge("client", "YOU")
             }
 
-            if(data.sender == 'System'){
+            if(data.sender == 'System' || data.sender == 'GlobalSystem'){
                 badgeDisplay += getBadge("system", 'SYSTEM')
             }
 
@@ -231,18 +226,29 @@
 
            let messageID;
 
-            div.onmouseover = e => {
+            div.onmousedown = e => {
                 if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
                     e.target.style.cursor = "pointer"
+
                     e.target.onclick = e => {
-                        if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
+                        // console long the click only when the button is pressed down, not when it's released
+                        if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content')){
                             messageID = currentRoomRef.toString().split("/").slice(3).join("/") + "/" + data.messageID;
                             messageID = messageID.split("/")
                             messageID.shift()
                             messageID = messageID.join("/")
 
-                            if(data.sender == "System") messageID = "💀💀💀"
+                            if(data.sender == "System" || data.sender == "GlobalSystem") return sendLocalSystemMessage("Can't do that.")
                             navigator.clipboard.writeText(messageID)
+                            sendLocalSystemMessage("Copied message ID to clipboard!")
+
+                        }
+
+                        if(e.target.classList.contains('message-head') || e.target.classList.contains('message-container')){
+
+                            if(data.sender == "System" || data.sender == "GlobalSystem") return sendLocalSystemMessage("Can't do that.")
+                            navigator.clipboard.writeText(data.sender)
+                            sendLocalSystemMessage("Copied username to clipboard!")
                         }
                     }
                 }
@@ -269,20 +275,12 @@
             let isEmpty = messageInput.value.trim() === ""
 
             if(isEmpty){
-                return createMessage({
-                    sender: "System",
-                    content: "You cannot send an empty message.",
-                    timestamp: getDateAndTime().timestamp,
-                }, false)
+                return sendLocalSystemMessage("You cannot send an empty message.")
             }
 
             if(banned){
                 messageInput.value = ""
-                return createMessage({
-                    sender: "System",
-                    content: "You are banned from sending messages.",
-                    timestamp: getDateAndTime().timestamp,
-                }, false)
+                return sendLocalSystemMessage("You are banned from sending messages.")
             }
 
             if(timedOut) return;
@@ -299,17 +297,78 @@
             })
 
             let messageID = Date.now()
-            currentRoomRef.update({
-                [messageID]: {
-                    senderToken: userToken,
-                    senderUsername: username,
-                    content: messageInput.value,
-                    roomID: roomID,
-                    messageID: messageID,
-                    timestamp: getDateAndTime().timestamp,
-                    badges: senderBadges
-                }
-            })
+
+            if(!isCommand){
+                currentRoomRef.update({
+                    [messageID]: {
+                        senderToken: userToken,
+                        senderUsername: username,
+                        content: messageInput.value,
+                        roomID: roomID,
+                        messageID: messageID,
+                        timestamp: getDateAndTime().timestamp,
+                        badges: senderBadges
+                    }
+                })
+            }
+
+            // command handler ================================
+            if(isCommand){
+                let splitCommand = messageInput.value.split(" ")
+                let command = splitCommand[0]
+
+
+                if(command == '/localping'){
+                    sendLocalSystemMessage("Local Pong!")
+                } else
+
+                if(command == '/localadminping'){
+                    // check if the user is an admin
+                    rtdbUserRef.once("value", (snapshot) => {
+                        if(!snapshot.val().admin) return sendLocalSystemMessage("You are not an admin.")
+                        sendLocalSystemMessage("Local Admin Pong!")
+                    })
+                } else
+
+                if(command == '/globalping'){
+                    sendGlobalSystemMessage("Global Pong!")
+                } else 
+
+                if(command == '/globaladminping'){
+                    // check if the user is an admin
+                    rtdbUserRef.once("value", (snapshot) => {
+                        if(!snapshot.val().admin) return sendLocalSystemMessage("You are not an admin.")
+                        sendGlobalSystemMessage("Global Admin Pong!")
+                    })
+                } else 
+                
+                if(command == '/ban'){
+                    rtdbUserRef.once("value", (snapshot) => {
+                        if(!snapshot.val().admin) return sendLocalSystemMessage("You are not an admin.")
+                        let target = splitCommand[1]
+                        let offendingMessage = splitCommand[2]
+
+                        if(target == "System" || target == "GlobalSystem") return sendLocalSystemMessage("No Bueno!")
+                        if(offendoffendingMessage == "💀💀💀") return sendLocalSystemMessage("No Bueno!")
+
+                        // check if the target is a valid user
+                        let targetToken;
+                        rtdb.ref("users").once("value", (snapshot) => {
+                            let users = snapshot.val()
+                            for(let user in users){
+                                if(users[user].username == target){
+                                    targetToken = user
+                                }
+                            }
+                        })
+
+                        if(targetToken == undefined) return sendLocalSystemMessage("Invalid user.")
+
+                        console.log(`Admin ${username} banned ${targetToken} for ${offendingMessage}`)
+                    })
+                } else return sendLocalSystemMessage("Invalid command.")
+            }
+
 
             messageInput.value = ""
 
@@ -324,7 +383,6 @@
 
             rtdb.ref(`users/${message.senderToken}`).once("value", (snapshot) => {
                 if(snapshot.val().accountCreation + 86400000 < Date.now()){ // 86400000
-                    // remove the 'new' badge
                     rtdb.ref(`users/${message.senderToken}`).update({
                         badges: snapshot.val().badges.filter((badge) => badge != "new")
                     })
@@ -357,9 +415,39 @@
         // get all online users
         rtdb.ref("users").on("value", (snapshot) => {
             rtdbUsageDataRef.update({
-                onlineUsers: Object.values(snapshot.val()).filter((user) => user.status === "online").length
+                onlineUsers: Object.values(snapshot.val()).filter((user) => user.status === "online" && user.token != "GlobalSystem").length
             })
         })
+
+        function sendGlobalSystemMessage(message){
+            let messageID = Date.now()
+            let ref = rtdb.ref(`rooms/Global/messages/${getDateAndTime().year}/${getDateAndTime().month}/${getDateAndTime().day}`)
+            // if the ref is not null
+            if(ref != null){
+                ref.update({
+                    [Date.now()]: {
+                        senderToken: "GlobalSystem",
+                        senderUsername: "System",
+                        content: message,
+                        roomID: roomID,
+                        messageID: messageID,
+                        timestamp: getDateAndTime().timestamp,
+                        badges: ["filler"]
+                    }
+                })
+            }
+        }
+
+        function sendLocalSystemMessage(message){
+            return createMessage({
+                sender: "System",
+                content: message,
+                timestamp: getDateAndTime().timestamp,
+            }, false)
+        }
     }
+
+    
+
     
 </script>

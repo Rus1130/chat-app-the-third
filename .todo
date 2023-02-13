@@ -2,11 +2,13 @@
     [ ] admin Commands
         [ ] ban
             [x] show offending message on banned page
+        [ ] unban
         [ ] admin
         [ ] deadmin
         [ ] bgive (badge give)
         [ ] bremove (badge remove)
 
+    [ ] help
     [ ] room
     [ ] alias
 
@@ -17,7 +19,7 @@
         [ ] **bold**
         [ ] __underline__
         [ ] --strikethrough--
-    [ ] click username to copy name
+    [x] click username to copy name
     [x] click message to copy messageID
 
 # Bugs
