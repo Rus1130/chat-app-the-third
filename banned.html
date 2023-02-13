@@ -62,11 +62,22 @@
 
         bansRef.on('value', (snapshot) => {
             let messageText = snapshot.val().itemData.content;
-            let timestamp = snapshot.val().itemData.timestamp;
             let badges = snapshot.val().itemData.badges;
 
             banned.innerHTML = banned.innerHTML.replace('#CONTENT', messageText);
-            banned.innerHTML = banned.innerHTML.replace('#TIMESTAMP', `<div class="time-display">${timestamp}</div>`);
+            let timestamp = new Date(snapshot.val().itemData.timestamp);
+
+            let hours = String(timestamp.getHours()).padStart(2, '0')
+            let minutes = String(timestamp.getMinutes()).padStart(2, '0')
+            let seconds = String(timestamp.getSeconds()).padStart(2, '0')
+
+            let day = String(timestamp.getDate()).padStart(2, '0')
+            let month = String(timestamp.getMonth() + 1).padStart(2, '0')
+            let year = timestamp.getFullYear()
+
+            let timestampString = `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
+
+            banned.innerHTML = banned.innerHTML.replace('#TIMESTAMP', `<div class="time-display">${timestampString}</div>`);
 
             // remove filler from the badges array
             badges.splice(0, 1);
