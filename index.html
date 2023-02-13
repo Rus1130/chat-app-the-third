@@ -281,16 +281,7 @@
             let day = String(timestamp.getDate()).padStart(2, '0')
             let month = String(timestamp.getMonth() + 1).padStart(2, '0')
             let year = timestamp.getFullYear()
-
-            console.log({
-                year: year,
-                month: month,
-                day: day,
-                hours: hours,
-                minutes: minutes,
-                seconds: seconds
-            })
-
+            
             let timestampString = `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
             
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
