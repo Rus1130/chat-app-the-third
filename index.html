@@ -43,7 +43,8 @@
             day: day,
             hrs: hrs,
             mins: mins,
-            secs: secs
+            secs: secs,
+            UTC: new Date(),
             // UTCTimestamp: `${month}/${day}/${year} at ${hrs}:${mins}:${secs}`
         }
     }
@@ -267,7 +268,9 @@
                 }
             }
 
-            let timeStamp = new Date(data.timestamp)
+            let timeStamp = data.timestamp
+            // offset the timestamp by the user's timezone
+            console.log(new Date(timeStamp.UTC).toLocaleDateString())
             
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
@@ -320,7 +323,7 @@
                         content: messageInput.value,
                         roomID: roomID,
                         messageID: messageID,
-                        timestamp: String(new Date()),
+                        timestamp: offsetDate(0),
                         badges: senderBadges
                     }
                 })
@@ -473,7 +476,7 @@
                         content: message,
                         roomID: roomID,
                         messageID: messageID,
-                        timestamp: String(new Date()),
+                        timestamp: offsetDate(0),
                         badges: ["filler"]
                     }
                 })
@@ -484,7 +487,7 @@
             return createMessage({
                 sender: "System",
                 content: message,
-                timestamp: String(new Date()),
+                timestamp: offsetDate(0),
             }, false)
         }
     }
