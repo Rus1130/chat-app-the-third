@@ -27,6 +27,7 @@
         [ ] --strikethrough--
     [x] click username to copy name
     [x] click message to copy messageID
+    [ ] themes
 
 # Bugs
     [ ] emojis not working
