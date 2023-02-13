@@ -32,3 +32,6 @@
     [ ] emojis not working
     [ ] fix online user count not working property in db
     [x] timestamps on messages showing incorrect time
+
+[!] Currently Unfixable Bugs
+    /!\ changing distance between message submit + first message

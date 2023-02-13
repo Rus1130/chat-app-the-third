@@ -1,6 +1,6 @@
 <head>
     <title>Chat during school!</title>
-    <link rel="stylesheet" type="text/css" href="./styles/index/light/styles.css">
+    <link rel="stylesheet" type="text/css" href="./styles/index/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
     <script defer src="firebase/app.js"></script>
     <script defer src="firebase/firestore.js"></script>
@@ -9,8 +9,6 @@
 </head>
 <body>
     <div class='screen-cover' id="loading-screen">Loading...</div>
-
-
     <div class="banner fix-top">
         <div id="currentUsers">Current Users: # | Current Room: Global</div>
     </div>
@@ -20,13 +18,19 @@
     <div class="banner fix-bottom" style="height: 100px">
         <div class="ui-grid">
             <textarea class="inputs" id="message-input" placeholder="Enter your message here..." spellcheck="false"></textarea>
-            <div class="inputs" id="send-button">Send</div>
+            <div class="inputs" id="send-button">&nbsp;&nbsp;Send&nbsp;&nbsp;</div>
+            <div class="inputs" id="settings-button">&nbsp;&nbsp;Settings&nbsp;&nbsp;</div>
         </div>
     </div>
 </body>
 
 <script defer>
-    // date at time
+    // var stylesheets = document.head.getElementsByTagName("link");
+    // for (var i = 0; i < stylesheets.length; i++) {
+    //     if (stylesheets[i].getAttribute("type") == "text/css") {
+    //         stylesheets[i].disabled = true;
+    //     }
+    // }
 
     function offsetDate(offset){
         var d = new Date(new Date().getTime() + (offset * 1000));
