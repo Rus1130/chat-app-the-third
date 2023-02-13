@@ -29,13 +29,13 @@
         var d = new Date(new Date().getTime() + (offset * 1000));
 
         // offset date
-        var year = d.getUTCFullYear()
-        var month = d.getUTCMonth() + 1
-        var day = d.getUTCDate()
+        var year = String(d.getUTCFullYear()).padStart(4, '0')
+        var month = String(d.getUTCMonth() + 1).padStart(2, '0')
+        var day = String(d.getUTCDate()).padStart(2, '0')
 
-        var hrs = d.getUTCHours()
-        var mins = d.getUTCMinutes()
-        var secs = d.getUTCSeconds()
+        var hrs = String(d.getUTCHours()).padStart(2, '0')
+        var mins = String(d.getUTCMinutes()).padStart(2, '0')
+        var secs = String(d.getUTCSeconds()).padStart(2, '0')
 
         return {
             year: year,
@@ -267,6 +267,7 @@
                 }
             }
 
+            let timeStamp = new Date(data.timestamp)
             
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${data.timestamp}</div></div>
