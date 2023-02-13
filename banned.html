@@ -7,6 +7,7 @@
     <script defer src="db-init.js"></script>
 </head>
 <body>
+    <div class="screen-cover" id='loading' style="z-index: 10000">Loading...</div>
     <div class='screen-cover' id="banned">
         <div>
             Wow! You're banned. Contact Rus#2180 for appeals.<br>
@@ -21,7 +22,10 @@
 </body>
 <script defer>
     let userToken = localStorage.getItem('chat-app-the-third-userToken');
+
     const banned = document.getElementById('banned');
+    const loading = document.getElementById('loading');
+
     banned.innerHTML = banned.innerHTML.replace('#USERID', userToken);
 
     let trulyBanned = true;
@@ -33,5 +37,56 @@
             }
         })
     }, 50)
+
+    const customBadges = {
+        'tester': "TESTER",
+        'hurr-durr': 'hurr durr im a returd!',
+        'admin': 'ADMIN',
+        'invis': 'invisible!',
+        'w-human': "W Human Being",
+        "crit": "CRITERION",
+        "new": "NEW",
+    }
+
+    document.body.onload = () => {
+        let usersRef = rtdb.ref('users/' + userToken);
+        let bansRef = rtdb.ref('bans/' + userToken);
+
+        let messageID;
+
+        let username;
+        let timestamp;
+        let badges;
+
+        let content;
+
+        bansRef.on('value', (snapshot) => {
+            let messageText = snapshot.val().itemData.content;
+            let timestamp = snapshot.val().itemData.timestamp;
+            let badges = snapshot.val().itemData.badges;
+
+            banned.innerHTML = banned.innerHTML.replace('#CONTENT', messageText);
+            banned.innerHTML = banned.innerHTML.replace('#TIMESTAMP', `<div class="time-display">${timestamp}</div>`);
+
+            // remove filler from the badges array
+            badges.splice(0, 1);
+
+            badges.forEach((badge) => {
+
+
+
+                badges[badges.indexOf(badge)] = `<span class='badge ${badge}-badge'>${customBadges[badge]}</span>`
+            })
+
+            banned.innerHTML = banned.innerHTML.replace('#BADGES', badges.join(''));
+
+            banned.innerHTML = banned.innerHTML.replace('#SENDER', snapshot.val().itemData.senderUsername);
+
+        })
+    }
+
+    setTimeout(() => {
+        loading.style.display = 'none';
+    }, 300)
 
 </script>

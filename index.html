@@ -349,22 +349,50 @@
                         let offendingMessage = splitCommand[2]
 
                         if(target == "System" || target == "GlobalSystem") return sendLocalSystemMessage("No Bueno!")
-                        if(offendoffendingMessage == "💀💀💀") return sendLocalSystemMessage("No Bueno!")
+                        if(offendingMessage == "💀💀💀") return sendLocalSystemMessage("No Bueno!")
 
                         // check if the target is a valid user
-                        let targetToken;
+                        let targetUsername;
                         rtdb.ref("users").once("value", (snapshot) => {
                             let users = snapshot.val()
                             for(let user in users){
                                 if(users[user].username == target){
-                                    targetToken = user
+                                    targetUsername = user
                                 }
                             }
                         })
 
-                        if(targetToken == undefined) return sendLocalSystemMessage("Invalid user.")
+                        
 
-                        console.log(`Admin ${username} banned ${targetToken} for ${offendingMessage}`)
+                        if(targetUsername == undefined) return sendLocalSystemMessage("Invalid user.")
+                        if(targetUsername == userToken) return sendLocalSystemMessage("No Bueno!")
+
+                        
+                        let valid = true;
+                        let itemData;
+                        // check if offending message is a real message
+                        rtdb.ref(`rooms/${offendingMessage}`).once("value", (snapshot) => {
+                            if(snapshot.val() == null){
+                                return valid = false;
+                            }
+                            itemData = snapshot.val();
+                        })
+
+                        if(offendingMessage == undefined) return sendLocalSystemMessage("Invalid reason.")
+
+                        if(!valid) return sendLocalSystemMessage("Message doesn't exist!")
+
+                        rtdb.ref(`bans/${targetUsername}`).update({
+                            item: offendingMessage,
+                            itemData: itemData,
+                            bannedBy: snapshot.val().username
+                        })
+
+                        rtdb.ref(`users/${targetUsername}`).update({
+                            banned: true
+                        })
+
+                        sendGlobalSystemMessage(`${target} was banned.`)
                     })
                 } else return sendLocalSystemMessage("Invalid command.")
             }

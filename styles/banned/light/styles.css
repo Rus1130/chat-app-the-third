@@ -47,3 +47,12 @@
 .message-content {
     word-break: break-word;
 }
+
+.time-display {
+    color: gray;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    margin-top: -0.5px;
+}
