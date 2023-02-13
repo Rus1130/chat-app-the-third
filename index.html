@@ -460,7 +460,8 @@
 
 
             rtdb.ref(`users/${message.senderToken}`).once("value", (snapshot) => {
-                if(snapshot.val().accountCreation + 86400000 < Date.now()){ // 86400000
+                if(snapshot.val() == null) return;
+                if(snapshot.val().accountCreation + 86400000 > Date.now()){ // 86400000
                     rtdb.ref(`users/${message.senderToken}`).update({
                         badges: snapshot.val().badges.filter((badge) => badge != "new")
                     })
