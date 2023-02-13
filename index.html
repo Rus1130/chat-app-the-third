@@ -108,7 +108,19 @@
         "new": "NEW",
     }
 
-
+    const leavingScreenText = [
+        "Leaving...",
+        "Logging out...",
+        "Bye!",
+        'See ya!',
+        "See you later!",
+        "Goodbye!",
+        "Have a nice day!",
+        "Monkey 🐒🐒🐒",
+        "💀💀💀",
+        "skrrr",
+        "Teacher catch you?"
+    ]
 
 
     document.body.onload = () => {
@@ -167,7 +179,7 @@
         let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${DnT.year}/${DnT.month}/${DnT.day}`)
 
         window.onbeforeunload = () => {
-            loadingScreen.innerHTML = "Teacher catch you?"
+            loadingScreen.innerHTML = leavingScreenText[Math.floor(Math.random() * leavingScreenText.length)]
             loadingScreen.style.display = "flex"
             rtdbUserRef.once("value", (snapshot) => {
                 rtdbUserRef.update({
