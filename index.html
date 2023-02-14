@@ -11,25 +11,16 @@
     <div class='screen-cover' id="loading-screen">Loading...</div>
     <div class="screen-cover" id="settings-menu-background" style="z-index: 10000; display: none">
         <div class="settings-menu">
-            <ul class="settings-menu-grid" id="settings-menu-options">
-                <li class="clicked">Item 1</li>
-                <li>Item 2</li>
-                <li>Item 3</li>
+            <ul id="settings-menu-options">
+                <li class="clicked" value="1">Themes</li>
+                <li value="2">Time Format</li>
             </ul>
             <ul class="settings-menu-grid selected" id="settings-menu-options-item-1">
-                <li>Item 1 Option 1</li>
-                <li>Item 1 Option 2</li>
-                <li>Item 1 Option 3</li>
+                <li class="clicked">Light</li>
             </ul>
             <ul style='display: none;' class="settings-menu-grid" id="settings-menu-options-item-2">
-                <li>Item 2 Option 1</li>
-                <li>Item 2 Option 2</li>
-                <li>Item 2 Option 3</li>
-            </ul>
-            <ul style='display: none;' class="settings-menu-grid" id="settings-menu-options-item-3">
-                <li>Item 3 Option 1</li>
-                <li>Item 3 Option 2</li>
-                <li>Item 3 Option 3</li>
+                <li>12-Hour</li>
+                <li class="clicked">24-Hour</li>
             </ul>
         </div>
     </div>
@@ -89,10 +80,20 @@
     const settingsMenuContainer = document.getElementById('settings-menu-background')
     const settingsMenu = document.getElementById('settings-menu-options')
 
-    // when a child of  is clicked, give it a property of 'clicked'
     settingsMenu.onclick = e => {
         if(e.target.tagName === "LI"){
             e.target.classList.add('clicked')
+            let menuOption = document.getElementById(`settings-menu-options-item-${e.target.value}`)
+            menuOption.style.display = "grid"
+
+            for(let i = 0; i < settingsMenu.children.length; i++){
+                if(settingsMenu.children[i] !== e.target){
+                    settingsMenu.children[i].classList.remove('clicked')
+                    document.getElementById(`settings-menu-options-item-${settingsMenu.children[i].value}`).style.display = "none"
+
+
+                }
+            }
         }
 
     }

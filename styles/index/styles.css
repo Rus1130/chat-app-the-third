@@ -239,11 +239,6 @@ textarea:focus {
     grid-template-rows: min-content 1fr;
 }
 
-.settings-menu-grid {
-    display: grid;
-    grid-template-columns: fit-content;
-}
-
 ul {
   list-style-type: none;
   margin: 0;
@@ -261,9 +256,7 @@ ul#settings-menu-options > li:first-child {
     border-top-left-radius: 10px;
 }
 
-ul#settings-menu-options > li.clicked {
-    background-color: orange;
-}
+
 
 li {
   display: block;
