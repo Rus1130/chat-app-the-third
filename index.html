@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class='screen-cover' id="loading-screen">Loading...</div>
-    <div class="screen-cover settings-menu" id="settings-menu" style="z-index: 10000; display: none">
+    <div class="screen-cover" id="settings-menu" style="z-index: 10000; display: none">
         <div class="settings-inner">
             <div class="settings-inner-item" style="grid-column: 1 / 3">Settings</div>
             <div class="settings-inner-item">
@@ -84,15 +84,6 @@
     messageInput.oninput = e => {
         if(messageInput.value.length > 1000){
             messageInput.value = messageInput.value.substring(0, 1000)
-        }
-    }
-
-    settingsButton.onclick = e => {
-        let settingsMenu = document.getElementById('settings-menu')
-        if(settingsMenu.style.display == "none"){
-            settingsMenu.style.display = "flex"
-        } else {
-            settingsMenu.style.display = "none"
         }
     }
 
