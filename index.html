@@ -11,7 +11,26 @@
     <div class='screen-cover' id="loading-screen">Loading...</div>
     <div class="screen-cover" id="settings-menu-background" style="z-index: 10000; display: none">
         <div class="settings-menu">
-
+            <ul class="settings-menu-grid" id="settings-menu-options">
+                <li class="clicked">Item 1</li>
+                <li>Item 2</li>
+                <li>Item 3</li>
+            </ul>
+            <ul class="settings-menu-grid selected" id="settings-menu-options-item-1">
+                <li>Item 1 Option 1</li>
+                <li>Item 1 Option 2</li>
+                <li>Item 1 Option 3</li>
+            </ul>
+            <ul style='display: none;' class="settings-menu-grid" id="settings-menu-options-item-2">
+                <li>Item 2 Option 1</li>
+                <li>Item 2 Option 2</li>
+                <li>Item 2 Option 3</li>
+            </ul>
+            <ul style='display: none;' class="settings-menu-grid" id="settings-menu-options-item-3">
+                <li>Item 3 Option 1</li>
+                <li>Item 3 Option 2</li>
+                <li>Item 3 Option 3</li>
+            </ul>
         </div>
     </div>
     <div class="banner fix-top">
@@ -67,11 +86,20 @@
     const settingsButton = document.getElementById('settings-button')
     const messages = document.getElementById('messages')
 
-    const settingsMenu = document.getElementById('settings-menu-background')
+    const settingsMenuContainer = document.getElementById('settings-menu-background')
+    const settingsMenu = document.getElementById('settings-menu-options')
+
+    // when a child of  is clicked, give it a property of 'clicked'
+    settingsMenu.onclick = e => {
+        if(e.target.tagName === "LI"){
+            e.target.classList.add('clicked')
+        }
+
+    }
 
 
     settingsButton.onclick = e => {
-        settingsMenu.style.display = "flex"
+        settingsMenuContainer.style.display = "flex"
     }
     messageInput.oninput = e => {
         Object.keys(emojis).forEach(index => {
