@@ -9,6 +9,19 @@
 </head>
 <body>
     <div class='screen-cover' id="loading-screen">Loading...</div>
+    <div class="screen-cover settings-menu" id="settings-menu" style="z-index: 10000; display: none">
+        <div class="settings-inner">
+            <div class="settings-inner-item" style="grid-column: 1 / 3">Settings</div>
+            <div class="settings-inner-item">
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                    <li>Item 3</li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
     <div class="banner fix-top">
         <div id="currentUsers">Current Users: # | Current Room: Global</div>
     </div>
@@ -57,7 +70,9 @@
     const loadingScreen = document.getElementById('loading-screen')
 
     const messageInput = document.getElementById('message-input')
+
     const sendButton = document.getElementById('send-button')
+    const settingsButton = document.getElementById('settings-button')
     const messages = document.getElementById('messages')
 
     messageInput.oninput = e => {
@@ -69,6 +84,15 @@
     messageInput.oninput = e => {
         if(messageInput.value.length > 1000){
             messageInput.value = messageInput.value.substring(0, 1000)
+        }
+    }
+
+    settingsButton.onclick = e => {
+        let settingsMenu = document.getElementById('settings-menu')
+        if(settingsMenu.style.display == "none"){
+            settingsMenu.style.display = "flex"
+        } else {
+            settingsMenu.style.display = "none"
         }
     }
 
@@ -437,7 +461,7 @@
 
             rtdb.ref(`users/${message.senderToken}`).once("value", (snapshot) => {
                 if(snapshot.val() == null) return;
-                if(snapshot.val().accountCreation + 86400000 > Date.now()){ // 86400000
+                if((1676380278693 + 86400000) < Date.now()){ // 86400000
                     rtdb.ref(`users/${message.senderToken}`).update({
                         badges: snapshot.val().badges.filter((badge) => badge != "new")
                     })
@@ -500,6 +524,7 @@
                 timestamp: new Date().toUTCString(),
             }, false)
         }
+
     }
 
     
