@@ -53,37 +53,6 @@
         return -(new Date().getTimezoneOffset() * 60)
     }
 
-    const emojis = {
-        ':grin:': '😁',
-        ':smile:': '😊',
-        ':laugh:': '😂',
-        ':rofl:': '🤣',
-        ':halo:': '😇',
-        ':pensive:': '😔',
-        ':sad:': '😢',
-        ':cry:': '😭',
-        ':angry:': '😠',
-        ':rage:': '😡',
-        ':confused:': '😕',
-        ':sick:': '🤢',
-        ':puke:': '🤮',
-        ':cat-hearts:': '😻',
-        ':cat-wink:': '😼',
-        ':skull:': '💀',
-        ':skull-bones:': '☠️',
-        ':boo:': '👻',
-        ':imp:': '👺',
-        ':devil:': '😈',
-        ':astonished:': '😲',
-        ':grimace:': '😬',
-        ':unamused:': '😒',
-        ':yum:': '😋',
-        ':upside-down:': '🙃',
-        ':heart-eyes:': '😍',
-        ':triple-hearts:': '🥰',
-        ':smirk:': '😏',
-    }
-
     const currentUsers = document.getElementById('currentUsers')
     const loadingScreen = document.getElementById('loading-screen')
 
@@ -156,6 +125,7 @@
 
         let roomID = "Global"
 
+        // handles user creation or update data when user logs in ========================================
         rtdbUserRef.once("value", (snapshot) => {
             if(snapshot.val() == null){
                 completion.push(true);
@@ -192,6 +162,8 @@
         })
         let currentRoomRef = rtdb.ref(`rooms/${roomID}/messages/${offsetDate(0).year}/${offsetDate(0).month}/${offsetDate(0).day}`)
 
+
+        // updates user data when page is closed ===============================
         window.onbeforeunload = () => {
             loadingScreen.innerHTML = leavingScreenText[Math.floor(Math.random() * leavingScreenText.length)]
             loadingScreen.style.display = "flex"
@@ -240,6 +212,7 @@
 
            let messageID;
 
+           // handles getting message ID and user ID on click ====================
             div.onmousedown = e => {
                 if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
                     e.target.style.cursor = "pointer"
@@ -289,6 +262,8 @@
             messages.prepend(div)
         }
 
+
+        // send a message ========================================================
         function submitMessage(){
 
             let banned = false;
@@ -452,6 +427,7 @@
 
         }
 
+        // message listener ================================
         currentRoomRef.on("child_added", (snapshot) => {
             if(snapshot.val() == null) return;
             let message = snapshot.val()
@@ -491,7 +467,7 @@
             }
         }
         
-        // get all online users
+        // get all online users and update the online users count ================================
         rtdb.ref("users").on("value", (snapshot) => {
             rtdbUsageDataRef.update({
                 onlineUsers: Object.values(snapshot.val()).filter((user) => user.status === "online" && user.token != "GlobalSystem").length
