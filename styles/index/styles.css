@@ -197,6 +197,8 @@ textarea:focus {
     font-size: 15px;
 }
 
+/* ============== BUTTONS ============== */
+
 #send-button, #settings-button  {
     transition: 0.1s ease-in-out;
     
@@ -218,30 +220,26 @@ textarea:focus {
     cursor: pointer;
 }
 
-#settings-menu {
+#settings-menu-background {
     background-color: transparent;
     backdrop-filter: blur(1px);
 }
 
-.settings-inner {
+.settings-menu {
     width: 500px;
     height: 600px;
     background-color: var(--body-background-color);
     color: var(--text-color);
-    outline: 1px solid black;
+    box-shadow: var(--box-shadow);
+    outline: 1px solid rgba(0, 0, 0, 0.05);
 
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr min-content;
     grid-template-rows: 1fr 9fr;
 
     border-radius: 10px;
     padding: 5px;
-}
-
-.settings-inner-item {
-    display: flex;
-    align-items: start;
-    justify-content: start;
+    row-gap: 10px;
 }
 
 ul {
