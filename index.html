@@ -193,7 +193,6 @@
 
 
     document.body.onload = () => {
-        console.log(window.location.origin)
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
         console.log(`User Token: ${userToken}`)
 
