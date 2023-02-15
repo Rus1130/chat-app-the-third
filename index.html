@@ -16,11 +16,11 @@
                 <div class="nav-main-option" id="navbar-parent-option" value="2">Theme</div>
             </ul>
             <ul id="settings-menu-options-value-1" value="selected-bkgd" class="settings-menu-navbar" style="display: block;">
-                <div class="settings-menu-option selected" value="time-24_hour">24 Hour</div>
-                <!-- <div class="settings-menu-option" value="time-12_hour">12 Hour</div> -->
+                <div class="settings-menu-option" value="time-24_hour">24 Hour</div>
+                <div class="settings-menu-option" value="time-12_hour">12 Hour</div>
             </ul>
             <ul id="settings-menu-options-value-2" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
-                <div class="settings-menu-option selected" value="theme-light">Light</div>
+                <div class="settings-menu-option" value="theme-light">Light</div>
                 <!-- <div class="settings-menu-option" value="theme-dark">Dark</div> -->
             </ul>
         </div>
@@ -82,6 +82,14 @@
 
     const settingsNavbarParentOptions = document.querySelectorAll('#navbar-parent-option')
 
+    let timeFormat = localStorage.getItem('chat-app-the-third-time') == null ? "24_hour" : localStorage.getItem('chat-app-the-third-time');
+    let theme = localStorage.getItem('chat-app-the-third-theme') == null ? "light" : localStorage.getItem('chat-app-the-third-theme');
+
+    // get the div with the class of settings-menu-option and value of timeFormat
+    document.querySelector(`.settings-menu-option[value="time-${timeFormat}"]`).classList.add('selected')
+    document.querySelector(`.settings-menu-option[value="theme-${theme}"]`).classList.add('selected')
+
+
     settingsNavbarParentOptions.forEach(option => {
         let correspondingSide = document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`)
         let children = correspondingSide.children
@@ -100,7 +108,10 @@
                 let selection = selectedValue.split("-")[0]
                 let value = selectedValue.split("-")[1]
 
-                console.log(selection, value)
+                localStorage.setItem(`chat-app-the-third-${selection}`, value)
+
+                timeFormat = localStorage.getItem('chat-app-the-third-time')
+                theme = localStorage.getItem('chat-app-the-third-theme')
             }
         }
 
@@ -121,6 +132,22 @@
 
     settingsButton.onclick = e => {
         settingsMenu.style.display = "flex"
+    }
+
+    document.body.onkeyup = e => {
+        if(settingsMenu.style.display == "flex" && e.key == " "){
+            settingsMenu.style.display = "none"
+            // get the current selected parent option
+            let selectedParentOption = [...settingsNavbarParentOptions].filter(option => option.classList.contains('selected'))[0].innerHTML
+            if(selectedParentOption == 'Time Format'){
+                loadingScreen.style.display = "flex"
+
+                // reload the page
+                setTimeout(() => {
+                    location.reload()
+                }, 1)
+            }
+        }
     }
 
     messageInput.oninput = e => {
@@ -168,10 +195,6 @@
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
         console.log(`User Token: ${userToken}`)
-
-        let timeFormat = localStorage.getItem('chat-app-the-third-timeFormat') == null ? "12" : localStorage.getItem('chat-app-the-third-timeFormat');
-
-        let theme = localStorage.getItem('chat-app-the-third-theme') == null ? "light" : localStorage.getItem('chat-app-the-third-theme');
 
         let completion = [];
 
@@ -239,6 +262,8 @@
                 }
             })
         }
+
+        // for each child of settings-menu
 
         let completionInterval = setInterval(() => {
             if(completion.length == 2){
@@ -313,8 +338,24 @@
             let month = String(timestamp.getMonth() + 1).padStart(2, '0')
             let year = timestamp.getFullYear()
 
+            let timeSpecifier = "AM"
+
             let timestampString = `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
-            
+            if(timeFormat == "12_hour"){
+                
+                if((+hours) - 12 >= 1){
+                    hours = (+hours) - 12
+                    timeSpecifier = "PM"
+                }
+
+                if(hours == 12){
+                    timeSpecifier = "PM"   
+                }
+
+                timestampString = `${month}/${day}/${year} at ${hours}:${minutes}:${seconds} ${timeSpecifier}`
+            }
+
+
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
                 <div class="message-content">${data.content}</div>
@@ -498,7 +539,7 @@
 
             rtdb.ref(`users/${message.senderToken}`).once("value", (snapshot) => {
                 if(snapshot.val() == null) return;
-                if((1676380278693 + 86400000) < Date.now()){ // 86400000
+                if((snapshot.val().accountCreation + 86400000) < Date.now()){ // 86400000
                     rtdb.ref(`users/${message.senderToken}`).update({
                         badges: snapshot.val().badges.filter((badge) => badge != "new")
                     })
