@@ -20,6 +20,11 @@
 
     --settings-selected-background-color: whitesmoke;
     --nav-settings-hover-color: rgb(210, 210, 210);
+
+    --settings-background-filter-color: rgba(0, 0, 0, 0.1);
+    --settings-background-filter-blur: blur(1px); 
+
+    --settings-menu-outline: rgba(0, 0, 0, 0.05);
 }
 
 ::-webkit-scrollbar {
@@ -225,8 +230,8 @@ textarea:focus {
 }
 
 #settings-menu-background {
-    background-color: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(1px);
+    background-color: var(--settings-background-filter-color);
+    backdrop-filter: var(--settings-background-filter-blur);
 }
 
 .settings-menu {
@@ -234,7 +239,7 @@ textarea:focus {
     height: 600px;
     color: var(--text-color);
     box-shadow: var(--box-shadow);
-    outline: 1px solid rgba(0, 0, 0, 0.05);
+    outline: 1px solid var(--settings-menu-outline);
     padding: 10px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
