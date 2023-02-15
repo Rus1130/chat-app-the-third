@@ -11,16 +11,17 @@
     <div class='screen-cover' id="loading-screen">Loading...</div>
     <div class="screen-cover" id="settings-menu-background" style="z-index: 10000; display: none">
         <div class="settings-menu">
-            <ul id="settings-menu-options">
-                <li class="clicked" value="1">Themes</li>
-                <li value="2">Time Format</li>
+            <ul class="settings-menu-navbar">
+                <div class="nav-main-option selected" id="navbar-parent-option" value="1" style="border-top-left-radius: 10px;">Time Format</div>
+                <div class="nav-main-option" id="navbar-parent-option" value="2">Theme</div>
             </ul>
-            <ul class="settings-menu-grid selected" id="settings-menu-options-item-1">
-                <li class="clicked">Light</li>
+            <ul id="settings-menu-options-value-1" value="diffBkgd" class="settings-menu-navbar" style="border-top-right-radius: 10px">
+                <div class="settings-menu-option" style="border-top-right-radius: 10px;">Time Format 1</div>
+                <div class="settings-menu-option">Time Format 2</div>
             </ul>
-            <ul style='display: none;' class="settings-menu-grid" id="settings-menu-options-item-2">
-                <li>12-Hour</li>
-                <li class="clicked">24-Hour</li>
+            <ul id="settings-menu-options-value-2" value="diffBkgd" class="settings-menu-navbar" style="display: none; border-top-right-radius: 10px;">
+                <div class="settings-menu-option" style="border-top-right-radius: 10px;">Theme 1</div>
+                <div class="settings-menu-option">Theme 2</div>
             </ul>
         </div>
     </div>
@@ -77,30 +78,27 @@
     const settingsButton = document.getElementById('settings-button')
     const messages = document.getElementById('messages')
 
-    const settingsMenuContainer = document.getElementById('settings-menu-background')
-    const settingsMenu = document.getElementById('settings-menu-options')
+    const settingsMenu = document.getElementById('settings-menu-background')
 
-    settingsMenu.onclick = e => {
-        if(e.target.tagName === "LI"){
-            e.target.classList.add('clicked')
-            let menuOption = document.getElementById(`settings-menu-options-item-${e.target.value}`)
-            menuOption.style.display = "grid"
-
-            for(let i = 0; i < settingsMenu.children.length; i++){
-                if(settingsMenu.children[i] !== e.target){
-                    settingsMenu.children[i].classList.remove('clicked')
-                    document.getElementById(`settings-menu-options-item-${settingsMenu.children[i].value}`).style.display = "none"
-
-
-                }
-            }
+    const settingsNavbarParentOptions = document.querySelectorAll('#navbar-parent-option')
+    // onclick for settings navbar parent options
+    settingsNavbarParentOptions.forEach(option => {
+        option.onclick = e => {
+            // add the "selected" property to the option
+            settingsNavbarParentOptions.forEach(option => {
+                option.classList.remove('selected')
+                document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`).style.display = "none"
+                
+            })
+            
+            option.classList.add('selected')
+            document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`).style.display = "block"
         }
-
-    }
+    })
 
 
     settingsButton.onclick = e => {
-        settingsMenuContainer.style.display = "flex"
+        settingsMenu.style.display = "flex"
     }
     messageInput.oninput = e => {
         Object.keys(emojis).forEach(index => {
@@ -153,6 +151,10 @@
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
         console.log(`User Token: ${userToken}`)
+
+        let timeFormat = localStorage.getItem('chat-app-the-third-timeFormat') == null ? "12" : localStorage.getItem('chat-app-the-third-timeFormat');
+
+        let theme = localStorage.getItem('chat-app-the-third-theme') == null ? "light" : localStorage.getItem('chat-app-the-third-theme');
 
         let completion = [];
 
