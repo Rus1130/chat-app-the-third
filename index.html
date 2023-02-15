@@ -193,6 +193,7 @@
 
 
     document.body.onload = () => {
+        console.log(window.location.origin)
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
         console.log(`User Token: ${userToken}`)
 
@@ -223,6 +224,7 @@
                     userInstances: 1,
                     badges: ['filler', "new"],
                     accountCreation: Date.now(),
+                    requestOrigin: window.location.origin,
                 })
             } else {
                 if(snapshot.val().banned){
@@ -233,6 +235,7 @@
                         status: "online",
                         room: 'Global',
                         userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1)),
+                        requestOrigin: window.location.origin,
                     })
                 }
             }
@@ -414,7 +417,8 @@
                         roomID: roomID,
                         messageID: messageID,
                         timestamp: new Date().toUTCString(),
-                        badges: senderBadges
+                        badges: senderBadges,
+                        requestOrigin: window.location.origin
                     }
                 })
             }
