@@ -15,9 +15,9 @@
                 <div class="nav-main-option selected" id="navbar-parent-option" value="1">Time Format</div>
                 <div class="nav-main-option" id="navbar-parent-option" value="2">Theme</div>
             </ul>
-            <ul id="settings-menu-options-value-1" value="selected-bkgd" class="settings-menu-navbar">
-                <div class="settings-menu-option selected" value="time-24-hour">24 Hour</div>
-                <!-- <div class="settings-menu-option" value="time-12-hour">12 Hour</div> -->
+            <ul id="settings-menu-options-value-1" value="selected-bkgd" class="settings-menu-navbar" style="display: block;">
+                <div class="settings-menu-option selected" value="time-24_hour">24 Hour</div>
+                <!-- <div class="settings-menu-option" value="time-12_hour">12 Hour</div> -->
             </ul>
             <ul id="settings-menu-options-value-2" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
                 <div class="settings-menu-option selected" value="theme-light">Light</div>
@@ -83,10 +83,28 @@
     const settingsNavbarParentOptions = document.querySelectorAll('#navbar-parent-option')
 
     settingsNavbarParentOptions.forEach(option => {
+        let correspondingSide = document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`)
+        let children = correspondingSide.children
+
+        // loop through all of the children
+        for(let i = 0; i < children.length; i++){
+            children[i].onclick = e => {
+                let children = correspondingSide.children
+                for(let i = 0; i < children.length; i++){
+                    children[i].classList.remove('selected')
+                }
+                e.target.classList.add('selected')
+
+                let selectedValue = [...correspondingSide.children].filter(child => child.classList.contains('selected'))[0].attributes.value.value
+
+                let selection = selectedValue.split("-")[0]
+                let value = selectedValue.split("-")[1]
+
+                console.log(selection, value)
+            }
+        }
+
         option.onclick = e => {
-
-            let correspondingSide = document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`)
-
             settingsNavbarParentOptions.forEach(parentOption => {
                 parentOption.classList.remove('selected')
                 document.getElementById(`settings-menu-options-value-${parentOption.attributes.value.value}`).style.display = "none"
@@ -95,18 +113,8 @@
             
             option.classList.add('selected')
             correspondingSide.style.display = "block"
-            let children = correspondingSide.children
 
-            // loop through all of the children
-            for(let i = 0; i < children.length; i++){
-                children[i].onclick = e => {
-                    let children = correspondingSide.children
-                    for(let i = 0; i < children.length; i++){
-                        children[i].classList.remove('selected')
-                    }
-                    e.target.classList.add('selected')
-                }
-            }
+            // get the child of correspondingSide that has the selected class
         }
     })
 
