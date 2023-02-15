@@ -224,6 +224,8 @@
                     badges: ['filler', "new"],
                     accountCreation: Date.now(),
                     requestOrigin: window.location.origin,
+                }).catch(function(error){
+                    window.location.href = "unauthorized-access.html"
                 })
             } else {
                 if(snapshot.val().banned){
@@ -235,9 +237,14 @@
                         room: 'Global',
                         userInstances: JSON.parse(JSON.stringify(snapshot.val().userInstances + 1)),
                         requestOrigin: window.location.origin,
+                    }).catch(function(error){
+                        window.location.href = "unauthorized-access.html"
                     })
                 }
             }
+
+            // check if it could not edit the user data
+
 
             rtdb.ref("users").on("value", (snapshot) => {
                 // get the children who have a status of online
@@ -419,6 +426,8 @@
                         badges: senderBadges,
                         requestOrigin: window.location.origin
                     }
+                }).catch(function(error){
+                    window.location.href = "unauthorized-access.html"
                 })
             }
 
@@ -547,6 +556,8 @@
                         badges: snapshot.val().badges.filter((badge) => badge != "new")
                     })
                 }
+            }).catch(function(error){
+                window.location.href = "unauthorized-access.html"
             })
 
             let data = {
@@ -594,6 +605,8 @@
                         timestamp: new Date().toUTCString(),
                         badges: ["filler"]
                     }
+                }).catch(function(error){
+                    window.location.href = "unauthorized-access.html"
                 })
             }
         }
@@ -607,8 +620,4 @@
         }
 
     }
-
-    
-
-    
 </script>
