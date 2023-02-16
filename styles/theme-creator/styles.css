@@ -77,7 +77,6 @@ textarea:focus {
     font-size: 30px;
     z-index: 9999;
     height: 100%;
-    width: 50%;
     left: 0;
     top: 0; 
 }
@@ -103,7 +102,7 @@ textarea:focus {
     margin-left: 20px;
     margin-right: 20px;
 
-    width: calc(70% - 80px);
+    width: calc(65% - 80px);
 
     color: var(--text-color);
 }
@@ -236,6 +235,7 @@ textarea:focus {
 #settings-menu-background {
     background-color: var(--settings-background-filter-color);
     backdrop-filter: var(--settings-background-filter-blur);
+    width: calc(60% + 60px);
 }
 
 .settings-menu {
@@ -299,7 +299,7 @@ ul[value="selected-bkgd"] {
 
 .wrapper {
     display: grid;
-    grid-template-columns: 70% 30%;
+    grid-template-columns: 65% 35%;
     grid-template-rows: 1fr;
     height: 100%;
 }
@@ -308,7 +308,7 @@ ul[value="selected-bkgd"] {
     background: none;
     border: none;
     margin: 0;
-    width: 300px;
+    width: 292px;
 }
 
 .colorPicker .oned {
@@ -323,6 +323,8 @@ ul[value="selected-bkgd"] {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
     height: fit-content;
     padding-top: 10px;
+    width: fit-content;
+    margin-right: -px;
 }
 .config {
     margin-left: 16px;
@@ -349,20 +351,25 @@ ul[value="selected-bkgd"] {
 
 #theme-creator-right {
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 9fr;
-    row-gap: 10px;
+    grid-template-columns: 100%;
+    row-gap: 5px;
     margin: 20px;
+    width: 320px;
 }
 #theme-creator-right-bottom {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: repeat(100, 30px);
+    grid-template-rows: repeat(20, 20px);
+    row-gap: 1px;
+    font-size: 13px;
+    height: fit-content;
+    width: 300px;
 }
 
-#theme-creator-right-bottom span {
+#theme-creator-right-bottom span:first-of-type {
     outline: 1px solid black;
-    padding: 2px;
+    padding: 1px;
+    font-family: monospace;
     border-radius: 2px;
     display: inline-flex;
     align-items: center;
@@ -370,7 +377,16 @@ ul[value="selected-bkgd"] {
     width: fit-content;
 }
 
-#theme-creator-right-bottom span:hover {
+#theme-creator-right-bottom span:nth-of-type(2) {
+    outline: 1px solid black;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    border-radius: 2px;
+    margin-left: 5px;
+}
+
+#theme-creator-right-bottom span:first-of-type:hover {
     cursor: pointer;
 }
 

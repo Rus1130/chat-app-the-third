@@ -50,10 +50,14 @@
                 </div>
             </div>
             <div id="theme-creator-right-bottom">
-                <div>Body Background Color: <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><br></div>
-                <div>Message Color: <span id="message-color" original="#fffff">#ffffff</span><br></div>
-                <div>Button Color: <span id="button-color" original="#000000">#000000</span><br></div>
-                <div>Button Background Color: <span id="button-background-color" original="#ffffff">#ffffff</span></div>
+                <div>Body Background Color: <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span><br></div>
+                <div>Message Color: <span id="message-color" original="#fffff">#ffffff</span><span>#</span><br></div>
+                <div>Button Text Color: <span id="button-color" original="#000000">#000000</span><span>#</span><br></div>
+                <div>Button Background Color: <span id="button-background-color" original="#ffffff">#ffffff</span><span>#</span></div>
+                <div>Button Color Hover: <span id="button-color-hover" original="#ffffff">#ffffff</span><span>#</span></div>
+                <div>Button Background Color Hover: <span id="button-background-color-hover" original="#000000">#000000</span><span>#</span></div>
+                <div>Text Color: <span id="text-color" original="#000000">#000000</span><span>#</span></div>
+                <div>Timestamp Color: <span id="timestamp-color" original="#808080">#808080</span><span>#</span></div>
             </div>
         </div>
     </div>
@@ -387,16 +391,35 @@
 
         // get all the spans in the div with the id theme-creator-right-bottom
 
-        let changeableColors = document.querySelectorAll("#theme-creator-right-bottom span");
+        function setPreviewColors(){
+            let children = [...document.getElementById("theme-creator-right-bottom").children];
+            for(i = 0; i < children.length; i++){
+                let color = children[i].children[0].innerHTML
+                let indicator = children[i].children[1]
+
+                
+                indicator.style.color = color
+                indicator.style.backgroundColor = color
+
+                // change custom property
+                document.documentElement.style.setProperty(`--${children[i].children[0].id}`, color);
+            }
+        }
+
+        setPreviewColors()
+
+        let changeableColors = document.querySelectorAll("#theme-creator-right-bottom span[id]");
         [...changeableColors].forEach((div) => {
             div.onclick = () => {
                 div.innerHTML = selectedColor
+                setPreviewColors()
             }
 
             // div on context menu
             div.oncontextmenu = e => {
                 e.preventDefault();
                 div.innerHTML = div.attributes.original.value
+                setPreviewColors()
             }
         });
     }
