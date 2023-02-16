@@ -102,7 +102,7 @@ textarea:focus {
     margin-left: 20px;
     margin-right: 20px;
 
-    width: calc(50% - 80px);
+    width: calc(70% - 80px);
 
     color: var(--text-color);
 }
@@ -130,8 +130,8 @@ textarea:focus {
 }
 
 .ui-grid {
-    grid-template-columns: 5fr 1fr 1fr;
-    grid-template-rows: 1fr;
+    grid-template-columns: 20fr 1fr 1fr;
+    grid-template-rows: 100%;
     grid-gap: 20px;
     display: grid;
 
@@ -298,7 +298,7 @@ ul[value="selected-bkgd"] {
 
 .wrapper {
     display: grid;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 70% 30%;
     grid-template-rows: 1fr;
     height: 100%;
 }
