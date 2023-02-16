@@ -50,8 +50,10 @@
                 </div>
             </div>
             <div id="theme-creator-right-bottom">
-                <div>Body Background Color: <span id="body-background-color" class="changeable-color" original="#f5f5f5">#f5f5f5</span><br></div>
-                <div>Message Color: <span id="message-color" class="changeable-color" original="#000000">#000000</span><br></div>
+                <div>Body Background Color: <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><br></div>
+                <div>Message Color: <span id="message-color" original="#fffff">#ffffff</span><br></div>
+                <div>Button Color: <span id="button-color" original="#000000">#000000</span><br></div>
+                <div>Button Background Color: <span id="button-background-color" original="#ffffff">#ffffff</span></div>
             </div>
         </div>
     </div>
@@ -383,8 +385,9 @@
 
         const cp = new ColorPicker(document.getElementById("colorjoe-container"));
 
-        // for each div with the class changeable color
-        let changeableColors = document.getElementsByClassName("changeable-color");
+        // get all the spans in the div with the id theme-creator-right-bottom
+
+        let changeableColors = document.querySelectorAll("#theme-creator-right-bottom span");
         [...changeableColors].forEach((div) => {
             div.onclick = () => {
                 div.innerHTML = selectedColor
