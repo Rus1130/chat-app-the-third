@@ -6,350 +6,46 @@
     <script src="colorjoe/colorjoe.min.js"></script>
 </head>
 <body>
-    <div class="wrapper">
-        <div style="outline: 5px black solid" id="theme-creator-left">
-            <div class="screen-cover" id="settings-menu-background" style="z-index: 10000; display: none;">
-                <div class="settings-menu">
-                    <ul class="settings-menu-navbar">
-                        <div class="nav-main-option selected" id="navbar-parent-option" value="1">Time Format</div>
-                        <div class="nav-main-option" id="navbar-parent-option" value="2">Theme</div>
-                    </ul>
-                    <ul id="settings-menu-options-value-1" value="selected-bkgd" class="settings-menu-navbar" style="display: block;">
-                        <div class="settings-menu-option" value="time-24_hour">24 Hour</div>
-                        <div class="settings-menu-option" value="time-12_hour">12 Hour</div>
-                    </ul>
-                    <ul id="settings-menu-options-value-2" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
-                        <div class="settings-menu-option" value="theme-light">Light</div>
-                        <!-- <div class="settings-menu-option" value="theme-dark">Dark</div> -->
-                    </ul>
+    <div id="grid">
+        <iframe src="iframe.html" id="iframe" style="border: unset; height: 100%; width: 100%;"></iframe>
+        <div id="theme-creator">
+            <div id="colorjoe-container">
+                <div id="color-picker"></div>
+                <div class="config">
+                    <div class="config-title">Selected Color</div>
+                    <div class="selected-color-text"></div>
+                    <div class="selected-color"></div>
                 </div>
-            </div>
-            <div class="banner fix-top">
-                <div id="currentUsers">Current Users: 1 | Current Room: Global</div>
-            </div>
-            <div class="messages-wrapper">
-                <div id="messages"></div>
-            </div>
-            <div class="banner fix-bottom" style="height: 100px;">
-                <div class="ui-grid">
-                    <textarea class="inputs" id="message-input" placeholder="Enter your message here..." spellcheck="false"></textarea>
-                    <div class="inputs" id="send-button">&nbsp;&nbsp;Send&nbsp;&nbsp;</div>
-                    <div class="inputs" id="settings-button">&nbsp;&nbsp;Settings&nbsp;&nbsp;</div>
-                </div>
-            </div>
-        </div>
-        <div id="theme-creator-right">
-            <div id="theme-creator-right-top">
-                <div id="colorjoe-container">
-                    <div id="color-picker"></div>
-                    <div class="config">
-                        <div class="config-title">Selected Color</div>
-                        <div class="selected-color-text"></div>
-                        <div class="selected-color"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="theme-creator-right-bottom">
+            </div><br>
+            <div id="color-previews">
                 <div>Body Background Color: <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span><br></div>
-                <div>Message Color: <span id="message-color" original="#fffff">#ffffff</span><span>#</span><br></div>
+                <div>Message Background Color: <span id="message-color" original="#fffff">#ffffff</span><span>#</span><br></div>
                 <div>Button Text Color: <span id="button-color" original="#000000">#000000</span><span>#</span><br></div>
                 <div>Button Background Color: <span id="button-background-color" original="#ffffff">#ffffff</span><span>#</span></div>
-                <div>Button Color Hover: <span id="button-color-hover" original="#ffffff">#ffffff</span><span>#</span></div>
+                <div>Button Text Color Hover: <span id="button-color-hover" original="#ffffff">#ffffff</span><span>#</span></div>
                 <div>Button Background Color Hover: <span id="button-background-color-hover" original="#000000">#000000</span><span>#</span></div>
                 <div>Text Color: <span id="text-color" original="#000000">#000000</span><span>#</span></div>
                 <div>Timestamp Color: <span id="timestamp-color" original="#808080">#808080</span><span>#</span></div>
             </div>
         </div>
     </div>
-
 </body>
-
 <script defer>
-    function offsetDate(offset){
-        var d = new Date(new Date().getTime() + (offset * 1000));
+    function changeProperty(property, newValue){
+        themeTester = document.getElementById("iframe").contentWindow.document;
+        let iframeRootElement = themeTester.getElementById("style-root");
 
-        // offset date
-        var year = String(d.getUTCFullYear()).padStart(4, '0')
-        var month = String(d.getUTCMonth() + 1).padStart(2, '0')
-        var day = String(d.getUTCDate()).padStart(2, '0')
-
-        var hrs = String(d.getUTCHours()).padStart(2, '0')
-        var mins = String(d.getUTCMinutes()).padStart(2, '0')
-        var secs = String(d.getUTCSeconds()).padStart(2, '0')
-
-        return {
-            year: year,
-            month: month,
-            day: day,
-            hrs: hrs,
-            mins: mins,
-            secs: secs,
-            UTC: new Date(),
-            localTimestamp: `${new Date(new Date()).toLocaleDateString()} at ${new Date(new Date()).toLocaleTimeString()}`,
-        }
+        iframeRootElement.appendChild(document.createTextNode(`:root{--${property}: ${newValue};}`))
     }
 
-    function getTimezoneOffset(){
-        return -(new Date().getTimezoneOffset() * 60)
-    }
+    let themeTester = document.getElementById("iframe").contentWindow.document;
+    
+    
 
-    const currentUsers = document.getElementById('currentUsers')
-    const loadingScreen = document.getElementById('loading-screen')
+    document.body.onload = function() {
 
-    const messageInput = document.getElementById('message-input')
-
-    const sendButton = document.getElementById('send-button')
-    const settingsButton = document.getElementById('settings-button')
-    const messages = document.getElementById('messages')
-
-    const settingsMenu = document.getElementById('settings-menu-background')
-
-    const settingsNavbarParentOptions = document.querySelectorAll('#navbar-parent-option')
-
-    let timeFormat = localStorage.getItem('chat-app-the-third-time') == null ? "24_hour" : localStorage.getItem('chat-app-the-third-time');
-    let theme = localStorage.getItem('chat-app-the-third-theme') == null ? "light" : localStorage.getItem('chat-app-the-third-theme');
-
-    // get the div with the class of settings-menu-option and value of timeFormat
-    document.querySelector(`.settings-menu-option[value="time-${timeFormat}"]`).classList.add('selected')
-    document.querySelector(`.settings-menu-option[value="theme-${theme}"]`).classList.add('selected')
-
-
-    settingsNavbarParentOptions.forEach(option => {
-        let correspondingSide = document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`)
-        let children = correspondingSide.children
-
-        // loop through all of the children
-        for(let i = 0; i < children.length; i++){
-            children[i].onclick = e => {
-                let children = correspondingSide.children
-                for(let i = 0; i < children.length; i++){
-                    children[i].classList.remove('selected')
-                }
-                e.target.classList.add('selected')
-
-                let selectedValue = [...correspondingSide.children].filter(child => child.classList.contains('selected'))[0].attributes.value.value
-
-                let selection = selectedValue.split("-")[0]
-                let value = selectedValue.split("-")[1]
-
-                localStorage.setItem(`chat-app-the-third-${selection}`, value)
-
-                timeFormat = localStorage.getItem('chat-app-the-third-time')
-                theme = localStorage.getItem('chat-app-the-third-theme')
-            }
-        }
-
-        option.onclick = e => {
-            settingsNavbarParentOptions.forEach(parentOption => {
-                parentOption.classList.remove('selected')
-                document.getElementById(`settings-menu-options-value-${parentOption.attributes.value.value}`).style.display = "none"
-                
-            })
-            
-            option.classList.add('selected')
-            correspondingSide.style.display = "block"
-
-            // get the child of correspondingSide that has the selected class
-        }
-    })
-
-
-    settingsButton.onclick = e => {
-        settingsMenu.style.display = "flex"
-    }
-
-    document.body.onkeyup = e => {
-        if(settingsMenu.style.display == "flex" && e.key == " "){
-            settingsMenu.style.display = "none"
-            // get the current selected parent option
-            let selectedParentOption = [...settingsNavbarParentOptions].filter(option => option.classList.contains('selected'))[0].innerHTML
-            if(selectedParentOption == 'Time Format'){
-                setTimeout(() => {
-                    location.reload()
-                }, 1)
-            }
-        }
-    }
-
-    messageInput.oninput = e => {
-        if(messageInput.value.length > 1000){
-            messageInput.value = messageInput.value.substring(0, 1000)
-        }
-    }
-
-    messageInput.onkeydown = e => {
-        let key = e.key
-        if(key === "Enter"){
-            e.preventDefault()
-        }
-    }
-
-    function generateToken(){
-        return (Math.random().toString(36) + Math.random().toString(36)).replaceAll('0.', "")
-    }
-
-    const customBadges = {
-        'tester': "TESTER",
-        'hurr-durr': 'hurr durr im a returd!',
-        'admin': 'ADMIN',
-        'invis': 'invisible!',
-        'w-human': "W Human Being",
-        "crit": "CRITERION",
-        "new": "NEW",
-    }
-
-    const leavingScreenText = [
-        "Leaving...",
-        "Logging out...",
-        "Bye!",
-        'See ya!',
-        "See you later!",
-        "Goodbye!",
-        "Have a nice day!",
-        "Monkey 🐒🐒🐒",
-        "💀💀💀",
-        "skrrr",
-        "Teacher catch you?"
-    ]
-
-
-    document.body.onload = () => {
         let selectedColor;
-        let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
-        console.log(`User Token: ${userToken}`)
-
-        let completion = [];
-
-        let timedOut = false;
-
-        if(localStorage.getItem('chat-app-the-third-userToken') == null){
-            localStorage.setItem('chat-app-the-third-userToken', userToken)
-        }
-
-        let roomID = "Global"
-
-        // handles user creation or update data when user logs in =======================================
-
-
-        // updates user data when page is closed ===============================
-
-
-        function getBadge(name, displayText){
-            return `&nbsp;<span class='badge ${name}-badge'>${displayText}</span>`
-        }
-
-        function createMessage(data, clientMessage){
-            let div = document.createElement('div')
-            let badgeDisplay = ''
-            if(clientMessage){
-                badgeDisplay += getBadge("client", "YOU")
-            }
-
-            if(data.sender == 'System' || data.sender == 'GlobalSystem'){
-                badgeDisplay += getBadge("system", 'SYSTEM')
-            }
-
-            if(data.badges != undefined){
-                data.badges.forEach((badge) => {
-                    if(badge == 'filler') return;
-                    badgeDisplay += getBadge(badge, customBadges[badge])
-                })
-            }
-
-           let messageID;
-
-           // handles getting message ID and user ID on click ====================
-            div.onmousedown = e => {
-                if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content') || e.target.classList.contains('message-head')){
-                    e.target.style.cursor = "pointer"
-
-                    e.target.onclick = e => {
-                        // console long the click only when the button is pressed down, not when it's released
-                        if(e.target.classList.contains('message-container') || e.target.classList.contains('message-content')){
-                            messageID = currentRoomRef.toString().split("/").slice(3).join("/") + "/" + data.messageID;
-                            messageID = messageID.split("/")
-                            messageID.shift()
-                            messageID = messageID.join("/")
-
-                            if(data.sender == "System" || data.sender == "GlobalSystem") return sendLocalSystemMessage("Can't do that.")
-                            navigator.clipboard.writeText(messageID)
-                            sendLocalSystemMessage("Copied message ID to clipboard!")
-
-                        }
-
-                        if(e.target.classList.contains('message-head') || e.target.classList.contains('message-container')){
-
-                            if(data.sender == "System" || data.sender == "GlobalSystem") return sendLocalSystemMessage("Can't do that.")
-                            navigator.clipboard.writeText(data.sender)
-                            sendLocalSystemMessage("Copied username to clipboard!")
-                        }
-                    }
-                }
-            }
-
-            // edit the timestamp so it shows the client's local time
-            let timestamp = new Date(data.timestamp)
-
-            let hours = String(timestamp.getHours()).padStart(2, '0')
-            let minutes = String(timestamp.getMinutes()).padStart(2, '0')
-            let seconds = String(timestamp.getSeconds()).padStart(2, '0')
-
-            let day = String(timestamp.getDate()).padStart(2, '0')
-            let month = String(timestamp.getMonth() + 1).padStart(2, '0')
-            let year = timestamp.getFullYear()
-
-            let timeSpecifier = "AM"
-
-            let timestampString = `${day}/${month}/${year} at ${hours}:${minutes}:${seconds}`
-            if(timeFormat == "12_hour"){
-                
-                if((+hours) - 12 >= 1){
-                    hours = (+hours) - 12
-                    timeSpecifier = "PM"
-                }
-
-                if(hours == 12){
-                    timeSpecifier = "PM"   
-                }
-
-                timestampString = `${month}/${day}/${year} at ${hours}:${minutes}:${seconds} ${timeSpecifier}`
-            }
-
-
-            div.innerHTML = `<div class="message-container" messageID=${messageID}>
-                <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
-                <div class="message-content">${data.content}</div>
-            </div>`
-
-            messages.prepend(div)
-        }
-
-
-        // send a message ========================================================
-        function submitMessage(){
-            createMessage({
-                sender: userToken,
-                content: messageInput.value,
-                timestamp: Date.now(),
-                badges: []
-            }, true)
-            messageInput.value = "";
-
-        }
-
-        // message listener ================================
-
-
-        sendButton.onclick = () => {
-            submitMessage();
-        };
-
-        messageInput.onkeyup = e => {
-            let key = e.key
-            if(key === "Enter"){
-                submitMessage();
-            }
-        }
+        
 
         class ColorPicker {
             constructor(root) {
@@ -392,23 +88,25 @@
         // get all the spans in the div with the id theme-creator-right-bottom
 
         function setPreviewColors(){
-            let children = [...document.getElementById("theme-creator-right-bottom").children];
+            let children = [...document.getElementById("color-previews").children];
+
             for(i = 0; i < children.length; i++){
                 let color = children[i].children[0].innerHTML
                 let indicator = children[i].children[1]
-
                 
                 indicator.style.color = color
                 indicator.style.backgroundColor = color
 
-                // change custom property
-                document.documentElement.style.setProperty(`--${children[i].children[0].id}`, color);
+                // console.log(document.documentElement.style.setProperty(`--${children[i].id}`, color))
+                changeProperty([...children[i].children][0].id, color)
+
+
             }
         }
 
         setPreviewColors()
 
-        let changeableColors = document.querySelectorAll("#theme-creator-right-bottom span[id]");
+        let changeableColors = document.querySelectorAll("#color-previews span[id]");
         [...changeableColors].forEach((div) => {
             div.onclick = () => {
                 div.innerHTML = selectedColor
