@@ -2,10 +2,12 @@
     <title>Chat during school!</title>
     <link rel="stylesheet" type="text/css" href="./styles/theme-creator/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
+    <link rel="stylesheet" href="colorjoe/colorjoe.css">
+    <script src="colorjoe/colorjoe.min.js"></script>
 </head>
 <body>
     <div class="wrapper">
-        <div style="outline: 5px black solid">
+        <div style="outline: 5px black solid" id="theme-creator-left">
             <div class="screen-cover" id="settings-menu-background" style="z-index: 10000; display: none;">
                 <div class="settings-menu">
                     <ul class="settings-menu-navbar">
@@ -36,7 +38,24 @@
                 </div>
             </div>
         </div>
+        <div id="theme-creator-right">
+            <div id="theme-creator-right-top">
+                <div id="colorjoe-container">
+                    <div id="color-picker"></div>
+                    <div class="config">
+                        <div class="config-title">Selected Color</div>
+                        <div class="selected-color-text"></div>
+                        <div class="selected-color"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="theme-creator-right-bottom">
+                <div>Body Background Color: <span id="body-background-color" class="changeable-color">#f5f5f5</span><br></div>
+                <div>Message Color: <span id="message-color" class="changeable-color">#000000</span><br></div>
+            </div>
+        </div>
     </div>
+
 </body>
 
 <script defer>
@@ -189,6 +208,7 @@
 
 
     document.body.onload = () => {
+        let selectedColor;
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
         console.log(`User Token: ${userToken}`)
 
@@ -324,5 +344,51 @@
                 submitMessage();
             }
         }
+
+        class ColorPicker {
+            constructor(root) {
+                this.root = root;
+                this.colorjoe = colorjoe.rgb(document.getElementById("color-picker"));
+                this.selectedColor = null;
+                this.savedColors = this.getSavedColors();
+
+                this.colorjoe.show();
+                this.setSelectedColor("#" + Math.floor(Math.random() * 16777215).toString(16));
+                selectedColor = this.selectedColor;
+
+                this.colorjoe.on("change", color => {
+                    this.setSelectedColor(color.hex(), true);
+                    selectedColor = color.hex();
+                });
+            }
+
+            setSelectedColor(color, skipCjUpdate = false) {
+                this.selectedColor = color;
+                this.root.querySelector(".selected-color-text").textContent = color;
+                this.root.querySelector(".selected-color").style.background = color;
+
+                if (!skipCjUpdate) {
+                    this.colorjoe.set(color);
+                }
+            }
+
+            getSavedColors() {
+                const saved = JSON.parse(localStorage.getItem("colorpicker-saved") || "[]");
+
+                return new Array(5).fill("#ffffff").map((defaultColor, i) => {
+                    return saved[i] || defaultColor;
+                });
+            }
+        }
+
+        const cp = new ColorPicker(document.getElementById("colorjoe-container"));
+
+        // for each div with the class changeable color
+        let changeableColors = document.getElementsByClassName("changeable-color");
+        [...changeableColors].forEach((div) => {
+            div.onclick = () => {
+                div.innerHTML = selectedColor
+            }
+        });
     }
 </script>

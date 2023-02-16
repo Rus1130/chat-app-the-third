@@ -303,4 +303,74 @@ ul[value="selected-bkgd"] {
     height: 100%;
 }
 
+.colorPicker {
+    background: none;
+    border: none;
+    margin: 0;
+    width: 300px;
+}
+
+.colorPicker .oned {
+    margin-right: 0;
+}
+
+#colorjoe-container {
+    display: flex;
+    flex-direction: column-reverse;
+    background: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    height: fit-content;
+    padding-top: 10px;
+}
+.config {
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
+.config-title {
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+.selected-color-text {
+    text-align: center;
+    font-family: monospace;
+}
+
+.selected-color {
+    height: 20px;
+    outline: 1px solid #eeeeee;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#theme-creator-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 9fr;
+    row-gap: 10px;
+    margin: 20px;
+}
+#theme-creator-right-bottom {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 30px;
+}
+
+#theme-creator-right-bottom span {
+    outline: 1px solid black;
+    padding: 2px;
+    border-radius: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+}
+
+#theme-creator-right-bottom span:hover {
+    cursor: pointer;
+}
+
 /*https://www.w3schools.com/css/css_navbar_vertical.asp*/
