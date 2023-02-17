@@ -157,8 +157,9 @@ div .c-b-text[selected] {
     color: blue;
 }
 
-div .c-b > span:last-child {
+div.c-b > span:last-of-type {
     cursor: default;
+    color: transparent;
 }
 
 /*https://www.w3schools.com/css/css_navbar_vertical.asp*/

@@ -165,7 +165,7 @@
         let colorPreviews = [...document.querySelectorAll("span[id]")];
         colorPreviews.forEach((preview) => {
             let color = setColors[preview.id] == null ? preview.getAttribute("original") : setColors[preview.id];
-            preview.textContent = color;
+
         });
 
         window.onbeforeunload = () => {
@@ -238,7 +238,6 @@
                     let color = children[i].children[1].innerHTML
                     let indicator = children[i].children[2]
                     
-                    indicator.style.color = color
                     indicator.style.backgroundColor = color
 
                     setColors[children[i].children[1].id] = color
@@ -260,12 +259,57 @@
         let changeableColors = document.querySelectorAll("#color-previews span[id]");
 
         [...changeableColors].forEach((div) => {
+            let clicks = 0;
             div.onclick = () => {
-                selectedColorFields = [div]
-                selectedColorFields.forEach((field) => {
-                    field.innerHTML = selectedColor
-                    setPreviewColors()
-                });
+                clicks++;
+                setTimeout(() => {
+                    if(clicks == 1){
+                        selectedColorFields = [div]
+                        selectedColorFields.forEach((field) => {
+                            field.innerHTML = selectedColor;
+                            setPreviewColors()
+                        })
+                    } else if(clicks == 2){
+                        selectedColorFields = [div]
+                        selectedColorFields.forEach((field) => {
+                            field.setAttribute("contenteditable", "true");
+                            let oldValue = field.innerHTML;
+                            field.focus();
+
+                            // place the cursor where the user clicked
+                            let range = document.createRange();
+                            let sel = window.getSelection();
+                            range.setStart(field.childNodes[0], field.innerHTML.length);
+                            range.collapse(true);
+
+                            field.oninput = e => {
+                                if(e.inputType == "insertParagraph"){
+                                    field.blur();
+                                    field.removeAttribute("contenteditable");
+                                }
+                                if(!/^#(?:[0-9a-fA-F]{3}){2}$/.test(field.innerHTML)){
+                                    field.style.outline = "2px solid red";
+                                } else {
+                                    field.style.outline = "1px solid black";
+                                    setPreviewColors();
+                                }
+
+                            }
+
+                            field.onblur = e => {
+                                if(!/^#(?:[0-9a-fA-F]{3}){2}$/.test(field.innerHTML)){
+                                    field.innerHTML = oldValue;
+                                    field.style.outline = "1px solid black";
+                                } else {
+                                    setPreviewColors();
+                                    field.removeAttribute("contenteditable");
+                                    field.oninput = null;
+                                }
+                            }
+                        })
+                    }
+                    clicks = 0;
+                }, 250)
             }
 
             // div on context menu
