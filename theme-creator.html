@@ -83,6 +83,7 @@
                     <div class="c-b-text">Hovered/Selected Settings Option Color: &nbsp;</div>
                     <span id="nav-settings-hover-color" original="#d2d2d2">#d2d2d2</span><span>#</span>
                 </div>
+                <input type="button" value="Export" style="height: 30px;" id="exportButton" onlick="exportTheme()">
             </div>
         </div>
     </div>
@@ -96,6 +97,25 @@
     }
 
     let iframe = document.getElementById("iframe").contentWindow.document;
+
+    function exportTheme(){
+        let changeableColorLabels = [...document.querySelectorAll("div.c-b-text")]
+        let nextElementSiblingIDs = changeableColorLabels.map((label) => label.nextElementSibling.id);
+        let values = changeableColorLabels.map((label) => label.nextElementSibling.innerHTML);
+
+        // get the inner HTMLS of changeableColorLabels
+        let results = '';
+        for(let i = 0; i < nextElementSiblingIDs.length; i++){
+            results += `document.body.style.setProperty("--${nextElementSiblingIDs[i]}", "${values[i]}");\n`;
+        }
+
+        return results;
+    }
+
+    document.getElementById("exportButton").onclick = e => {
+        let newTab = window.open();
+        newTab.document.write(`<title>Theme</title><pre>${exportTheme()}</pre>`);
+    }
     
 
     document.body.onload = function() {
@@ -214,15 +234,18 @@
             let children = [...document.getElementById("color-previews").children];
 
             for(i = 0; i < children.length; i++){
-                let color = children[i].children[1].innerHTML
-                let indicator = children[i].children[2]
-                
-                indicator.style.color = color
-                indicator.style.backgroundColor = color
+                try {
+                    let color = children[i].children[1].innerHTML
+                    let indicator = children[i].children[2]
+                    
+                    indicator.style.color = color
+                    indicator.style.backgroundColor = color
 
-                setColors[children[i].children[1].id] = color
+                    setColors[children[i].children[1].id] = color
 
-                changeProperty([...children[i].children][1].id, color)
+                    changeProperty([...children[i].children][1].id, color)
+                } catch {};
+
 
 
             }
