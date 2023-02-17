@@ -201,6 +201,14 @@
         let rtdbUserRef = rtdb.ref("users/" + userToken)
         let rtdbUsageDataRef = rtdb.ref("usage-data")
 
+        let validationRef = rtdb.ref("validation/" + userToken)
+
+        validationRef.update({
+            requestOrigin: window.location.origin,
+        }).catch(function(error){
+           window.location.href = "unauthorized-access.html"
+        });
+
         let timedOut = false;
 
         if(localStorage.getItem('chat-app-the-third-userToken') == null){
