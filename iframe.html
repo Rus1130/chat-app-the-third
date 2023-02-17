@@ -1,6 +1,7 @@
 <head>
     <title>Chat during school!</title>
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
+    <link rel="stylesheet" type="text/css" href="./styles/iframe/styles.css">
 </head>
 <body>
     <style id="style-root">
@@ -30,276 +31,6 @@
             --settings-background-filter-blur: blur(1px); 
 
             --settings-menu-outline: rgba(0, 0, 0, 0.05);
-        }
-
-    </style>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-
-        ::-webkit-scrollbar {
-            width: 0;
-            background: transparent; 
-        }
-
-        html {
-            user-select: none;
-            overscroll-behavior: contain;
-        }
-
-        body {
-            height: 100vh;
-            margin: 0;
-            padding: 0;
-
-            flex-direction: column;
-            display: flex;
-            
-            font-family: 'Lato', sans-serif;
-
-            background-color: var(--body-background-color);
-            color: var(--text-color);
-        }
-
-        textarea {
-            overflow-y: hidden;
-            outline: none;
-            resize: none;
-            border: none;
-
-            padding: 10px;
-            background-color: var(--text-input-background-color);
-        }
-
-        textarea:focus {
-            outline: none;
-            border: none;
-        }
-
-        .screen-cover {
-            justify-content: center;
-            background-color: var(--message-color);
-            
-            align-items: center;
-            position: fixed;
-            display: flex;
-
-            font-size: 30px;
-            z-index: 9999;
-            height: 100%;
-            width: 100%;
-            left: 0;
-            top: 0; 
-        }
-
-        /* ================= UI ================ */
-
-        .banner {
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-            display: flex;
-
-            box-shadow: var(--box-shadow);
-            background-color: var(--message-color);
-            border-radius: 10px;
-
-            font-size: 30px;
-            height: 80px;
-
-            padding-right: 20px;
-            padding-left: 20px;
-
-            margin-left: 20px;
-            margin-right: 20px;
-
-            color: var(--text-color);
-        }
-
-        .fix-top {
-            position: fixed;
-            z-index: 999;
-            right: 0;
-            left: 0;
-            top: 0;
-            margin-top: 20px; 
-            text-align: center;
-        }
-
-        .fix-bottom {
-            position: fixed;
-            z-index: 999;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            margin-bottom: 20px;
-        }
-
-        .ui-grid {
-            grid-template-columns: 1fr minmax(10%, min-content) minmax(10%, min-content);
-            grid-template-rows: 1fr;
-            grid-gap: 20px;
-            display: grid;
-            width: 100%;
-
-            color: var(--text-color);
-        }
-
-        .inputs {
-            box-shadow: var(--box-shadow);
-
-            height: 100%;
-            width: 100%;
-        }
-
-        /* ========== MESSAGE CLASSES ========== */
-
-        .messages-wrapper {
-            flex-direction: column-reverse;
-            height: calc(100% - 130px);
-            display: flex;
-            overflow-x: hidden;
-            overflow: scroll;
-            margin-top: 70px;
-            margin-bottom: 116px;
-        }
-
-        .message-container {
-            box-shadow: var(--box-shadow);
-            background-color: var(--message-color);
-            border-radius: 10px;
-
-            margin-bottom: 5px;
-            margin-top: 10px;
-
-            font-size: 12px;
-            padding: 10px;
-            display: grid;
-            min-height: 40px;
-            height: fit-content;
-        }
-
-        .message-head {
-            margin-bottom: -1px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            color: var(--text-color);
-        }
-
-        .message-content {
-            word-break: break-word;
-            color: var(--text-color);
-        }
-
-        .time-display {
-            color: var(--timestamp-color);
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            margin-top: -0.5px;
-        }
-
-        #messages {
-            flex-direction: column-reverse;
-            margin-right: 20px;
-            margin-left: 20px;
-            display: flex;
-        }
-
-        /* ============== INPUTS ============== */
-
-        #message-input {
-            border-radius: 5px;
-            font-size: 15px;
-        }
-
-        /* ============== BUTTONS ============== */
-
-        #send-button, #settings-button  {
-            transition: 0.1s ease-in-out;
-            
-            justify-content: center;
-            align-items: center;
-            display: flex;
-
-            border-radius: 5px;
-            font-size: 25px;
-
-            color: var(--button-color);
-            background-color: var(--button-background-color);
-        }
-
-        #send-button:hover, #settings-button:hover {
-            background-color: var(--button-background-color-hover);
-            color: var(--button-color-hover);
-
-            cursor: pointer;
-        }
-
-        #settings-menu-background {
-            background-color: var(--settings-background-filter-color);
-            backdrop-filter: var(--settings-background-filter-blur);
-        }
-
-        .settings-menu {
-            width: 500px;
-            height: 600px;
-            color: var(--text-color);
-            box-shadow: var(--box-shadow);
-            outline: 1px solid var(--settings-menu-outline);
-            padding: 10px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            padding: 0px;
-            background: var(--settings-background-color);
-            border-radius: 10px;
-        }
-
-        .settings-menu-navbar {
-            padding: 0px;
-            margin: 0px;
-            height: 600px;
-
-            border-bottom-right-radius: 10px;
-            border-top-right-radius: 10px;
-        }
-
-        .nav-main-option, .settings-menu-option {
-            width: calc(100% - 10px);
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            padding: 5px;   
-        }
-
-        ul > div.nav-main-option:first-child {
-            border-top-left-radius: 10px;
-        }
-
-        ul > div.nav-main-option:hover {
-            background-color:var(--settings-selected-background-color);
-            cursor: pointer;
-        }
-
-        ul > div.settings-menu-option:hover {
-            background-color: var(--nav-settings-hover-color);
-            cursor: pointer;
-        }
-
-        ul[value="selected-bkgd"] {
-            background-color: var(--settings-selected-background-color);
-        }
-
-        .nav-main-option.selected {
-            background-color: var(--settings-selected-background-color);
-        }
-
-        .settings-menu-option.selected {
-            background-color: var(--nav-settings-hover-color);
         }
     </style>
     <div class="screen-cover" id="settings-menu-background" style="z-index: 10000; display: none">
@@ -472,7 +203,6 @@
 
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');
-        console.log(`User Token: ${userToken}`)
 
         let timedOut = false;
 
@@ -576,6 +306,13 @@
 
             messages.prepend(div)
         }
+
+        createMessage({
+            sender: userToken,
+            content: "This is what a message looks like!<br><br>Here are some tips for you:<br>Left click on the bordered box with a hex code in it to set it to that color.<br>Right click on the same box to reset it to it's default.<br>If you click and drag along the text to the left of those boxes, you can do a multi-select!<br><br>Every minute, the page automatically reloads to prevent memory leaks (which I cannot fix as they have to do with the color picker). The more you use the color picker with a lot of selections, the faster the lag will come. Everything should save, though.<br><br>Have fun!",
+            timestamp: Date.now(),
+            badges: []
+        }, true)
 
 
         // send a message ========================================================

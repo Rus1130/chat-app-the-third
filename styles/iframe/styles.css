@@ -1,32 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-:root {
-    --body-background-color: #f5f5f5;
-    --banner-color: white;
-    --message-color: white;
-
-    --button-color: black;
-    --button-background-color: white;
-
-    --button-color-hover: white;
-    --button-background-color-hover: black;
-
-    --text-color: black;
-    --timestamp-color: gray;
-    --box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
-
-    --text-input-background-color: white;
-    --text-input-color: black;
-
-    --settings-background-color: white;
-
-    --settings-selected-background-color: whitesmoke;
-    --nav-settings-hover-color: rgb(210, 210, 210);
-
-    --settings-background-filter-color: rgba(0, 0, 0, 0.1);
-    --settings-background-filter-blur: blur(1px); 
-
-    --settings-menu-outline: rgba(0, 0, 0, 0.05);
-}
 
 ::-webkit-scrollbar {
     width: 0;
@@ -60,6 +32,7 @@ textarea {
 
     padding: 10px;
     background-color: var(--text-input-background-color);
+    color: var(--text-input-color);
 }
 
 textarea:focus {
@@ -293,5 +266,3 @@ ul[value="selected-bkgd"] {
 .settings-menu-option.selected {
     background-color: var(--nav-settings-hover-color);
 }
-
-/*https://www.w3schools.com/css/css_navbar_vertical.asp*/

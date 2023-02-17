@@ -18,50 +18,161 @@
                 </div>
             </div><br>
             <div id="color-previews">
-                <div>Body Background Color: <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span><br></div>
-                <div>Message Background Color: <span id="message-color" original="#fffff">#ffffff</span><span>#</span><br></div>
-                <div>Button Text Color: <span id="button-color" original="#000000">#000000</span><span>#</span><br></div>
-                <div>Button Background Color: <span id="button-background-color" original="#ffffff">#ffffff</span><span>#</span></div>
-                <div>Button Text Color Hover: <span id="button-color-hover" original="#ffffff">#ffffff</span><span>#</span></div>
-                <div>Button Background Color Hover: <span id="button-background-color-hover" original="#000000">#000000</span><span>#</span></div>
-                <div>Text Color: <span id="text-color" original="#000000">#000000</span><span>#</span></div>
-                <div>Timestamp Color: <span id="timestamp-color" original="#808080">#808080</span><span>#</span></div>
+                <div class="c-b">
+                    <div class="c-b-text">Body Background Color: &nbsp;</div>
+                    <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span><br>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Banner Top + Banner Bottom Background Color: &nbsp;</div>
+                    <span id="banner-color" original="#ffffff">#ffffff</span><span>#</span><br>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Message Background Color: &nbsp;</div>
+                    <span id="message-color" original="#ffffff">#ffffff</span><span>#</span><br>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Text Color: &nbsp;</div>
+                    <span id="text-color" original="#000000">#000000</span><span>#</span>
+                </div>
+
+
+                <div class="c-b">
+                    <div class="c-b-text">Button Text Color: &nbsp;</div>
+                    <span id="button-color" original="#000000">#000000</span><span>#</span><br>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Button Text Color Hover: &nbsp;</div>
+                    <span id="button-color-hover" original="#ffffff">#ffffff</span><span>#</span>
+                </div>
+
+
+                <div class="c-b">
+                    <div class="c-b-text">Button Background Color: &nbsp;</div>
+                    <span id="button-background-color" original="#ffffff">#ffffff</span><span>#</span>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Button Background Color Hover: &nbsp;</div>
+                    <span id="button-background-color-hover" original="#000000">#000000</span><span>#</span>
+                </div>
+
+
+                <div class="c-b">
+                    <div class="c-b-text">Timestamp Color: &nbsp;</div>
+                    <span id="timestamp-color" original="#808080">#808080</span><span>#</span>
+                </div>
+
+                <div class="c-b">
+                    <div class="c-b-text">Text Input Text Color: &nbsp;</div>
+                    <span id="text-input-color" original="#000000">#000000</span><span>#</span>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Text Input Background Color: &nbsp;</div>
+                    <span id="text-input-background-color" original="#ffffff">#ffffff</span><span>#</span>
+                </div>
+
+
+                <div class="c-b">
+                    <div class="c-b-text">Unselected Settings Background Color: &nbsp;</div>
+                    <span id="settings-background-color" original="#ffffff">#ffffff</span><span>#</span>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Selected Settings Background Color: &nbsp;</div>
+                    <span id="settings-selected-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span>
+                </div>
+                <div class="c-b">
+                    <div class="c-b-text">Hovered/Selected Settings Option Color: &nbsp;</div>
+                    <span id="nav-settings-hover-color" original="#d2d2d2">#d2d2d2</span><span>#</span>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script defer>
     function changeProperty(property, newValue){
-        themeTester = document.getElementById("iframe").contentWindow.document;
-        let iframeRootElement = themeTester.getElementById("style-root");
+        iframe = document.getElementById("iframe").contentWindow.document;
+        let iframeRootElement = iframe.getElementById("style-root");
 
         iframeRootElement.appendChild(document.createTextNode(`:root{--${property}: ${newValue};}`))
     }
 
-    let themeTester = document.getElementById("iframe").contentWindow.document;
-    
+    let iframe = document.getElementById("iframe").contentWindow.document;
     
 
     document.body.onload = function() {
 
         let selectedColor;
+
+        let changeableColorLabels = [...document.querySelectorAll("div.c-b-text")]
+        let selectedElementsIndeces = localStorage.getItem("chat-app-the-third-theme-creator-selected-elements") == null ? [] : localStorage.getItem("chat-app-the-third-theme-creator-selected-elements").split(",").map((index) => parseInt(index));
+
+        selectedElementsIndeces.forEach((index) => {
+            if(changeableColorLabels[index] == undefined) return;
+            changeableColorLabels[index].setAttribute("selected", "");
+        });
+
+        changeableColorLabels.forEach((label) => {
+            label.onmouseover = e => {
+                if (e.buttons == 1) {
+                    label.toggleAttribute("selected")
+                    if(label.hasAttribute("selected")){
+                        selectedElementsIndeces.push(changeableColorLabels.indexOf(label));
+                    } else {
+                        selectedElementsIndeces.splice(selectedElementsIndeces.indexOf(changeableColorLabels.indexOf(label)), 1);
+                    }
+
+                    localStorage.setItem("chat-app-the-third-theme-creator-selected-elements", selectedElementsIndeces);
+                }
+            }
+
+            label.onmousedown = e => {
+                if (e.buttons == 1) {
+                    label.toggleAttribute("selected")
+                    if(label.hasAttribute("selected")){
+                        selectedElementsIndeces.push(changeableColorLabels.indexOf(label));
+                    } else {
+                        selectedElementsIndeces.splice(selectedElementsIndeces.indexOf(changeableColorLabels.indexOf(label)), 1);
+                    }
+
+                    localStorage.setItem("chat-app-the-third-theme-creator-selected-elements", selectedElementsIndeces);
+                }
+            }
+        });
+
+        let update = false;
+
+        let setColors = localStorage.getItem("chat-app-the-third-theme-creator-colors-obj") == null ? {} : JSON.parse(localStorage.getItem("chat-app-the-third-theme-creator-colors-obj"));
         
+        let colorPreviews = [...document.querySelectorAll("span[id]")];
+        colorPreviews.forEach((preview) => {
+            let color = setColors[preview.id] == null ? preview.getAttribute("original") : setColors[preview.id];
+            preview.textContent = color;
+        });
+
+        window.onbeforeunload = () => {
+            localStorage.setItem("chat-app-the-third-theme-creator-colors-obj", JSON.stringify(setColors));
+        }
 
         class ColorPicker {
             constructor(root) {
                 this.root = root;
                 this.colorjoe = colorjoe.rgb(document.getElementById("color-picker"));
                 this.selectedColor = null;
-                this.savedColors = this.getSavedColors();
 
                 this.colorjoe.show();
-                this.setSelectedColor("#" + Math.floor(Math.random() * 16777215).toString(16));
+                this.setSelectedColor("#" + Math.floor(Math.random() * 16777214).toString(16));
                 selectedColor = this.selectedColor;
 
                 this.colorjoe.on("change", color => {
                     this.setSelectedColor(color.hex(), true);
                     selectedColor = color.hex();
-                });
+
+                    this.colorjoe.hide();
+                    this.colorjoe.show();
+
+                    update = true;
+                })
+
+                this.colorjoe.on("done", () => update = false)
             }
 
             setSelectedColor(color, skipCjUpdate = false) {
@@ -73,44 +184,59 @@
                     this.colorjoe.set(color);
                 }
             }
-
-            getSavedColors() {
-                const saved = JSON.parse(localStorage.getItem("colorpicker-saved") || "[]");
-
-                return new Array(5).fill("#ffffff").map((defaultColor, i) => {
-                    return saved[i] || defaultColor;
-                });
-            }
         }
 
-        const cp = new ColorPicker(document.getElementById("colorjoe-container"));
+        setInterval(() => {
+            if(update){
+                let colorsToChange = [...document.querySelectorAll("div.c-b-text[selected]")];
+                colorsToChange.forEach((color) => {
+                    color.parentElement.children[1].textContent = selectedColor;
+                    changeProperty(color.parentElement.children[1].id, selectedColor);
+                });
+                setPreviewColors()
+            }
+        }, 100)
 
-        // get all the spans in the div with the id theme-creator-right-bottom
+
+        setInterval(() => {
+            location.reload()
+        }, 60000)
+
+        const cj = new ColorPicker(document.getElementById("colorjoe-container"));
 
         function setPreviewColors(){
             let children = [...document.getElementById("color-previews").children];
 
             for(i = 0; i < children.length; i++){
-                let color = children[i].children[0].innerHTML
-                let indicator = children[i].children[1]
+                let color = children[i].children[1].innerHTML
+                let indicator = children[i].children[2]
                 
                 indicator.style.color = color
                 indicator.style.backgroundColor = color
 
-                // console.log(document.documentElement.style.setProperty(`--${children[i].id}`, color))
-                changeProperty([...children[i].children][0].id, color)
+                setColors[children[i].children[1].id] = color
+
+                changeProperty([...children[i].children][1].id, color)
 
 
             }
         }
 
+        document.getElementById("iframe").onload = e => {
+            setPreviewColors()
+        }
+
         setPreviewColors()
 
         let changeableColors = document.querySelectorAll("#color-previews span[id]");
+
         [...changeableColors].forEach((div) => {
             div.onclick = () => {
-                div.innerHTML = selectedColor
-                setPreviewColors()
+                selectedColorFields = [div]
+                selectedColorFields.forEach((field) => {
+                    field.innerHTML = selectedColor
+                    setPreviewColors()
+                });
             }
 
             // div on context menu

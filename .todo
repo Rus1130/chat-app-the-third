@@ -29,17 +29,17 @@
     [x] click message to copy messageID
     [ ] settings menu
         [x] change time format
-        [ ] themes
+        [o] themes
     [x] visually save selected settings
     [x] correct time format when settings switched
-    [o] complete color changer
+    [x] complete color changer
     [x] have everything change in real time
     
 
 # Bugs
     [ ] emojis not working
     [x] timestamps on messages showing incorrect time
-    [ ] fix need to reload to apply change in time format
+    [-] fix need to reload to apply change in time format
 
 [?] Not sure if bug
     [?] fix online user count not working property in db

@@ -28,6 +28,8 @@
     --settings-menu-outline: rgba(0, 0, 0, 0.05);
 }
 
+/*;*/
+
 ::-webkit-scrollbar {
     width: 0;
     background: transparent; 
@@ -100,8 +102,8 @@ body {
     grid-template-rows: repeat(18, 20px);
     row-gap: 1px;
     font-size: 13px;
-    height: fit-content;
-    width: 300px;
+    height: min-content;
+    width: 400px;
 }
 
 #color-previews span:first-of-type {
@@ -122,6 +124,7 @@ body {
     display: inline-flex;
     border-radius: 2px;
     margin-left: 5px;
+    margin-bottom: 1px;
 }
 
 #color-previews span:first-of-type:hover {
@@ -129,17 +132,33 @@ body {
 }
 
 #theme-creator {
-    width: fit-content;
+    width: calc(100% - 40px);
     margin: 20px;
     display: inline-block;
 }
 
 #grid {
     display: grid;
-    grid-template-columns: 2fr min-content;
+    grid-template-columns: 1fr min-content;
     height: 100%;
     margin: none;
+}
 
+div.c-b-text {
+    display: inline-block;
+}
+
+div.c-b-text:hover {
+    color: #ae6666;
+    cursor: pointer;
+}
+
+div .c-b-text[selected] {
+    color: blue;
+}
+
+div .c-b > span:last-child {
+    cursor: default;
 }
 
 /*https://www.w3schools.com/css/css_navbar_vertical.asp*/
