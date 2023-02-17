@@ -1,5 +1,5 @@
 <head>
-    <title>Chat during school!</title>
+    <title id="reload-timer">30</title>
     <link rel="stylesheet" type="text/css" href="./styles/theme-creator/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
     <link rel="stylesheet" href="colorjoe/colorjoe.css">
@@ -201,6 +201,12 @@
         setTimeout(() => {
             location.reload()
         }, 30000)
+
+        let reloadTimer = 30;
+        setInterval(() => {
+            reloadTimer--;
+            document.getElementById("reload-timer").textContent = reloadTimer;
+        }, 1000)
 
         const cj = new ColorPicker(document.getElementById("colorjoe-container"));
 
