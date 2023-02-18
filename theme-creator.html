@@ -1,5 +1,5 @@
 <head>
-    <title id="reload-timer">120</title>
+    <title id="reload-timer">Reloads in: 60</title>
     <link rel="stylesheet" type="text/css" href="./styles/theme-creator/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
     <link rel="stylesheet" href="colorjoe/colorjoe.css">
@@ -106,7 +106,6 @@
     function changeProperty(property, newValue){
         iframe = document.getElementById("iframe").contentWindow.document;
         let iframeRootElement = iframe.getElementById("style-root");
-
         iframeRootElement.appendChild(document.createTextNode(`:root{--${property}: ${newValue};}`))
     }
 
@@ -234,12 +233,12 @@
 
         setTimeout(() => {
             location.reload()
-        }, 120000)
+        }, 60000)
 
-        let reloadTimer = 120;
+        let reloadTimer = 60;
         setInterval(() => {
             reloadTimer--;
-            document.getElementById("reload-timer").textContent = reloadTimer;
+            document.getElementById("reload-timer").textContent = `Reloads In: ${reloadTimer}` ;
         }, 1000)
 
         const cj = new ColorPicker(document.getElementById("colorjoe-container"));
@@ -323,7 +322,7 @@
                                         field.style.outline = "1px solid black";
                                         field.blur();
                                         field.setAttribute("contenteditable", "false");
-                                        
+
                                     }
                                 }
                             }
