@@ -20,68 +20,82 @@
             <div id="color-previews">
                 <div class="c-b">
                     <div class="c-b-text">Body Background Color: &nbsp;</div>
-                    <span id="body-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span><br>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="body-background-color" original="f5f5f5" spellcheck="false">f5f5f5</span><span>#</span><br>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Banner Top + Banner Bottom Background Color: &nbsp;</div>
-                    <span id="banner-color" original="#ffffff">#ffffff</span><span>#</span><br>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="banner-color" original="ffffff" spellcheck="false">ffffff</span><span>#</span><br>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Message Background Color: &nbsp;</div>
-                    <span id="message-color" original="#ffffff">#ffffff</span><span>#</span><br>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="message-color" original="ffffff" spellcheck="false">ffffff</span><span>#</span><br>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Text Color: &nbsp;</div>
-                    <span id="text-color" original="#000000">#000000</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="text-color" original="000000" spellcheck="false">000000</span><span>#</span>
                 </div>
 
 
                 <div class="c-b">
                     <div class="c-b-text">Button Text Color: &nbsp;</div>
-                    <span id="button-color" original="#000000">#000000</span><span>#</span><br>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="button-color" original="000000" spellcheck="false">000000</span><span>#</span><br>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Button Text Color Hover: &nbsp;</div>
-                    <span id="button-color-hover" original="#ffffff">#ffffff</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="button-color-hover" original="ffffff" spellcheck="false">ffffff</span><span>#</span>
                 </div>
 
 
                 <div class="c-b">
                     <div class="c-b-text">Button Background Color: &nbsp;</div>
-                    <span id="button-background-color" original="#ffffff">#ffffff</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="button-background-color" original="ffffff" spellcheck="false">ffffff</span><span>#</span>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Button Background Color Hover: &nbsp;</div>
-                    <span id="button-background-color-hover" original="#000000">#000000</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="button-background-color-hover" original="000000" spellcheck="false">000000</span><span>#</span>
                 </div>
 
 
                 <div class="c-b">
                     <div class="c-b-text">Timestamp Color: &nbsp;</div>
-                    <span id="timestamp-color" original="#808080">#808080</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="timestamp-color" original="808080" spellcheck="false">808080</span><span>#</span>
                 </div>
 
                 <div class="c-b">
                     <div class="c-b-text">Text Input Text Color: &nbsp;</div>
-                    <span id="text-input-color" original="#000000">#000000</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="text-input-color" original="000000" spellcheck="false">000000</span><span>#</span>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Text Input Background Color: &nbsp;</div>
-                    <span id="text-input-background-color" original="#ffffff">#ffffff</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="text-input-background-color" original="ffffff" spellcheck="false">ffffff</span><span>#</span>
                 </div>
 
 
                 <div class="c-b">
                     <div class="c-b-text">Unselected Settings Background Color: &nbsp;</div>
-                    <span id="settings-background-color" original="#ffffff">#ffffff</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="settings-background-color" original="ffffff" spellcheck="false">ffffff</span><span>#</span>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Selected Settings Background Color: &nbsp;</div>
-                    <span id="settings-selected-background-color" original="#f5f5f5">#f5f5f5</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="settings-selected-background-color" original="f5f5f5" spellcheck="false">f5f5f5</span><span>#</span>
                 </div>
                 <div class="c-b">
                     <div class="c-b-text">Hovered/Selected Settings Option Color: &nbsp;</div>
-                    <span id="nav-settings-hover-color" original="#d2d2d2">#d2d2d2</span><span>#</span>
+                    <hexPrefix>#</hexPrefix>
+                    <span id="nav-settings-hover-color" original="d2d2d2" spellcheck="false">d2d2d2</span><span>#</span>
                 </div>
                 <input type="button" value="Export" style="height: 30px;" id="exportButton" onlick="exportTheme()">
             </div>
@@ -106,7 +120,7 @@
         // get the inner HTMLS of changeableColorLabels
         let results = '';
         for(let i = 0; i < nextElementSiblingIDs.length; i++){
-            results += `document.body.style.setProperty("--${nextElementSiblingIDs[i]}", "${values[i]}");\n`;
+            results += `document.body.style.setProperty("--${nextElementSiblingIDs[i]}", "#${values[i]}");\n`;
         }
 
         return results;
@@ -165,6 +179,7 @@
         let colorPreviews = [...document.querySelectorAll("span[id]")];
         colorPreviews.forEach((preview) => {
             let color = setColors[preview.id] == null ? preview.getAttribute("original") : setColors[preview.id];
+            preview.innerHTML = color.replace("#", "");
 
         });
 
@@ -179,7 +194,7 @@
                 this.selectedColor = null;
 
                 this.colorjoe.show();
-                this.setSelectedColor("#" + Math.floor(Math.random() * 16777214).toString(16));
+                this.setSelectedColor(Math.floor(Math.random() * 16777214).toString(16));
                 selectedColor = this.selectedColor;
 
                 this.colorjoe.on("change", color => {
@@ -210,8 +225,8 @@
             if(update){
                 let colorsToChange = [...document.querySelectorAll("div.c-b-text[selected]")];
                 colorsToChange.forEach((color) => {
-                    color.parentElement.children[1].textContent = selectedColor;
-                    changeProperty(color.parentElement.children[1].id, selectedColor);
+                    color.parentElement.children[2].textContent = selectedColor.replace("#", "");
+                    changeProperty(color.parentElement.children[2].id, selectedColor);
                 });
                 setPreviewColors()
             }
@@ -235,14 +250,13 @@
 
             for(i = 0; i < children.length; i++){
                 try {
-                    let color = children[i].children[1].innerHTML
-                    let indicator = children[i].children[2]
+                    let color = children[i].children[2].innerHTML
+                    let indicator = children[i].children[3]
                     
                     indicator.style.backgroundColor = color
 
-                    setColors[children[i].children[1].id] = color
-
-                    changeProperty([...children[i].children][1].id, color)
+                    setColors[children[i].children[2].id] = "#" + color
+                    changeProperty([...children[i].children][2].id, "#" + color)
                 } catch {};
 
 
@@ -258,15 +272,26 @@
 
         let changeableColors = document.querySelectorAll("#color-previews span[id]");
 
+        function isValidColorCode(colorCode){
+            let regex = /^(?:[0-9a-fA-F]{3}){2}$/;
+            return regex.test(colorCode);
+        }
+
         [...changeableColors].forEach((div) => {
             let clicks = 0;
             div.onclick = () => {
                 clicks++;
+                
                 setTimeout(() => {
-                    if(clicks == 1){
+                    let blockClick = false;
+                    if(document.activeElement != document.body){
+                        blockClick = true;
+                    }
+                    if(clicks == 1 && blockClick == false){
                         selectedColorFields = [div]
                         selectedColorFields.forEach((field) => {
                             field.innerHTML = selectedColor;
+                            field.innerHTML = field.innerHTML.replace("#", "");
                             setPreviewColors()
                         })
                     } else if(clicks == 2){
@@ -275,41 +300,48 @@
                             field.setAttribute("contenteditable", "true");
                             let oldValue = field.innerHTML;
                             field.focus();
-
-                            // place the cursor where the user clicked
+                            // be able to put cursor in the middle of the text
                             let range = document.createRange();
                             let sel = window.getSelection();
                             range.setStart(field.childNodes[0], field.innerHTML.length);
-                            range.collapse(true);
 
-                            field.oninput = e => {
-                                if(e.inputType == "insertParagraph"){
-                                    field.blur();
-                                    field.removeAttribute("contenteditable");
-                                }
-                                if(!/^#(?:[0-9a-fA-F]{3}){2}$/.test(field.innerHTML)){
-                                    field.style.outline = "2px solid red";
-                                } else {
-                                    field.style.outline = "1px solid black";
-                                    setPreviewColors();
-                                }
-
-                            }
-
-                            field.onblur = e => {
-                                if(!/^#(?:[0-9a-fA-F]{3}){2}$/.test(field.innerHTML)){
+                            field.onkeydown = e => {    
+                                if(e.key == 'Escape'){
                                     field.innerHTML = oldValue;
                                     field.style.outline = "1px solid black";
+                                    field.blur();
+                                    field.setAttribute("contenteditable", "false");
+                                    setPreviewColors()
+                                }
+                                if(e.key == 'Enter'){
+                                    if(isValidColorCode(field.innerHTML)){
+                                        e.preventDefault();
+                                        field.style.outline = "1px solid black";
+                                        field.blur();
+                                        field.setAttribute("contenteditable", "false");
+                                    } else {
+                                        field.innerHTML = oldValue;
+                                        field.style.outline = "1px solid black";
+                                        field.blur();
+                                        field.setAttribute("contenteditable", "false");
+                                        
+                                    }
+                                }
+                            }
+
+                            field.oninput = e => {
+                                if(isValidColorCode(field.innerHTML)){
+                                    setPreviewColors()
+                                    field.style.outline = "1px solid black";
                                 } else {
-                                    setPreviewColors();
-                                    field.removeAttribute("contenteditable");
-                                    field.oninput = null;
+                                    field.style.outline = "2px solid red";
                                 }
                             }
                         })
                     }
                     clicks = 0;
-                }, 250)
+                    blockClick = false;
+                }, 190)
             }
 
             // div on context menu

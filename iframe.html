@@ -309,7 +309,7 @@
 
         createMessage({
             sender: userToken,
-            content: "This is what a message looks like!<br><br>Here are some tips for you:<br>Left click on the bordered box with a hex code in it to set it to that color.<br>Right click on the same box to reset it to it's default.<br>If you click and drag along the text to the left of those boxes, you can do a multi-select!<br><br>Every 30 seconds, the page automatically reloads to prevent memory leaks (which I cannot fix as they have to do with the color picker). The more you use the color picker with a lot of selections, the faster the lag will come. Everything should save, though.<br><br>Have fun!",
+            content: "This is what a message looks like!<br><br>Here are some tips for you:<br>Left click on the bordered box with a hex code in it to set it to that color.<br>Right click on the same box to reset it to it's default.<br>If you click and drag along the text to the left of those boxes, you can do a multi-select!<br>If you double click on the boxes, you can manually input a hex code. The box will have a red outline if the code is invalid. Press enter to exit the box, and press escape to revert back to the code it was before you made the selection, in case you didn't like it.<br><br>Every 30 seconds, the page automatically reloads to prevent lag build-up (which I cannot fix as they have to do with the color picker). The more you use the color picker with a lot of selections, the faster the lag will come. Everything should save, though.<br><br>Have fun!",
             timestamp: Date.now(),
             badges: []
         }, true)

@@ -4,6 +4,7 @@
     [x] Done
     [-] removed
 
+
 # Commands
     [ ] admin Commands
         [x] ban
@@ -25,15 +26,19 @@
         [ ] **bold**
         [ ] __underline__
         [ ] --strikethrough--
+
     [x] click username to copy name
     [x] click message to copy messageID
+
     [ ] settings menu
         [x] change time format
         [o] themes
+        
     [x] visually save selected settings
     [x] correct time format when settings switched
     [x] complete color changer
     [x] have everything change in real time
+    [x] complete theme creator
     
 
 # Bugs
@@ -46,3 +51,4 @@
 
 [!] Currently Unfixable Bugs
     /!\ changing distance between message submit + first message
+    /!\ lagging color picker

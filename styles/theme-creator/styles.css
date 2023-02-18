@@ -107,25 +107,35 @@ body {
 }
 
 #color-previews span:first-of-type {
-    outline: 1px solid black;
-    padding: 1px;
+    outline: 1px solid rgb(0, 0, 0);
     font-family: monospace;
     border-radius: 2px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: fit-content;
+    height: 18px;
+    transform: translateY(0.4px);
+    padding-left: 7.5px;
+    padding-right: 1px;
+    margin-left: -8px;
 }
 
 #color-previews span:nth-of-type(2) {
-    outline: 1px solid black;
+    outline: 1px solid rgb(205, 0, 0);
     width: 18px;
     height: 18px;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 2px;
-    margin-left: 5px;
-    margin-bottom: 1px;
+    margin-left: 3px;
+    transform: translateY(1px);
+
 }
+
+/* move #color-previews span:nth-of-type(2)  one pixel down */
+
 
 #color-previews span:first-of-type:hover {
     cursor: pointer;
@@ -160,6 +170,19 @@ div .c-b-text[selected] {
 div.c-b > span:last-of-type {
     cursor: default;
     color: transparent;
+}
+
+hexPrefix {
+    font-family: monospace;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform: translate(-1.5px, 0.40px);
+    width: 0px;
+}
+
+displayPositioner {
+    transform: translateX(-10px);
 }
 
 /*https://www.w3schools.com/css/css_navbar_vertical.asp*/
