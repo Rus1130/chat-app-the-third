@@ -1,5 +1,5 @@
 <head>
-    <title id="reload-timer">30</title>
+    <title id="reload-timer">120</title>
     <link rel="stylesheet" type="text/css" href="./styles/theme-creator/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
     <link rel="stylesheet" href="colorjoe/colorjoe.css">
@@ -130,7 +130,6 @@
         let newTab = window.open();
         newTab.document.write(`<title>Theme</title><pre>${exportTheme()}</pre>`);
     }
-    
 
     document.body.onload = function() {
 
@@ -235,9 +234,9 @@
 
         setTimeout(() => {
             location.reload()
-        }, 30000)
+        }, 120000)
 
-        let reloadTimer = 30;
+        let reloadTimer = 120;
         setInterval(() => {
             reloadTimer--;
             document.getElementById("reload-timer").textContent = reloadTimer;

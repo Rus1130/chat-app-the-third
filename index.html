@@ -14,6 +14,7 @@
             <ul class="settings-menu-navbar">
                 <div class="nav-main-option selected" id="navbar-parent-option" value="1">Time Format</div>
                 <div class="nav-main-option" id="navbar-parent-option" value="2">Theme</div>
+                <div class="nav-main-option" id="navbar-parent-option" value="3">Exit</div>
             </ul>
             <ul id="settings-menu-options-value-1" value="selected-bkgd" class="settings-menu-navbar" style="display: block;">
                 <div class="settings-menu-option" value="time-24_hour">24 Hour</div>
@@ -22,6 +23,9 @@
             <ul id="settings-menu-options-value-2" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
                 <div class="settings-menu-option" value="theme-light">Light</div>
                 <!-- <div class="settings-menu-option" value="theme-dark">Dark</div> -->
+            </ul>
+            <ul id="settings-menu-options-value-3" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
+                <div class="settings-menu-option" value="exit" id="settings-exit-button">You Sure?</div>
             </ul>
         </div>
     </div>
@@ -89,6 +93,10 @@
     document.querySelector(`.settings-menu-option[value="time-${timeFormat}"]`).classList.add('selected')
     document.querySelector(`.settings-menu-option[value="theme-${theme}"]`).classList.add('selected')
 
+    document.getElementById("settings-exit-button").onclick = () => {
+        settingsMenu.style.display = "none"
+    }
+
 
     settingsNavbarParentOptions.forEach(option => {
         let correspondingSide = document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`)
@@ -139,14 +147,6 @@
             settingsMenu.style.display = "none"
             // get the current selected parent option
             let selectedParentOption = [...settingsNavbarParentOptions].filter(option => option.classList.contains('selected'))[0].innerHTML
-            if(selectedParentOption == 'Time Format'){
-                loadingScreen.style.display = "flex"
-
-                // reload the page
-                setTimeout(() => {
-                    location.reload()
-                }, 1)
-            }
         }
     }
 
@@ -190,7 +190,6 @@
         "skrrr",
         "Teacher catch you?"
     ]
-
 
     document.body.onload = () => {
         let userToken = localStorage.getItem('chat-app-the-third-userToken') == null ? generateToken() : localStorage.getItem('chat-app-the-third-userToken');

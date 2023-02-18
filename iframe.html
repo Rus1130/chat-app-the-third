@@ -38,6 +38,7 @@
             <ul class="settings-menu-navbar">
                 <div class="nav-main-option selected" id="navbar-parent-option" value="1">Time Format</div>
                 <div class="nav-main-option" id="navbar-parent-option" value="2">Theme</div>
+                <div class="nav-main-option" id="navbar-parent-option" value="3">Exit</div>
             </ul>
             <ul id="settings-menu-options-value-1" value="selected-bkgd" class="settings-menu-navbar" style="display: block;">
                 <div class="settings-menu-option" value="time-24_hour">24 Hour</div>
@@ -46,6 +47,9 @@
             <ul id="settings-menu-options-value-2" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
                 <div class="settings-menu-option" value="theme-light">Light</div>
                 <!-- <div class="settings-menu-option" value="theme-dark">Dark</div> -->
+            </ul>
+            <ul id="settings-menu-options-value-3" value="selected-bkgd" class="settings-menu-navbar" style="display: none;">
+                <div class="settings-menu-option" value="exit" id="settings-exit-button">You Sure?</div>
             </ul>
         </div>
     </div>
@@ -113,9 +117,14 @@
     document.querySelector(`.settings-menu-option[value="time-${timeFormat}"]`).classList.add('selected')
     document.querySelector(`.settings-menu-option[value="theme-${theme}"]`).classList.add('selected')
 
+    document.getElementById("settings-exit-button").onclick = () => {
+        settingsMenu.style.display = "none"
+    }
+
 
     settingsNavbarParentOptions.forEach(option => {
         let correspondingSide = document.getElementById(`settings-menu-options-value-${option.attributes.value.value}`)
+        if(correspondingSide == null) return
         let children = correspondingSide.children
 
         // loop through all of the children
@@ -194,7 +203,6 @@
         'tester': "TESTER",
         'hurr-durr': 'hurr durr im a returd!',
         'admin': 'ADMIN',
-        'invis': 'invisible!',
         'w-human': "W Human Being",
         "crit": "CRITERION",
         "new": "NEW",
@@ -309,9 +317,9 @@
 
         createMessage({
             sender: userToken,
-            content: "This is what a message looks like!<br><br>Here are some tips for you:<br>Left click on the bordered box with a hex code in it to set it to that color.<br>Right click on the same box to reset it to it's default.<br>If you click and drag along the text to the left of those boxes, you can do a multi-select!<br>If you double click on the boxes, you can manually input a hex code. The box will have a red outline if the code is invalid. Press enter to exit the box, and press escape to revert back to the code it was before you made the selection, in case you didn't like it.<br><br>Every 30 seconds, the page automatically reloads to prevent lag build-up (which I cannot fix as they have to do with the color picker). The more you use the color picker with a lot of selections, the faster the lag will come. Everything should save, though.<br><br>Have fun!",
+            content: "This is what a message looks like!<br><br>Here are some tips for you:<br>Left click on the bordered box with a hex code in it to set it to that color.<br>Right click on the same box to reset it to it's default.<br>If you click and drag along the text to the left of those boxes, you can do a multi-select!<br>If you double click on the boxes, you can manually input a hex code. The box will have a red outline if the code is invalid. <br>Press enter to exit the box, and press escape to revert back to the code it was before you made the selection, in case you didn't like it.<br><br>Every 2 minutes, the page automatically reloads to prevent lag build-up (which I cannot fix as they have to do with the color picker). But by the time you get to the 2 minute mark, you've probably reloaded manually.<br>The more you use the color picker with a lot of selections, the faster the lag will come. Everything should save, though.<br><br>Have fun!",
             timestamp: Date.now(),
-            badges: []
+            badges: Object.keys(customBadges),
         }, true)
 
 

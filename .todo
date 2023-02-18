@@ -45,6 +45,7 @@
     [ ] emojis not working
     [x] timestamps on messages showing incorrect time
     [-] fix need to reload to apply change in time format
+    [ ] top message getting cut off
 
 [?] Not sure if bug
     [?] fix online user count not working property in db
