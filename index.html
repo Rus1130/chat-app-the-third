@@ -93,9 +93,9 @@
     document.querySelector(`.settings-menu-option[value="time-${timeFormat}"]`).classList.add('selected')
     document.querySelector(`.settings-menu-option[value="theme-${theme}"]`).classList.add('selected')
 
-    document.getElementById("settings-exit-button").onclick = () => {
+    document.getElementById("settings-exit-button").addEventListener('click', e => {
         settingsMenu.style.display = "none"
-    }
+    })
 
 
     settingsNavbarParentOptions.forEach(option => {
