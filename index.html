@@ -367,21 +367,10 @@
                 timestampString = `${month}/${day}/${year} at ${hours}:${minutes}:${seconds} ${timeSpecifier}`
             }
 
-            let content = data.content
-            content = surround(content, "!", "!", "<formatBold>", "</formatBold>")
-            content = surround(content, "\\*", "\\*", "<formatItalic>", "</formatItalic>")
-            content = surround(content, "_", "_", "<formatUnderline>", "</formatUnderline>")
-            content = surround(content, "~", "~", "<formatStrike>", "</formatStrike>")
-            content = surround(content, "#r\\|", "#", "<formatColor class='colorRed'>", "</formatColor>")
-            content = surround(content, "#o\\|", "#", "<formatColor class='colorOrange'>", "</formatColor>")
-            content = surround(content, "#y\\|", "#", "<formatColor class='colorYellow'>", "</formatColor>")
-            content = surround(content, "#g\\|", "#", "<formatColor class='colorGreen'>", "</formatColor>")
-            content = surround(content, "#b\\|", "#", "<formatColor class='colorBlue'>", "</formatColor>")
-            content = surround(content, "#p\\|", "#", "<formatColor class='colorPurple'>", "</formatColor>")
-            content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
 
 
-            data.content = content
+
+            data.content = format(data.content);
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
                 <div class="message-content">${data.content}</div>
@@ -473,7 +462,7 @@
                     'Surround your message with * to make it italic',
                     'Surround your message with _ to underline it',
                     'Surround your message with - to strike it through',
-                    'Start your message with #, followed by a color (r, o, y, g, b, p) and a |, and end with a # to change the color of your message',
+                    'Start your message with #, followed by a color identifier, and a |, and end with a # to change the color of your message',
                     'Surround your message with @ to make it bigger',
                 ]
 
@@ -556,6 +545,17 @@
                     })
                 } else if(command == "/tips"){
                     sendLocalSystemMessage(tips.join("<br>"));
+                } else if(command == '/colors'){
+                    const colors = [
+                        "r - #r|red#",
+                        "o - #o|orange#",
+                        "y - #y|yellow#",
+                        "g - #g|green#",
+                        "b - #b|blue#",
+                        "p - #p|purple#",
+                        "c - #c|cyan#",
+                        "m - #m|magenta#",
+                    ]
                 } else return sendLocalSystemMessage("Invalid command.")
             }
 

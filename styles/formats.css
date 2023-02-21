@@ -41,3 +41,11 @@ formatColor.colorBlue {
 formatColor.colorPurple {
     color: purple;
 }
+
+formatColor.colorCyan {
+    color: cyan;
+}
+
+formatColor.colorMagenta {
+    color: magenta;
+}

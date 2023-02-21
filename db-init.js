@@ -21,12 +21,38 @@ function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
     searchEnd = searchEnd.replaceAll("\\", "");
     for(i = 0; i < string.length; i++) {
         if(string[i] == searchStart) {
-            if(string.lastIndexOf(searchEnd) > i) {
-                string[i] = replaceStart;
-                string[string.lastIndexOf(searchEnd)] = replaceEnd;
+            // check if there is a matching string end
+            if(string.indexOf(searchEnd) > -1) {
+                // check if the string end is after the string start
+                if(string.indexOf(searchEnd) > i) {
+                    // check if the string start is not already surrounded
+                    if(!string[i-1].includes(replaceStart) && !string[i+1].includes(replaceStart)) {
+                        string[i] = replaceStart;
+                        string[string.indexOf(searchEnd)] = replaceEnd;
+                    }
+                }
             }
         }
     }
     string = string.join("");
     return string;
+}
+
+function format(content){
+    content = surround(content, "!", "!", "<formatBold>", "</formatBold>")
+    content = surround(content, "\\*", "\\*", "<formatItalic>", "</formatItalic>")
+    content = surround(content, "_", "_", "<formatUnderline>", "</formatUnderline>")
+    content = surround(content, "~", "~", "<formatStrike>", "</formatStrike>")
+    content = surround(content, "#r\\|", "#", "<formatColor class='colorRed'>", "</formatColor>")
+    content = surround(content, "#o\\|", "#", "<formatColor class='colorOrange'>", "</formatColor>")
+    content = surround(content, "#y\\|", "#", "<formatColor class='colorYellow'>", "</formatColor>")
+    content = surround(content, "#g\\|", "#", "<formatColor class='colorGreen'>", "</formatColor>")
+    content = surround(content, "#b\\|", "#", "<formatColor class='colorBlue'>", "</formatColor>")
+    content = surround(content, "#p\\|", "#", "<formatColor class='colorPurple'>", "</formatColor>")
+    content = surround(content, "#c\\|", "#", "<formatColor class='colorCyan'>", "</formatColor>")
+    content = surround(content, "#m\\|", "#", "<formatColor class='colorMagenta'>", "</formatColor>")
+    content = surround(content, "#lg\\|", "#", "<formatColor class='colorLimegreen'>", "</formatColor>")
+    content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
+
+    return content;
 }
