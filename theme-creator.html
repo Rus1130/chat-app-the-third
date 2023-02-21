@@ -112,17 +112,17 @@
     let iframe = document.getElementById("iframe").contentWindow.document;
 
     function exportTheme(){
-        let changeableColorLabels = [...document.querySelectorAll("div.c-b-text")]
-        let nextElementSiblingIDs = changeableColorLabels.map((label) => label.nextElementSibling.id);
-        let values = changeableColorLabels.map((label) => label.nextElementSibling.innerHTML);
+        let colors = [...document.querySelectorAll("div.c-b")].map(x => x.children[2].innerHTML)
+        let properties = [...document.querySelectorAll("div.c-b")].map(x => x.children[2].id)
 
         // get the inner HTMLS of changeableColorLabels
         let results = '';
-        for(let i = 0; i < nextElementSiblingIDs.length; i++){
-            results += `document.body.style.setProperty("--${nextElementSiblingIDs[i]}", "#${values[i]}");\n`;
+        for(let i = 0; i < properties.length; i++){
+            results += `document.body.style.setProperty("--${properties[i]}", "#${colors[i]}");\n`;
         }
 
         return results;
+
     }
 
     document.getElementById("exportButton").onclick = e => {
