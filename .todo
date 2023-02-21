@@ -33,22 +33,26 @@
     [ ] settings menu
         [x] change time format
         [o] themes
-        
+
     [x] visually save selected settings
     [x] correct time format when settings switched
     [x] complete color changer
     [x] have everything change in real time
     [x] complete theme creator
-    
+    [ ] show who is online in the db
+
 
 # Bugs
     [ ] emojis not working
     [x] timestamps on messages showing incorrect time
     [-] fix need to reload to apply change in time format
     [ ] top message getting cut off
+    [ ] exit option selecting
+
 
 [?] Not sure if bug
     [?] fix online user count not working property in db
+
 
 [!] Currently Unfixable Bugs
     /!\ changing distance between message submit + first message
