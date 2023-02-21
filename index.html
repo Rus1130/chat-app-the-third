@@ -398,7 +398,7 @@
             let isCommand = messageInput.value.startsWith("/")
 
 
-            let emptyChecker = messageInput.value.replace(/[\u0001-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069\u200B]/g, "")
+            let emptyChecker = messageInput.value.replace(/[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069\u200B]/g, "")
             let isEmpty = emptyChecker.trim() === ""
 
             if(isEmpty){
@@ -462,8 +462,12 @@
                 ]
 
                 const tips = [
-                    'You can click on a message to copy the message ID to your clipboard.',
-                    'You can click on a username to copy the username to your clipboard.',
+                    'You can click on a message to copy the message ID to your clipboard',
+                    'You can click on a username to copy the username to your clipboard',
+                    'Surround your message with ** to make it bold',
+                    'Surround your message with * to make it italic',
+                    'Surround your message with __ to underline it',
+                    'Surround your message with ~~ to strike it through',
                 ]
 
 

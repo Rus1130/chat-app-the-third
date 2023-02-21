@@ -25,7 +25,7 @@
         [x] *italic*
         [x] **bold**
         [x] __underline__
-        [x] --strikethrough--
+        [x] ~~strikethrough~~
 
     [x] click username to copy name
     [x] click message to copy messageID
