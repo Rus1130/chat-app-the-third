@@ -367,16 +367,21 @@
                 timestampString = `${month}/${day}/${year} at ${hours}:${minutes}:${seconds} ${timeSpecifier}`
             }
 
+            let content = data.content
+            content = surround(content, "!", "!", "<formatBold>", "</formatBold>")
+            content = surround(content, "\\*", "\\*", "<formatItalic>", "</formatItalic>")
+            content = surround(content, "_", "_", "<formatUnderline>", "</formatUnderline>")
+            content = surround(content, "~", "~", "<formatStrike>", "</formatStrike>")
+            content = surround(content, "#r\\|", "#", "<formatColor class='colorRed'>", "</formatColor>")
+            content = surround(content, "#o\\|", "#", "<formatColor class='colorOrange'>", "</formatColor>")
+            content = surround(content, "#y\\|", "#", "<formatColor class='colorYellow'>", "</formatColor>")
+            content = surround(content, "#g\\|", "#", "<formatColor class='colorGreen'>", "</formatColor>")
+            content = surround(content, "#b\\|", "#", "<formatColor class='colorBlue'>", "</formatColor>")
+            content = surround(content, "#p\\|", "#", "<formatColor class='colorPurple'>", "</formatColor>")
+            content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
 
-            // put span elements around text that is surrounded by **
-            let content = surround(data.content, "**", "formatBold")
-            content = surround(content, "*", "formatItalic")
-            content = surround(content, "__", "formatUnderline")
-            content = surround(content, "~~", "formatStrike")
 
-            data.content = content;
-
-
+            data.content = content
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
                 <div class="message-content">${data.content}</div>
@@ -464,10 +469,12 @@
                 const tips = [
                     'You can click on a message to copy the message ID to your clipboard',
                     'You can click on a username to copy the username to your clipboard',
-                    'Surround your message with ** to make it bold',
+                    'Surround your message with ! to make it bold',
                     'Surround your message with * to make it italic',
-                    'Surround your message with __ to underline it',
-                    'Surround your message with ~~ to strike it through',
+                    'Surround your message with _ to underline it',
+                    'Surround your message with - to strike it through',
+                    'Start your message with #, followed by a color (r, o, y, g, b, p) and a |, and end with a # to change the color of your message',
+                    'Surround your message with @ to make it bigger',
                 ]
 
 

@@ -13,3 +13,31 @@ formatUnderline {
 formatStrike {
     text-decoration: line-through;
 }
+
+formatHead {
+    font-size: 1.5em;
+}
+
+formatColor.colorRed {
+    color: red;
+}
+
+formatColor.colorOrange {
+    color: orange;
+}
+
+formatColor.colorYellow {
+    color: yellow;
+}
+
+formatColor.colorGreen {
+    color: green;
+}
+
+formatColor.colorBlue {
+    color: blue;
+}
+
+formatColor.colorPurple {
+    color: purple;
+}

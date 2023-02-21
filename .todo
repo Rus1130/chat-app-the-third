@@ -23,9 +23,9 @@
 # Other
     [x] markdown
         [x] *italic*
-        [x] **bold**
-        [x] __underline__
-        [x] ~~strikethrough~~
+        [x] !bold!
+        [x] _underline_
+        [x] -strikethrough-
 
     [x] click username to copy name
     [x] click message to copy messageID

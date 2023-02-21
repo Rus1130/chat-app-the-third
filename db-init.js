@@ -13,18 +13,20 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore(app);
 const rtdb = firebase.database();
 
-function surround(string, search, replace) {
-    let content = string
-    let contentArray = content.split(search)
-    let contentString = ""
+function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
 
-    contentArray.forEach((item, index) => {
-        if(index % 2 == 0){
-            contentString += item
-        } else {
-            contentString += `<${replace}>${item}</${replace}>`
+    string = string.split(new RegExp(`(${searchStart}|${searchEnd})`, 'g'));
+
+    searchStart = searchStart.replaceAll("\\", "");
+    searchEnd = searchEnd.replaceAll("\\", "");
+    for(i = 0; i < string.length; i++) {
+        if(string[i] == searchStart) {
+            if(string.lastIndexOf(searchEnd) > i) {
+                string[i] = replaceStart;
+                string[string.lastIndexOf(searchEnd)] = replaceEnd;
+            }
         }
-    })
-
-    return contentString
+    }
+    string = string.join("");
+    return string;
 }
