@@ -21,11 +21,11 @@
 
 
 # Other
-    [ ] markdown
-        [ ] *italic*
-        [ ] **bold**
-        [ ] __underline__
-        [ ] --strikethrough--
+    [x] markdown
+        [x] *italic*
+        [x] **bold**
+        [x] __underline__
+        [x] --strikethrough--
 
     [x] click username to copy name
     [x] click message to copy messageID

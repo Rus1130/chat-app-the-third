@@ -2,6 +2,7 @@
     <title>Chat during school!</title>
     <link rel="stylesheet" type="text/css" href="./styles/index/styles.css">
     <link rel="stylesheet" type="text/css" href="./styles/badges.css">
+    <link rel="stylesheet" type="text/css" href="./styles/formats.css">
     <script defer src="firebase/app.js"></script>
     <script defer src="firebase/firestore.js"></script>
     <script defer src="firebase/database.js"></script>
@@ -367,6 +368,15 @@
             }
 
 
+            // put span elements around text that is surrounded by **
+            let content = surround(data.content, "**", "formatBold")
+            content = surround(content, "*", "formatItalic")
+            content = surround(content, "__", "formatUnderline")
+            content = surround(content, "~~", "formatStrike")
+
+            data.content = content;
+
+
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
                 <div class="message-content">${data.content}</div>
@@ -388,7 +398,7 @@
             let isCommand = messageInput.value.startsWith("/")
 
 
-            let emptyChecker = messageInput.value.replace(/[\u0000-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069\u200B]/g, "")
+            let emptyChecker = messageInput.value.replace(/[\u0001-\u001F\u007F-\u009F\u061C\u200E\u200F\u202A-\u202E\u2066-\u2069\u200B]/g, "")
             let isEmpty = emptyChecker.trim() === ""
 
             if(isEmpty){

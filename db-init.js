@@ -12,3 +12,19 @@ const firebaseConfig = {
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore(app);
 const rtdb = firebase.database();
+
+function surround(string, search, replace) {
+    let content = string
+    let contentArray = content.split(search)
+    let contentString = ""
+
+    contentArray.forEach((item, index) => {
+        if(index % 2 == 0){
+            contentString += item
+        } else {
+            contentString += `<${replace}>${item}</${replace}>`
+        }
+    })
+
+    return contentString
+}

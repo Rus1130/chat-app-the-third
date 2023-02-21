@@ -1,0 +1,15 @@
+formatBold {
+    font-weight: bold;
+}
+
+formatItalic {
+    font-style: italic;
+}
+
+formatUnderline {
+    text-decoration: underline;
+}
+
+formatStrike {
+    text-decoration: line-through;
+}
