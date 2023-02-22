@@ -6,7 +6,6 @@
     <script defer src="firebase/app.js"></script>
     <script defer src="firebase/firestore.js"></script>
     <script defer src="firebase/database.js"></script>
-    <script defer src="firebase/analytics.js"></script>
     <script defer src="db-init.js"></script>
 </head>
 <body>
@@ -372,6 +371,7 @@
 
 
             data.content = format(data.content);
+
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
                 <div class="message-content">${data.content}</div>
@@ -460,11 +460,11 @@
                 const tips = [
                     'You can click on a message to copy the message ID to your clipboard',
                     'You can click on a username to copy the username to your clipboard',
-                    'Surround your message with ! to make it bold',
+                    'Surround your message with ** to make it bold',
                     'Surround your message with * to make it italic',
-                    'Surround your message with _ to underline it',
-                    'Surround your message with - to strike it through',
-                    'Start your message with #, followed by a color identifier, and a |, and end with a # to change the color of your message',
+                    'Surround your message with __ to underline it',
+                    'Surround your message with ~~ to strike it through',
+                    'Start your message with #, followed by a color identifier, and a |, then type your message followed by a | to change the color.',
                     'Surround your message with @ to make it bigger',
                 ]
 
@@ -549,15 +549,18 @@
                     sendLocalSystemMessage(tips.join("<br>"));
                 } else if(command == '/colors'){
                     const colors = [
-                        "r - #r|red#",
-                        "o - #o|orange#",
-                        "y - #y|yellow#",
-                        "g - #g|green#",
-                        "b - #b|blue#",
-                        "p - #p|purple#",
-                        "c - #c|cyan#",
-                        "m - #m|magenta#",
+                        "r - #<wbr>r|red| #r|red|",
+                        "o - #<wbr>o|orange| #o|orange|",
+                        "y - #<wbr>y|yellow| #y|yellow|",
+                        "g - #<wbr>g|green| #g|green|",
+                        "b - #<wbr>b|blue| #b|blue|",
+                        "p - #<wbr>p|purple| #p|purple|",
+                        "c - #<wbr>c|cyan| #c|cyan|",
+                        "m - #<wbr>m|magenta| #m|magenta|",
                     ]
+
+                    sendLocalSystemMessage(colors.join("<br>"))
+
                 } else return sendLocalSystemMessage("Invalid command.")
             }
 

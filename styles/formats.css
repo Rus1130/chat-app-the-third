@@ -20,32 +20,40 @@ formatHead {
 
 formatColor.colorRed {
     color: red;
+    text-decoration-color: red;
 }
 
 formatColor.colorOrange {
     color: orange;
+    text-decoration-color: orange;
 }
 
 formatColor.colorYellow {
     color: yellow;
+    text-decoration-color: yellow;
 }
 
 formatColor.colorGreen {
     color: green;
+    text-decoration-color: green;
 }
 
 formatColor.colorBlue {
     color: blue;
+    text-decoration-color: blue;
 }
 
 formatColor.colorPurple {
     color: purple;
+    text-decoration-color: purple;
 }
 
 formatColor.colorCyan {
     color: cyan;
+    text-decoration-color: cyan;
 }
 
 formatColor.colorMagenta {
     color: magenta;
+    text-decoration-color: magenta;
 }
