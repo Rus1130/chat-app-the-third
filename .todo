@@ -23,9 +23,9 @@
 # Other
     [o] markdown
         [x] *italic*
-        [x] !bold!
-        [x] _underline_
-        [x] -strikethrough-
+        [x] **bold**
+        [x] __underline__
+        [x] ~~strikethrough~~
         [o] add character escaping
 
     [x] click username to copy name
