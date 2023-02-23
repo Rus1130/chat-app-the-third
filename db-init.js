@@ -16,6 +16,8 @@ const rtdb = firebase.database();
 function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
     string = string.split(new RegExp(`(${searchStart}|${searchEnd})`, 'g'));
 
+    
+
     searchStart = searchStart.replaceAll("\\", "");
     searchEnd = searchEnd.replaceAll("\\", "");
 
@@ -39,7 +41,6 @@ function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
     }
 
     for(i = 0; i < searchStartIndeces.length; i++){
-        // check if there is a matching searchEnd
         if(searchEndIndeces[i] != undefined){
             string[searchStartIndeces[i]] = replaceStart;
             string[searchEndIndeces[i]] = replaceEnd;
@@ -61,8 +62,7 @@ function format(content){
     content = surround(content, "#b\\|", "\\|", "<formatColor class='colorBlue'>", "</formatColor>")
     content = surround(content, "#p\\|", "\\|", "<formatColor class='colorPurple'>", "</formatColor>")
     content = surround(content, "#c\\|", "\\|", "<formatColor class='colorCyan'>", "</formatColor>")
-    content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>")
-    content = surround(content, "#lg\\|", "\\|", "<formatColor class='colorLimegreen'>", "</formatColor>")
+    content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>") 
     content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
 
     return content;

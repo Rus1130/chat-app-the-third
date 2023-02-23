@@ -21,11 +21,12 @@
 
 
 # Other
-    [x] markdown
+    [o] markdown
         [x] *italic*
         [x] !bold!
         [x] _underline_
         [x] -strikethrough-
+        [o] add character escaping
 
     [x] click username to copy name
     [x] click message to copy messageID
