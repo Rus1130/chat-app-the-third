@@ -16,8 +16,6 @@ const rtdb = firebase.database();
 function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
     string = string.split(new RegExp(`(${searchStart}|${searchEnd})`, 'g'));
 
-    
-
     searchStart = searchStart.replaceAll("\\", "");
     searchEnd = searchEnd.replaceAll("\\", "");
 
@@ -66,4 +64,31 @@ function format(content){
     content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
 
     return content;
+}
+
+function removeUnallowedHTMLTags(content){
+    const allowedTags = ["formatBold", "formatItalic", "formatUnderline", "formatStrike", "formatColor", "formatHead"];
+    
+    let tags = content.match(/(<\w+>)|(<\/\w+>) /g);
+    let tagsToReplace = [];
+
+    if(tags == null) return content;
+    for(let i = 0; i < tags.length; i++){
+        let tag = tags[i].replaceAll("</", "").replaceAll("<", "").replaceAll(">", "");
+        openingTag = "<" + tag + ">";
+        closingTag = "</" + tag + ">";
+        if(!allowedTags.includes(tag)){
+            tagsToReplace.push(openingTag);
+            tagsToReplace.push(closingTag);
+        }
+
+
+    }
+
+    for(let i = 0; i < tagsToReplace.length; i++){
+        content = content.replace(tagsToReplace[i], "");
+    }
+
+    return content;
+
 }

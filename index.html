@@ -375,7 +375,7 @@
 
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
-                <div class="message-content">${data.content}</div>
+                <div class="message-content">${removeUnallowedHTMLTags(data.content)}</div>
             </div>`
 
             messages.prepend(div)
