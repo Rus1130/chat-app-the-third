@@ -14,13 +14,11 @@ const db = firebase.firestore(app);
 const rtdb = firebase.database();
 
 function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
-
-    string = string.split(new RegExp(`(${searchStart}|${searchEnd})`, 'g'));
+    string = string.split(new RegExp(`(${searchStart}|${searchEnd}|\\\\)`, 'g'));
 
     searchStart = searchStart.replaceAll("\\", "");
     searchEnd = searchEnd.replaceAll("\\", "");
-
-    console.log(string)
+    
 
     let searchStartIndeces = []
     let searchEndIndeces = []
@@ -52,25 +50,29 @@ function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
 }
 
 function format(content){
-    content = surround(content, "\\*\\*<unescaped>", "\\*\\*", "<formatBold>", "</formatBold>")
-    content = surround(content, "\\*<unescaped>", "\\*", "<formatItalic>", "</formatItalic>")
-    content = surround(content, "__<unescaped>", "__", "<formatUnderline>", "</formatUnderline>")
-    content = surround(content, "~~<unescaped>", "~~", "<formatStrike>", "</formatStrike>")
-    content = surround(content, "#r\\|<unescaped>", "\\|", "<formatColor class='colorRed'>", "</formatColor>")
-    content = surround(content, "#o\\|<unescaped>", "\\|", "<formatColor class='colorOrange'>", "</formatColor>")
-    content = surround(content, "#y\\|<unescaped>", "\\|", "<formatColor class='colorYellow'>", "</formatColor>")
-    content = surround(content, "#g\\|<unescaped>", "\\|", "<formatColor class='colorGreen'>", "</formatColor>")
-    content = surround(content, "#b\\|<unescaped>", "\\|", "<formatColor class='colorBlue'>", "</formatColor>")
-    content = surround(content, "#p\\|<unescaped>", "\\|", "<formatColor class='colorPurple'>", "</formatColor>")
-    content = surround(content, "#c\\|<unescaped>", "\\|", "<formatColor class='colorCyan'>", "</formatColor>")
-    content = surround(content, "#m\\|<unescaped>", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>") 
+    content = surround(content, "\\*\\*", "\\*\\*", "<formatBold>", "</formatBold>")
+    content = surround(content, "\\*", "\\*", "<formatItalic>", "</formatItalic>")
+    content = surround(content, "__", "__", "<formatUnderline>", "</formatUnderline>")
+    content = surround(content, "~~", "~~", "<formatStrike>", "</formatStrike>")
+    content = surround(content, "#r\\|", "\\|", "<formatColor class='colorRed'>", "</formatColor>")
+    content = surround(content, "#o\\|", "\\|", "<formatColor class='colorOrange'>", "</formatColor>")
+    content = surround(content, "#y\\|", "\\|", "<formatColor class='colorYellow'>", "</formatColor>")
+    content = surround(content, "#g\\|", "\\|", "<formatColor class='colorGreen'>", "</formatColor>")
+    content = surround(content, "#b\\|", "\\|", "<formatColor class='colorBlue'>", "</formatColor>")
+    content = surround(content, "#p\\|", "\\|", "<formatColor class='colorPurple'>", "</formatColor>")
+    content = surround(content, "#c\\|", "\\|", "<formatColor class='colorCyan'>", "</formatColor>")
+    content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>") 
     content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
+
+    content = content.replaceAll("$twirly$", "<twirly></twirly>")
+    content = content.replaceAll("$growing-smiley$", "<growing-smiley></growing-smiley>")
+    content = content.replaceAll("$emoji-wheel$", "<emoji-wheel></emoji-wheel>")
 
     return content;
 }
 
 function removeUnallowedHTMLTags(content){
-    const allowedTags = ["formatBold", "formatItalic", "formatUnderline", "formatStrike", "formatColor", "formatHead", "unescaped"];
+    const allowedTags = ["formatBold", "formatItalic", "formatUnderline", "formatStrike", "formatColor", "formatHead", "twirly", "growing-smiley", "emoji-wheel"];
     
     let tags = content.match(/(<\w+>)|(<\/\w+>) /g);
     let tagsToReplace = [];

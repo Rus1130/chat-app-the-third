@@ -57,3 +57,205 @@ formatColor.colorMagenta {
     color: magenta;
     text-decoration-color: magenta;
 }
+
+
+/* make a keyframes that changes the content from - to / to | to \*/
+@-webkit-keyframes twirly-animation {
+    0% {
+        content: "-";
+    }
+    25% {
+        content: "/";
+    }
+    50% {
+        content: "|";
+    }
+    75% {
+        content: "\\";
+    }
+    100% {
+        content: "-";
+    }
+}
+
+@keyframes twirly-animation {
+    0% {
+        content: "-";
+    }
+    25% {
+        content: "\\";
+    }
+    50% {
+        content: "|";
+    }
+    75% {
+        content: "/";
+    }
+    100% {
+        content: "-";
+    }
+}
+
+
+twirly:after {
+    -webkit-animation: twirly-animation 200ms linear infinite;
+    animation: twirly-animation 200ms linear infinite;
+    content: "-";
+}
+
+@-webkit-keyframes growing-smiley-animation {
+    0% {
+        content: "8=D";
+    }
+    10% {
+        content: "8==D";
+    }
+    20% {
+        content: "8===D";
+    }
+    30% {
+        content: "8====D";
+    }
+    40% {
+        content: "8=====D";
+    }
+    50% {
+        content: "8======D";
+    }
+    60% {
+        content: "8=======D";
+    }
+    70% {
+        content: "8========D";
+    }
+    80% {
+        content: "8=========D";
+    }
+    90% {
+        content: "8==========D";
+    }
+    100% {
+        content: "8===========D";
+    }
+}
+
+@keyframes growing-smiley-animation {
+    0% {
+        content: "8=D";
+    }
+    10% {
+        content: "8==D";
+    }
+    20% {
+        content: "8===D";
+    }
+    30% {
+        content: "8====D";
+    }
+    40% {
+        content: "8=====D";
+    }
+    50% {
+        content: "8======D";
+    }
+    60% {
+        content: "8=======D";
+    }
+    70% {
+        content: "8========D";
+    }
+    80% {
+        content: "8=========D";
+    }
+    90% {
+        content: "8==========D";
+    }
+    100% {
+        content: "8===========D";
+    }
+}
+
+
+growing-smiley:after {
+    -webkit-animation: growing-smiley-animation 500ms linear infinite alternate;
+    animation: growing-smiley-animation 500ms linear infinite alternate;
+    content: "8=D";
+}
+
+@-webkit-keyframes emoji-wheel-animation {
+    0% {
+        content: "💀";
+    }
+    10% {
+        content: "😋";
+    }
+    20% {
+        content: "😎";
+    }
+    30% {
+        content: "😍";
+    }
+    40% {
+        content: "🥵";
+    }
+    50% {
+        content: "👺";
+    }
+    60% {
+        content: "👻";
+    }
+    70% {
+        content: "👨‍🦽";
+    }
+    80% {
+        content: "🤡";
+    }
+    90% {
+        content: "👽";
+    }
+    100% {
+        content: "😈";
+    }
+}
+
+@keyframes emoji-wheel-animation {
+    0% {
+        content: "💀";
+    }
+    10% {
+        content: "😋";
+    }
+    20% {
+        content: "😎";
+    }
+    30% {
+        content: "😍";
+    }
+    40% {
+        content: "🥵";
+    }
+    50% {
+        content: "👺";
+    }
+    60% {
+        content: "👻";
+    }
+    70% {
+        content: "👨‍🦽";
+    }
+    80% {
+        content: "🤡";
+    }
+    90% {
+        content: "👽";
+    }
+    100% {
+        content: "😈";
+    }
+}
+
+emoji-wheel:after {
+    -webkit-animation: emoji-wheel-animation 800ms linear infinite;
+    animation: emoji-wheel-animation 800ms linear infinite;
+    content: "💀";
+}
