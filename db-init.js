@@ -63,11 +63,9 @@ function format(content){
     content = surround(content, "#c\\|", "\\|", "<formatColor class='colorCyan'>", "</formatColor>")
     content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>") 
     content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
-
-    content = content.replaceAll("$twirly$", "<twirly></twirly>")
-    content = content.replaceAll("$growing-smiley$", "<growing-smiley></growing-smiley>")
-    content = content.replaceAll("$emoji-wheel$", "<emoji-wheel></emoji-wheel>")
-
+    content = surround(content, "\\$twirly", "\\$", "<twirly>", "</twirly>")
+    content = surround(content, "\\$growing-smiley", "\\$", "<growing-smiley>", "</growing-smiley>")
+    content = surround(content, "\\$emoji-wheel", "\\$", "<emoji-wheel>", "</emoji-wheel>")
     return content;
 }
 
