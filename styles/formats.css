@@ -18,6 +18,16 @@ formatHead {
     font-size: 1.5em;
 }
 
+formatCode {
+    font-family: monospace;
+    color: white;
+    background-color: black;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
 formatColor.colorRed {
     color: red;
     text-decoration-color: red;

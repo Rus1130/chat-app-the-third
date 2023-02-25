@@ -371,11 +371,12 @@
 
             // in data.content, replace all strings of \ followed by any character with the character followed by <wbr>
 
+            data.content = removeHTMLTags(data.content)
             data.content = format(data.content)
 
             div.innerHTML = `<div class="message-container" messageID=${messageID}>
                 <div class="message-head">${data.sender}&nbsp;${badgeDisplay}&nbsp;&nbsp;<div class="time-display">${timestampString}</div></div>
-                <div class="message-content">${removeUnallowedHTMLTags(data.content)}</div>
+                <div class="message-content">${data.content}</div>
             </div>`
 
             messages.prepend(div)
@@ -465,6 +466,7 @@
                     'Surround your message with * to make it italic',
                     'Surround your message with __ to underline it',
                     'Surround your message with ~~ to strike it through',
+                    // 'Surround your message with `` to make it a code block',
                     'Start your message with #, followed by a color identifier, and a |, then type your message followed by a | to change the color.',
                     'Surround your message with @ to make it bigger',
                 ]
@@ -550,14 +552,14 @@
                     sendLocalSystemMessage(tips.join("<br>"));
                 } else if(command == '/colors'){
                     const colors = [
-                        "r - #<wbr>r|red| #r|red|",
-                        "o - #<wbr>o|orange| #o|orange|",
-                        "y - #<wbr>y|yellow| #y|yellow|",
-                        "g - #<wbr>g|green| #g|green|",
-                        "b - #<wbr>b|blue| #b|blue|",
-                        "p - #<wbr>p|purple| #p|purple|",
-                        "c - #<wbr>c|cyan| #c|cyan|",
-                        "m - #<wbr>m|magenta| #m|magenta|",
+                        "r - # r|red| #r|red|",
+                        "o - # o|orange| #o|orange|",
+                        "y - # y|yellow| #y|yellow|",
+                        "g - # g|green| #g|green|",
+                        "b - # b|blue| #b|blue|",
+                        "p - # p|purple| #p|purple|",
+                        "c - # c|cyan| #c|cyan|",
+                        "m - # m|magenta| #m|magenta|",
                     ]
 
                     sendLocalSystemMessage(colors.join("<br>"))

@@ -23,10 +23,19 @@ function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
     let searchStartIndeces = []
     let searchEndIndeces = []
 
+    let ignoreFormatting = false;
+
+    let codeBlockStarts = [];
+    let codeBlockEnds = [];
+
     // find all pairs of searchStart and searchEnd
     for (let i = 0; i < string.length; i++) {
+        
         if(string[i] == searchStart){
-            searchStartIndeces.push(i);
+            if(ignoreFormatting == false){
+                searchStartIndeces.push(i);
+            }
+
         }
     }
 
@@ -50,28 +59,27 @@ function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
 }
 
 function format(content){
-    content = surround(content, "\\*\\*", "\\*\\*", "<formatBold>", "</formatBold>")
-    content = surround(content, "\\*", "\\*", "<formatItalic>", "</formatItalic>")
-    content = surround(content, "__", "__", "<formatUnderline>", "</formatUnderline>")
-    content = surround(content, "~~", "~~", "<formatStrike>", "</formatStrike>")
-    content = surround(content, "#r\\|", "\\|", "<formatColor class='colorRed'>", "</formatColor>")
-    content = surround(content, "#o\\|", "\\|", "<formatColor class='colorOrange'>", "</formatColor>")
-    content = surround(content, "#y\\|", "\\|", "<formatColor class='colorYellow'>", "</formatColor>")
-    content = surround(content, "#g\\|", "\\|", "<formatColor class='colorGreen'>", "</formatColor>")
-    content = surround(content, "#b\\|", "\\|", "<formatColor class='colorBlue'>", "</formatColor>")
-    content = surround(content, "#p\\|", "\\|", "<formatColor class='colorPurple'>", "</formatColor>")
-    content = surround(content, "#c\\|", "\\|", "<formatColor class='colorCyan'>", "</formatColor>")
-    content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>") 
-    content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
-    content = surround(content, "\\$twirly", "\\$", "<twirly>", "</twirly>")
-    content = surround(content, "\\$growing-smiley", "\\$", "<growing-smiley>", "</growing-smiley>")
-    content = surround(content, "\\$emoji-wheel", "\\$", "<emoji-wheel>", "</emoji-wheel>")
+    content = surround(content, "\\*\\*", "\\*\\*", "<formatBold start='**' end='**'>", "</formatBold>")
+    content = surround(content, "\\*", "\\*", "<formatItalic start='*' end ='*'>", "</formatItalic>")
+    content = surround(content, "__", "__", "<formatUnderline start='__' end='__'>", "</formatUnderline>")
+    content = surround(content, "~~", "~~", "<formatStrike start='~~' end='~~'>", "</formatStrike>")
+    content = surround(content, "#r\\|", "\\|", "<formatColor class='colorRed' start='#r|' end='|'>", "</formatColor>")
+    content = surround(content, "#o\\|", "\\|", "<formatColor class='colorOrange' start='#o|' end='|'>", "</formatColor>")
+    content = surround(content, "#y\\|", "\\|", "<formatColor class='colorYellow' start='#y|' end='|'>", "</formatColor>")
+    content = surround(content, "#g\\|", "\\|", "<formatColor class='colorGreen' start='#g|' end='|'>", "</formatColor>")
+    content = surround(content, "#b\\|", "\\|", "<formatColor class='colorBlue' start='#b|' end='|'>", "</formatColor>")
+    content = surround(content, "#p\\|", "\\|", "<formatColor class='colorPurple' start='#p|' end='|'>", "</formatColor>")
+    content = surround(content, "#c\\|", "\\|", "<formatColor class='colorCyan' start='#c|' end='|'>", "</formatColor>")
+    content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta' start='#m|' end='|'>", "</formatColor>")
+    content = surround(content, "@", "@", "<formatHead start='@' end='@'>", "</formatHead>")
+    content = surround(content, "`", "`", "<formatCode>", "</formatCode>")
+    content = surround(content, "\\$twirly", "\\$", "<twirly start='$twirly' end='$'>", "</twirly>")
+    content = surround(content, "\\$growing-smiley", "\\$", "<growing-smiley start='$growing-smiley' end='$'>", "</growing-smiley>")
+    content = surround(content, "\\$emoji-wheel", "\\$", "<emoji-wheel start='$emoji-wheel' end='$'>", "</emoji-wheel>")
     return content;
 }
 
-function removeUnallowedHTMLTags(content){
-    const allowedTags = ["formatBold", "formatItalic", "formatUnderline", "formatStrike", "formatColor", "formatHead", "twirly", "growing-smiley", "emoji-wheel"];
-    
+function removeHTMLTags(content){    
     let tags = content.match(/(<\w+>)|(<\/\w+>) /g);
     let tagsToReplace = [];
 
@@ -80,11 +88,8 @@ function removeUnallowedHTMLTags(content){
         let tag = tags[i].replaceAll("</", "").replaceAll("<", "").replaceAll(">", "");
         openingTag = "<" + tag + ">";
         closingTag = "</" + tag + ">";
-        if(!allowedTags.includes(tag)){
-            tagsToReplace.push(openingTag);
-            tagsToReplace.push(closingTag);
-        }
-
+        tagsToReplace.push(openingTag);
+        tagsToReplace.push(closingTag);
 
     }
 
@@ -93,5 +98,4 @@ function removeUnallowedHTMLTags(content){
     }
 
     return content;
-
 }
