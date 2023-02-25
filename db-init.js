@@ -32,10 +32,7 @@ function surround(string, searchStart, searchEnd, replaceStart, replaceEnd) {
     for (let i = 0; i < string.length; i++) {
         
         if(string[i] == searchStart){
-            if(ignoreFormatting == false){
-                searchStartIndeces.push(i);
-            }
-
+            searchStartIndeces.push(i);
         }
     }
 
