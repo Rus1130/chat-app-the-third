@@ -68,7 +68,7 @@ function format(content){
     content = surround(content, "#p\\|", "\\|", "<formatColor class='colorPurple'>", "</formatColor>")
     content = surround(content, "#c\\|", "\\|", "<formatColor class='colorCyan'>", "</formatColor>")
     content = surround(content, "#m\\|", "\\|", "<formatColor class='colorMagenta'>", "</formatColor>")
-    content = surround(content, "@", "@", "<formatHead>", "</formatHead>")
+    content = surround(content, "@", "@", "<formatHead>", "</formatHead><br>")
     content = surround(content, "`", "`", "<formatCode>", "</formatCode>")
     content = surround(content, "\\$twirly", "\\$", "<twirly>", "</twirly>")
     content = surround(content, "\\$growing-smiley", "\\$", "<growing-smiley>", "</growing-smiley>")
